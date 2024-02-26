@@ -6,8 +6,8 @@ import '../../../constants/app_paddings.dart';
 import '../../../constants/size_config.dart';
 import '../../widgets/base_back_button.dart';
 import '../../widgets/base_common_widget.dart';
-import 'Widgets/EnterEmailOrUsername.dart';
-import 'Widgets/ResetPassword.dart';
+import 'Widgets/email_username_widget.dart';
+import 'Widgets/reset_password.dart';
 import 'forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends GetView<ForgotPasswordController>

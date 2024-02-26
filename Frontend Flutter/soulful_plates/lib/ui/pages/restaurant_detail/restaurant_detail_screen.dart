@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/routing/route_names.dart';
+import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
 import '../../widgets/base_common_widget.dart';
 import 'restaurant_detail_controller.dart';
 
@@ -18,9 +16,32 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("RestaurantDetail"),
+          title: const Text("Restaurant Detail"),
+          actions: [
+            InkWell(
+              onTap: () {
+                controller.isEditable = !controller.isEditable;
+                controller.update();
+              },
+              child: const Icon(
+                Icons.edit,
+                color: AppColor.blackColor,
+                size: 24,
+              ).paddingHorizontal16(),
+            ).visibleWhen(isVisible: !controller.isEditable)
+          ],
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to cart",
+            onPressed: () {
+              Get.toNamed(viewCartViewRoute);
+            },
+            child: const Icon(
+              Icons.shopping_cart,
+              size: 24,
+              color: AppColor.whiteColor,
+            )),
         body: SafeArea(
           child: GetBuilder(
             init: controller,
@@ -33,13 +54,14 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
   }
 
   Widget getBody(BuildContext context) {
-    return Column(
-      children: [
-        12.rVerticalSizedBox(),
-        const Text("RestaurantDetail Screen"),
-        12.rVerticalSizedBox(),
-
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          16.rVerticalSizedBox(),
+          16.rVerticalSizedBox(),
+        ],
+      ).paddingHorizontal24(),
     );
   }
 }

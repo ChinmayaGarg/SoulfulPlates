@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/routing/route_names.dart';
+import 'package:soulful_plates/ui/pages/view_cart/view_cart_controller.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
+import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
-import 'view_cart_controller.dart';
 
-class ViewCartScreen extends GetView<ViewCartController>
-    with BaseCommonWidget {
+class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   ViewCartScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("ViewCart"),
+          title: const Text("View Cart"),
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to Payment",
+            onPressed: () {
+              Get.toNamed(cartPaymentViewRoute);
+            },
+            child: const Icon(
+              Icons.payments_outlined,
+              size: 24,
+              color: AppColor.whiteColor,
+            )),
         body: SafeArea(
           child: GetBuilder(
             init: controller,
@@ -34,11 +40,18 @@ class ViewCartScreen extends GetView<ViewCartController>
 
   Widget getBody(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         12.rVerticalSizedBox(),
-        const Text("ViewCart Screen"),
-        12.rVerticalSizedBox(),
-
+        // Expanded(
+        //   child: ListView.builder(
+        //     itemCount: controller.dataList.length,
+        //     shrinkWrap: true,
+        //     itemBuilder: (context, index) {
+        //       return CartItemWidget(cartItem: controller.dataList[index]);
+        //     },
+        //   ),
+        // ),
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:soulful_plates/Utils/Extensions.dart';
 
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
+import '../../../routing/route_names.dart';
 import '../../../utils/utils.dart';
 
 class ForgotPasswordController extends BaseController {
@@ -36,25 +37,6 @@ class ForgotPasswordController extends BaseController {
     }
   }
 
-  void validateAndSendRequest() async {
-    // await CognitoService.setUserPoolData(isManual: true);
-    // setLoaderState(ViewStateEnum.busy);
-    // final Map<String, dynamic> demoMap = {};
-    // var sendRequestCallback = await CognitoService.requestForgotPassword(
-    //   emailController.text.trim(),
-    // );
-    // if (sendRequestCallback.runtimeType == demoMap.runtimeType) {
-    //   setLoaderState(ViewStateEnum.idle);
-    //   forgotPasswordStatus = ForgotPasswordStatus.resetPassword;
-    //   Utils.showMessageInSnackBar(
-    //       "Verification code sent successfully !", false);
-    //   update();
-    // } else {
-    //   setLoaderState(ViewStateEnum.idle);
-    //   Utils.showMessageInSnackBar(sendRequestCallback.toString(), true);
-    // }
-  }
-
   void navigateToNext() {
     forgotPasswordStatus = ForgotPasswordStatus.resetPassword;
     update();
@@ -63,12 +45,14 @@ class ForgotPasswordController extends BaseController {
   void validateAndResetPassword() async {
     if (!verificationCodeController.text.isNotNullOrEmpty) {
       Utils.showSuccessToast(
-          "Please enter the 6 digit code sent to your email.", false);
+          "Please enter the 4 digit code sent to your email.", false);
       return;
     }
     setLoaderState(ViewStateEnum.busy);
+    await Future.delayed(const Duration(seconds: 3));
     Utils.showSuccessToast("Password changed successfully !", false);
     setLoaderState(ViewStateEnum.idle);
+    Get.offAllNamed(loginViewRoute);
     // Logger.info("Check the username is there >>>> ${emailController.text}");
     // var forgotPasswordCallback = await CognitoService.forgotPassword(
     //   verificationCode: verificationCodeController.text.trim(),

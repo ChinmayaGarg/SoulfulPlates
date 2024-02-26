@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:soulful_plates/model/profile/user_profile.dart';
+import 'package:soulful_plates/utils/utils.dart';
 
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
 import '../../../network/network_interfaces/i_dio_singleton.dart';
 import '../../../network/network_utils/api_call.dart';
+import '../../../routing/route_names.dart';
+import '../../../utils/extensions.dart';
 
 class SignUpController extends BaseController {
   TextEditingController emailEditingController = TextEditingController();
@@ -29,40 +33,31 @@ class SignUpController extends BaseController {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   Future<void> signUpUser({data}) async {
     try {
       setLoaderState(ViewStateEnum.busy);
 
-      final UserProfile? userModel = await ApiCall().call<UserProfile>(
+      var response = await ApiCall().call<UserProfile>(
           method: RequestMethod.post,
-          endPoint: "/api/addUserDetails",
-          obj: UserProfile(),
+          endPoint: "/auth/signup",
           apiCallType: ApiCallType.simple,
           parameters: data);
-      if (userModel != null) {
-        // await UserPreference.setValue(
-        //     key: SharedPrefKey.userModel.name, value: userModel.toJson());
-        // await  UserPreference.setValue(key: SharedPrefKey.token.name, value: userModel.token);
-        // AppSingleton.userModel = userModel;
-        // setLoaderState(ViewStateEnum.idle);
-        // AppSingleton.showToastMessage(message: "Account created successfully.");
-        // onWidgetDidBuild(callback: () {
-        //   Get.offAllNamed(dashboardViewRoute);
-        // });
+      debugPrint('This is response $response ${response.runtimeType}');
+      debugPrint('This is response $response ${response['code']}');
+      if (response != null) {
+        Utils.showSuccessToast("Account created successfully.", true);
+        onWidgetDidBuild(callback: () {
+          Get.offAllNamed(loginViewRoute);
+        });
       } else {
         setLoaderState(ViewStateEnum.idle);
-        // AppSingleton.showToastMessage(
-        //     message: "Issue while creating user. Please try again later.");
+        Utils.showSuccessToast(
+            "Issue while creating user. Please try again later.", false);
       }
     } catch (e) {
       setLoaderState(ViewStateEnum.idle);
-      print('This is error $e');
-      // AppSingleton.showToastMessage(message: e.toString());
+      debugPrint('This is error $e');
+      Utils.showSuccessToast(e.toString(), false);
     }
   }
 }

@@ -1,25 +1,30 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:soulful_plates/Utils/Extensions.dart';
 import 'package:soulful_plates/network/network_interfaces/generic_model.dart';
 
 class UserProfile extends GenericModel {
   UserProfile({
     String? id,
-    String? fullName,
+    String? username,
     String? email,
     String? phoneNumber,
+    String? image,
   }) {
     _id = id;
-    _fullName = fullName;
+    _username = username;
     _email = email;
     _phoneNumber = phoneNumber;
+    _image = image;
   }
 
   UserProfile.fromJson(dynamic json) {
     _id = json['id'];
-    _fullName = json['full_name'];
+    _username = json['username'];
     _email = json['email'];
-    _phoneNumber = json['phone_number'];
+    _phoneNumber = json['contact_number'];
+    _image = json['image'];
   }
 
   static UserProfile? fromRawJson(String str) {
@@ -33,38 +38,50 @@ class UserProfile extends GenericModel {
   String toRawJson() => jsonEncode(toJson());
 
   String? _id;
-  String? _fullName;
+  String? _username;
   String? _email;
   String? _phoneNumber;
+  String? _image;
   UserProfile copyWith({
     String? id,
-    String? fullName,
+    String? username,
     String? email,
     String? phoneNumber,
+    String? image,
   }) =>
       UserProfile(
         id: id ?? _id,
-        fullName: fullName ?? _fullName,
+        username: username ?? _username,
         email: email ?? _email,
         phoneNumber: phoneNumber ?? _phoneNumber,
+        image: image ?? _image,
       );
   String? get id => _id;
-  String? get fullName => _fullName;
+  String? get username => _username;
   String? get email => _email;
   String? get phoneNumber => _phoneNumber;
+  String? get image => _image;
+
+  String shortName() {
+    if (username.isNotNullOrEmpty) {
+      return username!.substring(0, 1).capitalizeFirst ?? '';
+    }
+    return '-';
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
-    map['full_name'] = _fullName;
+    map['username'] = _username;
     map['email'] = _email;
-    map['phone_number'] = _phoneNumber;
+    map['contact_number'] = _phoneNumber;
+    map['image'] = _image;
     return map;
   }
 
   @override
   String toString() {
-    return 'UserProfile{_id: $_id, _fullName: $_fullName, _email: $_email, _phoneNumber: $_phoneNumber,}';
+    return 'UserProfile{_id: $_id, _username: $_username, _email: $_email, _phoneNumber: $_phoneNumber, _image: $_image}';
   }
 
   @override

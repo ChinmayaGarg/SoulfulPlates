@@ -27,40 +27,37 @@ class _InternetPageViewState extends State<InternetPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        backgroundColor: AppColor.whiteColor,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                customBorder: const CircleBorder(),
-                onTap: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await checkInternetConnection();
-                },
-                child: Icon(
-                  Icons.refresh,
-                  color: AppColor.blackColor,
-                  size: 24.rSize(),
-                ).paddingAll16(),
-              ).visibleWhen(
-                  isVisible: !isLoading,
-                  subWidget: const BaseLoadingWidget().paddingAll16()),
-              8.rVerticalSizedBox(),
-              Text(
-                LanguageConst.internetNotAvailable,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.textStyleBlack16With600,
-              ),
-            ],
-          ).paddingScreen(),
-        ),
+    return Scaffold(
+      backgroundColor: AppColor.whiteColor,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              customBorder: const CircleBorder(),
+              onTap: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await checkInternetConnection();
+              },
+              child: Icon(
+                Icons.refresh,
+                color: AppColor.blackColor,
+                size: 24.rSize(),
+              ).paddingAll16(),
+            ).visibleWhen(
+                isVisible: !isLoading,
+                subWidget: const BaseLoadingWidget().paddingAll16()),
+            8.rVerticalSizedBox(),
+            Text(
+              LanguageConst.internetNotAvailable,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.textStyleBlack16With600,
+            ),
+          ],
+        ).paddingScreen(),
       ),
     );
   }

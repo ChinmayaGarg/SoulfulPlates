@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:config/config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'model/profile/user_profile.dart';
@@ -19,6 +20,10 @@ class AppSingleton {
     ConnectionStatus connectionStatusSingleton = ConnectionStatus();
     connectionStatus = connectionStatusSingleton;
     initThings();
+  }
+
+  static isBuyer() {
+    return role == 'buyer';
   }
 
   initThings() async {

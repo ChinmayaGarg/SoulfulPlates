@@ -63,7 +63,7 @@ class NetworkCallDio implements INetCall {
       }
       return await sendResponse(res, response);
     } catch (err) {
-      if (err is DioError && err.response?.statusCode != 200) {
+      if (err is DioException && err.response?.statusCode != 200) {
         return Future.error(LanguageConst.couldNotConnectToServer);
       }
       try {
@@ -113,7 +113,7 @@ class NetworkCallDio implements INetCall {
     } catch (e) {
       log(e.toString());
       deleteFile(File(downloadPath));
-      if (e is DioError) {
+      if (e is DioException) {
         if (e.response?.statusCode == 404) return e.response.toString();
       }
       log(e.toString());
@@ -178,7 +178,7 @@ class NetworkCallDio implements INetCall {
         baseResponse.code == 1 ||
         baseResponse.code == '1') {
       if (response != null) {
-        print('THis is data returned');
+        debugPrint('THis is data returned');
         response(baseResponse.data);
       }
 
@@ -187,7 +187,7 @@ class NetworkCallDio implements INetCall {
       }
       return baseResponse.data;
     } else if (baseResponse.code == -3) {
-      print('This is code${baseResponse} ');
+      debugPrint('This is code$baseResponse ');
       return Future.error(
           baseResponse.description ?? LanguageConst.couldNotConnectToServer);
     } else {

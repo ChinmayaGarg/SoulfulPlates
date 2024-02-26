@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   ///basic theme colors
   static const Color primaryColor = c.primaryColor;
+  static const Color profileBackground = Color(0xFFC4C201);
   // Seller color = #242F34
   // buyer color = #02690B
   static const Color gradientSecondColor = Color(0xffE47E07);

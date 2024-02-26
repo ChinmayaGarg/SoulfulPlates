@@ -16,19 +16,14 @@ class LoginController extends BaseController {
   bool obscureText = true;
 
   TextEditingController emailEditingController =
-      TextEditingController(text: 'test13341@gmail.com');
+      TextEditingController(text: '');
   TextEditingController passwordEditingController =
-      TextEditingController(text: 'Test@1234');
+      TextEditingController(text: '');
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
   final formKey = GlobalKey<FormState>();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   void login() async {
     try {
@@ -60,8 +55,32 @@ class LoginController extends BaseController {
       }
     } catch (e) {
       setLoaderState(ViewStateEnum.idle);
-      print('This is error $e');
+      debugPrint('This is error $e');
       Utils.showSuccessToast(e.toString(), true);
+    }
+  }
+
+  signIn() async {
+    setLoaderState(ViewStateEnum.busy);
+    await Future.delayed(const Duration(seconds: 2));
+    setLoaderState(ViewStateEnum.idle);
+    if (passwordEditingController.text.trim() == 'Test@12345' ||
+        passwordEditingController.text.trim() == 'Nikul@1234') {
+      UserProfile userModel = UserProfile(
+          username: "NikulKukadiya",
+          email: emailEditingController.text,
+          phoneNumber: '8866534671');
+      Utils.addMenuItems();
+
+      await UserPreference.setValue(
+          key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
+      // await UserPreference.setValue(
+      //     key: SharedPrefKey.token.name, value: userModel.token);
+      AppSingleton.loggedInUserProfile = userModel;
+      Utils.showSuccessToast("Logged in successfully.", false);
+      Get.offAllNamed(dashboardViewRoute);
+    } else {
+      Utils.showSuccessToast("Sign in failed. Please try again.", false);
     }
   }
 }

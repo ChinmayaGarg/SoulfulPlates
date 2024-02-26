@@ -19,7 +19,7 @@ class BaseController extends GetxController {
       if (state != viewState) _state = viewState;
       update();
     } catch (e) {
-      print('This is error while building');
+      debugPrint('This is error while building');
     }
     // });
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/app_singleton.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_icons.dart';
@@ -54,7 +55,7 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
               ),
               16.rVerticalSizedBox(),
               Text(
-                'First name',
+                'Username',
                 style: AppTextStyles.textStyleBlackTwo12With400,
               ),
               8.rVerticalSizedBox(),
@@ -66,23 +67,23 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
                 onSubmitted: (val) {
                   controller.lastNameFocusNode.requestFocus();
                 },
-                hintText: 'First name',
+                hintText: 'Username',
               ),
-              Text(
-                'Last name',
-                style: AppTextStyles.textStyleBlackTwo12With400,
-              ),
-              8.rVerticalSizedBox(),
-              AppTextField(
-                focusNode: controller.lastNameFocusNode,
-                onSubmitted: (val) {
-                  controller.emailFocusNode.requestFocus();
-                },
-                controller: controller.lastNameEditingController,
-                validator: (val) =>
-                    Validations.emptyValidator(val, "Please enter last name!"),
-                hintText: 'Last name',
-              ),
+              // Text(
+              //   'Last name',
+              //   style: AppTextStyles.textStyleBlackTwo12With400,
+              // ),
+              // 8.rVerticalSizedBox(),
+              // AppTextField(
+              //   focusNode: controller.lastNameFocusNode,
+              //   onSubmitted: (val) {
+              //     controller.emailFocusNode.requestFocus();
+              //   },
+              //   controller: controller.lastNameEditingController,
+              //   validator: (val) =>
+              //       Validations.emptyValidator(val, "Please enter last name!"),
+              //   hintText: 'Last name',
+              // ),
               Text(
                 'Mobile number',
                 style: AppTextStyles.textStyleBlackTwo12With400,
@@ -169,18 +170,13 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
                 },
                 onSubmitted: (val) {
                   if (controller.formKey.currentState!.validate()) {
-                    // * You can use functions of Custom Button Cubit as follow:
                     controller.signUpUser(data: {
                       'email': controller.emailEditingController.text.trim(),
                       'password':
                           controller.passwordEditingController.text.trim(),
-                      "first_name":
+                      "username":
                           controller.firstNameEditingController.text.trim(),
-                      "last_name":
-                          controller.lastNameEditingController.text.trim(),
-                      "mobile_number":
-                          controller.mobileEditingController.text.trim(),
-                      "user_type": 'role_buyer',
+                      "role": AppSingleton.isBuyer() ? ['buyer'] : ['seller'],
                     });
                   }
                 },
@@ -249,18 +245,14 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
       return const Center(child: CircularProgressIndicator());
     }
     return BaseButton(
-        text: 'Sign In',
+        text: 'Sign Up',
         onSubmit: () async {
-          // * You can use functions of Custom Button Cubit as follow:
           if (controller.formKey.currentState!.validate()) {
-            // * You can use functions of Custom Button Cubit as follow:
             controller.signUpUser(data: {
               'email': controller.emailEditingController.text.trim(),
               'password': controller.passwordEditingController.text.trim(),
-              "first_name": controller.firstNameEditingController.text.trim(),
-              "last_name": controller.lastNameEditingController.text.trim(),
-              "mobile_number": controller.mobileEditingController.text.trim(),
-              "user_type": 'role_buyer',
+              "username": controller.firstNameEditingController.text.trim(),
+              "role": AppSingleton.isBuyer() ? ['buyer'] : ['seller'],
             });
           }
         });

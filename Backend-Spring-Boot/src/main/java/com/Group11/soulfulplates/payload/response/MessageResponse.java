@@ -1,17 +1,18 @@
 package com.Group11.soulfulplates.payload.response;
 
+import lombok.Data;
+
+@Data
 public class MessageResponse {
-  private String message;
+  private int code;
+  private String description;
+  private Object data;
 
-  public MessageResponse(String message) {
-    this.message = message;
+  public MessageResponse(int code, String description, Object data) {
+    this.code = code;
+    this.description = description;
+    this.data = data;
   }
 
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
 }
+

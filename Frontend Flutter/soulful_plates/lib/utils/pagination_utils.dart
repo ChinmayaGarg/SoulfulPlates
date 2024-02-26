@@ -64,7 +64,7 @@ import 'utils.dart';
       }
   }
  */
-abstract class PaginationUtils<T> {
+mixin class PaginationUtils<T> {
   final ScrollController scrollController = ScrollController();
   List<T> dataList = [];
   dynamic data;
@@ -114,9 +114,9 @@ abstract class PaginationUtils<T> {
     }
   }
 
-  void fetchData();
+  void fetchData() {}
 
-  void loadMore();
+  void loadMore() {}
 
   void resetPagination() {
     pageNo = 0;

@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-import '../../../utils/extensions.dart';
+
 import '../../../controller/base_controller.dart';
 
-
-class HomeController extends BaseController{
-
+class HomeController extends BaseController {
+  final formKey = GlobalKey<FormState>();
 }

@@ -42,12 +42,6 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
               Get.toNamed(restaurantDetailViewRoute);
             }).paddingHorizontal16(),
         16.rVerticalSizedBox(),
-        BaseButton(
-            text: "Go to view cart",
-            onSubmit: () {
-              Get.toNamed(viewCartViewRoute);
-            }).paddingHorizontal16(),
-        16.rVerticalSizedBox(),
         12.rVerticalSizedBox(),
       ],
     );

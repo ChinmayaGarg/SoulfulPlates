@@ -5,9 +5,11 @@ import com.Group11.soulfulplates.models.Role;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
+import com.Group11.soulfulplates.payload.request.ResetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.SignupRequest;
 import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.payload.response.OtpResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.security.jwt.JwtUtils;
@@ -23,16 +25,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
   @Autowired
   AuthenticationManager authenticationManager;
 
@@ -49,71 +49,62 @@ public class AuthController {
   JwtUtils jwtUtils;
 
   @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
+  public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
-    
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(item -> item.getAuthority())
-        .collect(Collectors.toList());
 
-    return ResponseEntity.ok(new JwtResponse(jwt, 
-                         userDetails.getId(), 
-                         userDetails.getUsername(), 
-                         userDetails.getEmail(), 
-                         roles));
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    List<String> roles = userDetails.getAuthorities().stream()
+            .map(Object::toString)
+            .collect(Collectors.toList());
+
+    JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+            userDetails.getEmail(), roles);
+
+    return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-      return ResponseEntity
-          .badRequest()
-          .body(new MessageResponse("Error: Username is already taken!"));
+      return ResponseEntity.badRequest()
+              .body(new MessageResponse(-1, "Error: Username is already taken!", null));
     }
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return ResponseEntity
-          .badRequest()
-          .body(new MessageResponse("Error: Email is already in use!"));
+      return ResponseEntity.badRequest()
+              .body(new MessageResponse(-1, "Error: Email is already in use!", null));
     }
 
-    // Create new user's account
-    User user = new User(signUpRequest.getUsername(), 
-               signUpRequest.getEmail(),
-               encoder.encode(signUpRequest.getPassword()));
+    User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()));
 
-    Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
 
-    if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_BUYER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
+    if (signUpRequest.getRole() == null) {
+      Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+      roles.add(buyerRole);
     } else {
-      strRoles.forEach(role -> {
+      signUpRequest.getRole().forEach(role -> {
         switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
-
-          break;
-        case "seller":
-          Role modRole = roleRepository.findByName(ERole.ROLE_SELLER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
-
-          break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_BUYER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
+          case "admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
+            break;
+          case "seller":
+            Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(sellerRole);
+            break;
+          default:
+            Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(buyerRole);
         }
       });
     }
@@ -121,48 +112,51 @@ public class AuthController {
     user.setRoles(roles);
     userRepository.save(user);
 
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return ResponseEntity.ok(new MessageResponse(1, "User registered successfully!", null));
   }
 
-//  @PostMapping("/forget-password")
-//  public ResponseEntity<?> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
-//    // Generate a random 4-digit code
-//    String code = generateRandomCode();
-//
-//    // Authenticate the user for the purpose of generating a JWT token
-//    Authentication authentication = authenticationManager.authenticate(
-//            new UsernamePasswordAuthenticationToken(forgetPasswordRequest.getUsername(), forgetPasswordRequest.getPassword()));
-//
-//    // Generate JWT token
-//    String jwt = jwtUtils.generateJwtToken(authentication);
-//
-//    // Here you can send this code to the user's email or phone number
-//    // and return the JWT token for further authentication
-//
-//    return ResponseEntity.ok(new ForgetPasswordResponse(code, jwt));
-//  }
-@PostMapping("/forget-password")
-@PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
-public String generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
-  // Generate a random 4-digit code
+  @PostMapping("/forget-password")
+  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+  public ResponseEntity<MessageResponse> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
+    if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
+      try {
+        return ResponseEntity.ok(new MessageResponse(1, "Forget password code generated successfully!",
+                Collections.singletonMap("OTP_Code", OtpResponse.OtpCode())));
+      } catch (Exception e) {
+        return ResponseEntity.badRequest()
+                .body(new MessageResponse(-1, "Error occurred while generating forget password code.", null));
+      }
+    } else{
+      return ResponseEntity
+              .badRequest()
+              .body(new MessageResponse(-1, "Error: Email does not exists!", null));
+    }
+  }
+  @PostMapping("/reset-password")
+  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+  public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+    if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
+      try {
+        Optional<User> optionalUser = userRepository.findByEmail(resetPasswordRequest.getEmail());
+        if (optionalUser.isPresent()) {
+          User user = optionalUser.get();
+          user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
+          userRepository.save(user);
 
-//  // Authenticate the user for the purpose of generating a JWT token
-//  Authentication authentication = authenticationManager.authenticate(
-//          new UsernamePasswordAuthenticationToken(forgetPasswordRequest.getUsername(), forgetPasswordRequest.getPassword()));
+          return ResponseEntity.ok(new MessageResponse(1, "Password reset successfully!", null));
+        } else {
+          return ResponseEntity.badRequest()
+                  .body(new MessageResponse(-1, "Error: User with provided email not found.", null));
+        }
+      } catch (Exception e) {
+        return ResponseEntity.badRequest()
+                .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
+      }
 
-  // Generate JWT token
-//  String jwt = jwtUtils.generateJwtToken(authentication);
-
-  // Here you can send this code to the user's email or phone number
-  // and return the JWT token for further authentication
-
-//  return ResponseEntity.ok(new ForgetPasswordResponse(code, jwt));
-  return generateRandomCode();
-}
-
-  private String generateRandomCode() {
-    Random random = new Random();
-    int code = 1000 + random.nextInt(9000); // Random 4-digit code
-    return String.valueOf(code);
+    } else {
+      return ResponseEntity
+              .badRequest()
+              .body(new MessageResponse(-1, "Error: Email does not exist!", null));
+    }
   }
 }

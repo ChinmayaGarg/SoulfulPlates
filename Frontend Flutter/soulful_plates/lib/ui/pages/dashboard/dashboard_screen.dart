@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/app_singleton.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../widgets/base_common_widget.dart';
@@ -24,7 +25,9 @@ class DashboardScreen extends GetView<DashboardController>
                 selectedItemColor: AppColor.primaryColor,
                 unselectedItemColor: AppColor.blackTextColor,
                 currentIndex: controller.currentIndex,
-                items: controller.items),
+                items: AppSingleton.isBuyer()
+                    ? controller.buyersItem
+                    : controller.items),
           );
         });
   }

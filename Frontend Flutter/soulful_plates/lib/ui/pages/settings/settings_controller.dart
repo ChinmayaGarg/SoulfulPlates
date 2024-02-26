@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-import '../../../utils/extensions.dart';
 import '../../../controller/base_controller.dart';
 
-
-class SettingsController extends BaseController{
-
+class SettingsController extends BaseController {
+  bool isNotificationEnabled = true;
 }

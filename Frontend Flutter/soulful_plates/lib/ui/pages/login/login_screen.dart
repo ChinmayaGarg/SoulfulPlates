@@ -78,7 +78,7 @@ class LoginScreen extends GetView<LoginController> with BaseCommonWidget {
                 validator: Validations.passwordValidator,
                 onSubmitted: (val) {
                   if (controller.formKey.currentState!.validate()) {
-                    controller.login();
+                    controller.signIn();
                   }
                 },
                 obscureText: controller.obscureText,
@@ -149,10 +149,8 @@ class LoginScreen extends GetView<LoginController> with BaseCommonWidget {
     return BaseButton(
         text: 'Sign In',
         onSubmit: () async {
-          // * You can use functions of Custom Button Cubit as follow:
           if (controller.formKey.currentState!.validate()) {
-            Get.offAllNamed(dashboardViewRoute);
-            // controller.login();
+            controller.signIn();
           }
         });
     // });

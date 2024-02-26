@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:soulful_plates/utils/connection_status.dart';
 
 import '../../constants/language/language_constants.dart';
@@ -69,17 +70,17 @@ class ApiCall {
       return response;
     } else {
       if (response is Iterable) {
-        print('THis is Iterable returned ${response}');
+        debugPrint('THis is Iterable returned $response');
         if (response.isNotEmpty) {
           for (var val in response) {
             try {
               list.add(obj.from(val));
             } catch (e) {
-              print('This is $e');
+              debugPrint('This is $e');
             }
           }
         }
-        print('This is one ');
+        debugPrint('This is one ');
         return list.toList();
       } else {
         return obj.from(response);

@@ -2,7 +2,7 @@ import 'package:config/config.dart';
 
 class LanguageConst {
   /// App Name
-  static String appName = APP_NAME;
+  static String appName = applicationName;
 
   ///Network Error Strings
   static String networkConnectionTimeout = "networkConnectionTimeout";

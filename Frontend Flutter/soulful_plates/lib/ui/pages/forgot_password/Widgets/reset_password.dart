@@ -11,7 +11,7 @@ import '../../../widgets/app_text_field.dart';
 import '../../../widgets/base_button.dart';
 import '../../../widgets/base_common_widget.dart';
 import '../forgot_password_controller.dart';
-import 'OTPField.dart';
+import 'otp_field.dart';
 
 class ResetPassword extends GetView<ForgotPasswordController>
     with BaseCommonWidget {
