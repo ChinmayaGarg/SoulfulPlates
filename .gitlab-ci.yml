@@ -89,6 +89,6 @@ deploy-job:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8073:8073 --name my-app docker.io/group11csci5308/main:$CI_COMMIT_SHORT_SHA"
   environment:
     name: production
-    url: http://172.172.2.123:8073
+    url: http://172.17.2.123:8073
   only:
     - main
