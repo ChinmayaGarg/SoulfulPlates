@@ -10,9 +10,9 @@ COPY Backend-Spring-Boot/target/soulfulplates-0.0.1-SNAPSHOT.jar app/app.jar
 # Expose the port on which your Spring Boot application will run (adjust as needed)
 EXPOSE 8080
 
-CMD ["ls"]
+# CMD ["ls"]
 
-CMD ["pwd"]
+# CMD ["pwd"]
 
 # Define the command to run your Spring Boot application when the container starts
-# ENTRYPOINT ["java", "-jar", "./app/app.jar"]
+ENTRYPOINT ["java", "-jar", "./app/app.jar"]
