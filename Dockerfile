@@ -11,4 +11,4 @@ COPY Backend-Spring-Boot/target/soulfulplates-0.0.1-SNAPSHOT.jar app/app.jar
 EXPOSE 8080
 
 # Define the command to run your Spring Boot application when the container starts
-ENTRYPOINT ["java", "-jar", "./app/.app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
