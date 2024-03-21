@@ -15,4 +15,4 @@ CMD ["ls"]
 CMD ["pwd"]
 
 # Define the command to run your Spring Boot application when the container starts
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# ENTRYPOINT ["java", "-jar", "app.jar"]
