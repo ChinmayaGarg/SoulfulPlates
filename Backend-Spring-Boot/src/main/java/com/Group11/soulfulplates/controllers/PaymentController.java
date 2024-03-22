@@ -30,7 +30,8 @@ public class PaymentController {
             Map<String, Object> response = paymentService.createPaymentAndTransaction(request);
             return ResponseEntity.ok().body(Map.of("code", 1, "data", response, "description", "Transaction created."));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("code", -1, "description", "An error occurred: " + e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("code", -1, "description", "An error occurred: " + e.getMessage()));
         }
     }
 
@@ -41,7 +42,8 @@ public class PaymentController {
             paymentService.updatePaymentStatus(request.getPaymentId(), request.getTransactionId(), request.getStatus());
             return ResponseEntity.ok(new MessageResponse(1, "Payment status updated.", null));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(0, "Error updating payment status: " + e.getMessage(), null));
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse(0, "Error updating payment status: " + e.getMessage(), null));
         }
     }
 
@@ -49,11 +51,20 @@ public class PaymentController {
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> filterPayments(@RequestBody PaymentFilterRequestBuyer request) {
         try {
-            List<PaymentFilterResponse> response = paymentService.filterPayments(request.getUserId(),request.getStatus(), request.getLimit(), request.getOffset());
+            // Extract parameters from the request for clarity
+            Long userId = request.getUserId();
+            String status = request.getStatus();
+            int limit = request.getLimit();
+            int offset = request.getOffset();
+
+            // Call the service method with the extracted parameters
+            List<PaymentFilterResponse> response = paymentService.filterPayments(userId, status, limit, offset);
+
             return ResponseEntity.ok(new MessageResponse(1, "Success", response));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(-1, "Failure", null));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse(-1, "Failure", null));
         }
     }
 
@@ -61,11 +72,20 @@ public class PaymentController {
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<?> filterSellerPayments(@RequestBody PaymentFilterRequestSeller request) {
         try {
-            List<PaymentFilterResponse> response = paymentService.filterPayments(request.getStoreId(),request.getStatus(), request.getLimit(), request.getOffset());
+            // Extract parameters from the request
+            Long storeId = request.getStoreId();
+            String status = request.getStatus();
+            int limit = request.getLimit();
+            int offset = request.getOffset();
+
+            // Use the extracted parameters to call the service method
+            List<PaymentFilterResponse> response = paymentService.filterPayments(storeId, status, limit, offset);
+
             return ResponseEntity.ok(new MessageResponse(1, "Success", response));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(-1, "Failure", null));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse(-1, "Failure", null));
         }
     }
 }
