@@ -33,10 +33,11 @@ public class OrderController {
     @PostMapping("/updateStatus")
     public ResponseEntity<?> updateOrderStatus(@RequestBody(required = false) UpdateOrderStatusRequest request) {
         Order order = orderService.updateOrderStatus(request.getOrderId(), request.getStatus());
-        if(order != null) {
+        if (order != null) {
             return ResponseEntity.ok(new MessageResponse(1, null, "Order status updated."));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(-1, null, "Error updating order status."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new MessageResponse(-1, null, "Error updating order status."));
         }
     }
 
@@ -69,7 +70,15 @@ public class OrderController {
             OrderDetailsResponse response = orderService.getOrderDetails(request.getUserId(), request.getOrderId());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1, "Error getting order details: " + e.getMessage(), null));
+
+            // Define the error message and code
+            String responseDescription = "Error getting order details:";
+            int responseCode = -1;
+
+            // Create a new MessageResponse object with the above details
+            OrderDetailsResponse messageResponse = new OrderDetailsResponse(responseCode, responseDescription, null);
+            return ResponseEntity.badRequest()
+                    .body(messageResponse);
         }
     }
 
@@ -77,10 +86,24 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForUser(@RequestBody GetOrdersRequest request) {
         try {
-            OrdersResponse response = orderService.getOrdersForUser(request.getUserId(), request.getStatus(), request.getLimit(), request.getOffset());
+            // Extract parameters from the request for clarity
+            Long userId = request.getUserId();
+            String status = request.getStatus();
+            int limit = request.getLimit();
+            int offset = request.getOffset();
+
+            // Call the service method with extracted parameters
+            OrdersResponse response = orderService.getOrdersForUser(userId, status, limit, offset);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1, "Error getting order details: " + e.getMessage(), null));
+            // Extract the error message from the exception
+            String errorMessage = "Error getting order details: " + e.getMessage();
+
+            // Instantiate the response object with details
+            OrderDetailsResponse orderDetailsResponse = new OrderDetailsResponse(-1, errorMessage, null);
+
+            // Return a bad request response entity with the custom order details response
+            return ResponseEntity.badRequest().body(orderDetailsResponse);
         }
     }
 
@@ -88,10 +111,24 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForStore(@RequestBody GetStoreOrders request) {
         try {
-            OrdersResponse response = orderService.getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset());
+            // Extract parameters from the request for clarity
+            Long storeId = request.getStoreId();
+            String status = request.getStatus();
+            int limit = request.getLimit();
+            int offset = request.getOffset();
+
+            // Call the service method with the extracted parameters
+            OrdersResponse response = orderService.getOrdersForStore(storeId, status, limit, offset);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1, "Error getting order details: " + e.getMessage(), null));
+            // Construct the error message
+            String errorMessage = "Error getting order details: " + e.getMessage();
+
+            // Create the response object
+            OrderDetailsResponse orderDetailsResponse = new OrderDetailsResponse(-1, errorMessage, null);
+
+            // Return a ResponseEntity indicating a bad request with the detailed response
+            return ResponseEntity.badRequest().body(orderDetailsResponse);
         }
     }
 
