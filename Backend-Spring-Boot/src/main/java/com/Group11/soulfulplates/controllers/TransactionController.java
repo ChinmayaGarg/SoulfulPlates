@@ -24,7 +24,8 @@ public class TransactionController {
         try {
             // Validate status parameter
             if (!isValidStatus(request.getStatus())) {
-                return ResponseEntity.badRequest().body(new MessageResponse(0, "Error updating transaction: Invalid status provided.", null));
+                MessageResponse response = new MessageResponse(0, "Error updating transaction: Invalid status provided.", null);
+                return ResponseEntity.badRequest().body(response);
             }
 
             transactionService.updateTransactionStatus(request.getTransactionId(), request.getStatus());
