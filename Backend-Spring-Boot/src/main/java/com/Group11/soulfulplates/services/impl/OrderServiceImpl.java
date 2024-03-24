@@ -86,8 +86,8 @@ public class OrderServiceImpl implements OrderService {
         if(!orderRepository.existsById(orderId)){
             return null;
         }
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+        RuntimeException orderNotFound = new RuntimeException("Order not found with id: " + orderId);
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> orderNotFound);
         order.setStatus(status);
         return orderRepository.save(order);
     }
@@ -95,8 +95,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetailsResponse getOrderDetails(Long userId, Long orderId) throws Exception{
         // Find the order by id and check if it belongs to the user
-        Order order = orderRepository.findByOrderIdAndUserId(orderId, userId)
-                .orElseThrow(() -> new RuntimeException("Order not found or does not belong to the user"));
+        RuntimeException orderNotFound = new RuntimeException("Order not found or does not belong to the user");
+        Order order = orderRepository.findByOrderIdAndUserId(orderId, userId).orElseThrow(() -> orderNotFound);
 
 
 
