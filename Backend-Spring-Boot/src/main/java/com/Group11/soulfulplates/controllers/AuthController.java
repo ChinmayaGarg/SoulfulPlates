@@ -115,8 +115,8 @@ public class AuthController {
     try {
       String loginUsername = loginRequest.getUsername();
       String loginPassword = loginRequest.getPassword();
-      Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(loginUsername, loginPassword));
+      UsernamePasswordAuthenticationToken userpass= new UsernamePasswordAuthenticationToken(loginUsername, loginPassword);
+      Authentication authentication = authenticationManager.authenticate(userpass);
 
       SecurityContextHolder.getContext().setAuthentication(authentication);
       String jwt = jwtUtils.generateJwtToken(authentication);
@@ -190,8 +190,9 @@ public class AuthController {
         return ResponseEntity.ok(messageResponse);
       }
     } catch (RuntimeException e) {
+      MessageResponse badRes = new MessageResponse(-1, "Error occurred while generating forget password code.", null);
       return ResponseEntity.badRequest()
-          .body(new MessageResponse(-1, "Error occurred while generating forget password code.", null));
+          .body(badRes);
     }
   }
 

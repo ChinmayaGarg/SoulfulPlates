@@ -60,6 +60,7 @@ public class StoreController {
 
     }
 
+
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Store>> getAllStores() {
@@ -112,8 +113,8 @@ public class StoreController {
     @PostMapping("/image/{storeId}")
     public ResponseEntity<MessageResponse> updateUserImage(@PathVariable Long storeId,
             @RequestParam("file") MultipartFile file) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found with id: " + storeId));
+        RuntimeException storeNotFound = new RuntimeException("Store not found with id: " + storeId);
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> storeNotFound);
 
         // Check if the uploaded file is not empty
         if (file.isEmpty()) {

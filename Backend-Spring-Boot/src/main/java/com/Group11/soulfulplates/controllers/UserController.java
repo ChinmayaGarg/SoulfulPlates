@@ -43,8 +43,8 @@ public class UserController {
 
     @PutMapping("/toggle-notification/{userId}")
     public ResponseEntity<MessageResponse> toggleNotificationFlag(@PathVariable Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> userNotFound);
 
 
         // Toggle the value of notificationFlag
@@ -98,11 +98,11 @@ public class UserController {
     // Update an existing address for a user
     @PutMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> updateAddressForUser(@PathVariable Long userId, @PathVariable Long addressId, @RequestBody Address addressDetails) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
+        RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
+        User user = userRepository.findById(userId).orElseThrow(() -> userNotFound);
 
-        Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
 
         address.setStreet(addressDetails.getStreet());
         address.setCity(addressDetails.getCity());
@@ -121,11 +121,10 @@ public class UserController {
     // Delete an address for a user
     @DeleteMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> deleteAddressForUser(@PathVariable Long userId, @PathVariable Long addressId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
-        Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
+        RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
+        User user = userRepository.findById(userId).orElseThrow(() ->userNotFound);
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
 
         addressRepository.delete(address);
 
@@ -184,8 +183,8 @@ public class UserController {
 
         try {
             // Fetch the address by addressId
-            Address userAddress = addressRepository.findById(addressId)
-                    .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+            RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
+            Address userAddress = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
 
             // Check if the fetched address belongs to the given user
             if (userAddress == null) {
