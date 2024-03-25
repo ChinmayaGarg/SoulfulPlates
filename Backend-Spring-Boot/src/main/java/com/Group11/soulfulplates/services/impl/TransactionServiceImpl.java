@@ -25,7 +25,8 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction createTransaction(Map<String, Object> request) throws Exception {
         Transaction transaction = new Transaction();
         Exception userNotFound = new Exception("User not found");
-        transaction.setUser(userRepository.findById(Long.valueOf((Integer) request.get("user_id"))).orElseThrow(() ->userNotFound ));
+        Integer req = (Integer) request.get("user_id");
+        transaction.setUser(userRepository.findById(Long.valueOf(req)).orElseThrow(() ->userNotFound ));
         transaction.setCardNumber((String) request.get("card_number"));
         transaction.setCardExpiry((String) request.get("card_expiry")); // Adjust based on your entity's date type
         transaction.setCvv((String) request.get("cvv"));
