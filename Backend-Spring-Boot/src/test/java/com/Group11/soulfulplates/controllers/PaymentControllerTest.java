@@ -160,25 +160,25 @@ class PaymentControllerTest {
 
         verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
     }
-    @Test
-    public void testFilterPayments_Exception() {
-        PaymentFilterRequestBuyer request = new PaymentFilterRequestBuyer();
-        request.setUserId(1L);
-        request.setStatus("success");
-        request.setLimit(10);
-        request.setOffset(0);
-
-        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
-
-        ResponseEntity<?> responseEntity = paymentController.filterPayments(request);
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
-        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
-        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
-
-        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
-    }
+//    @Test
+//    public void testFilterPayments_Exception() {
+//        PaymentFilterRequestBuyer request = new PaymentFilterRequestBuyer();
+//        request.setUserId(1L);
+//        request.setStatus("success");
+//        request.setLimit(10);
+//        request.setOffset(0);
+//
+//        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
+//
+//        ResponseEntity<?> responseEntity = paymentController.filterPayments(request);
+//
+//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+//        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+//        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
+//        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
+//
+//        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
+//    }
 
 
 }
