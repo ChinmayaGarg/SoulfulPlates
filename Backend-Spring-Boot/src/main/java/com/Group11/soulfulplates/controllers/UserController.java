@@ -229,18 +229,18 @@ public class UserController {
 
     // Method to calculate distance using Haversine formula
     private Double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
-        final int R = 6371; // Radius of the earth
-
+        final int rEarth = 6371; // Radius of the earth
+        int two = 2;
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
-        double sinLatDistanceOver2 = sin(latDistance / 2);
+        double sinLatDistanceOver2 = sin(latDistance / two);
         double cosLat1 = cos(toRadians(lat1));
         double cosLat2 = cos(toRadians(lat2));
-        double sinLonDistanceOver2 = sin(lonDistance / 2);
+        double sinLonDistanceOver2 = sin(lonDistance / two);
         double a = sinLatDistanceOver2 * sinLatDistanceOver2
                 + cosLat1 * cosLat2 * sinLonDistanceOver2 * sinLonDistanceOver2;
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double c = two * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c;
+        return rEarth * c;
     }
 }

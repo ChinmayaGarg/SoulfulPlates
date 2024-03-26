@@ -63,11 +63,13 @@ public class AuthControllerTest {
 
     @InjectMocks
     private AuthController authController;
+    static int expected200= 200;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
         openMocks(this);
+
     }
 
 
@@ -238,8 +240,9 @@ public class AuthControllerTest {
 
         System.out.println(responseEntity.getStatusCodeValue());
 
+
         // Verify response
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(AuthControllerTest.expected200, responseEntity.getStatusCodeValue());
         assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).getCode());
     }
 
