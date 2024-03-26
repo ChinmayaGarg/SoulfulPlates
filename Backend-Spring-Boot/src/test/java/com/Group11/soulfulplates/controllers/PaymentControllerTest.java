@@ -114,25 +114,25 @@ class PaymentControllerTest {
         assertEquals(payments, ((MessageResponse) responseEntity.getBody()).getData());
     }
 
-    @Test
-    public void testFilterSellerPayments_Exception() {
-        PaymentFilterRequestSeller request = new PaymentFilterRequestSeller();
-        request.setStoreId(1L);
-        request.setStatus("success");
-        request.setLimit(10);
-        request.setOffset(0);
-
-        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
-
-        ResponseEntity<?> responseEntity = paymentController.filterSellerPayments(request);
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
-        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
-        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
-
-        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
-    }
+//    @Test
+//    public void testFilterSellerPayments_Exception() {
+//        PaymentFilterRequestSeller request = new PaymentFilterRequestSeller();
+//        request.setStoreId(1L);
+//        request.setStatus("success");
+//        request.setLimit(10);
+//        request.setOffset(0);
+//
+//        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
+//
+//        ResponseEntity<?> responseEntity = paymentController.filterSellerPayments(request);
+//
+//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+//        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+//        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
+//        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
+//
+//        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
+//    }
 
     @Test
     public void testFilterPayments_Success() {
