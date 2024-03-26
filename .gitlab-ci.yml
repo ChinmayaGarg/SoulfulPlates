@@ -1,6 +1,7 @@
 stages: # List of stages for jobs, and their order of execution
   - build
   - test
+  - quality
   - package
   - publish
   - deploy
@@ -21,7 +22,7 @@ build-job: # This job runs in the build stage, which runs first.
     expire_in: 30 days
 
 
-backend_test:
+test-job:
   image: maven:latest
   stage: test
   tags:
@@ -35,6 +36,20 @@ backend_test:
     untracked: true
     expire_in: 30 days
 
+
+code_quality:
+  image: openjdk:17
+  stage: quality
+  tags:
+    - test-runner-2
+  script:
+    - 'cd Backend-Spring-Boot'
+    - rm -rf code_smells
+    - mkdir code_smells
+    - java -jar DesigniteJava.jar -i ./designite -o ./designite/result
+  artifacts:
+    untracked: true
+    expire_in: 30 days
 
 package-job: # This job runs in the package stage.
   image: maven:latest
