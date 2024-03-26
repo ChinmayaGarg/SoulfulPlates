@@ -46,7 +46,7 @@ code_quality:
     - 'cd Backend-Spring-Boot'
     - rm -rf code_smells
     - mkdir code_smells
-    - java -jar ./designite/DesigniteJava.jar -i ./designite -o ./designite/result
+    - java -jar ./designite/DesigniteJava.jar -i ./src -o ./designite/result
   artifacts:
     untracked: true
     expire_in: 30 days
