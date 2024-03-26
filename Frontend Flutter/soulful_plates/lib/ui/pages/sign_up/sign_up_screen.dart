@@ -122,9 +122,7 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
                 focusNode: controller.passwordFocusNode,
                 validator: Validations.passwordValidator,
                 onSubmitted: (val) {
-                  if (controller.formKey.currentState!.validate()) {
-                    controller.signUpUser();
-                  }
+                  controller.confirmPasswordFocusNode.requestFocus();
                 },
                 obscureText: controller.obscureText,
                 hintText: 'Password',

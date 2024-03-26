@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import static java.lang.Math.*;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -66,6 +65,14 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse(1, "Address saved successfully!", null));
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<MessageResponse> getUserById(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return ResponseEntity.ok(new MessageResponse(1, "User information received", user));
+    }
+
 
     @GetMapping("/addresses/{userId}")
     public ResponseEntity<MessageResponse> getAllAddressesForUser(@PathVariable Long userId) {
@@ -96,7 +103,7 @@ public class UserController {
 
 
     // Update an existing address for a user
-    @PutMapping("/addresses/{userId}/{addressId}")
+    @PostMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> updateAddressForUser(@PathVariable Long userId, @PathVariable Long addressId, @RequestBody Address addressDetails) {
         RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
         RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
@@ -199,28 +206,37 @@ public class UserController {
             List<Map<String, Object>> storesLatLon = addressService.getAllStoresLatLon();
 
             // Find the nearest store within the specified maximum distance
-            Map<String, Object> nearestStore = null;
+            List<Map<String, Object>> nearestStores = new ArrayList<>();
             double minDistance = Double.MAX_VALUE;
 
             for (Map<String, Object> store : storesLatLon) {
                 Double storeLatitude = (Double) store.get("lat");
                 Double storeLongitude = (Double) store.get("lon");
 
+                if(storeLatitude == null || storeLongitude == null){
+                    Map<String, Object> nearestStore = new HashMap<>(store); // Create a new map to store distance
+                    nearestStore.put("distance", 0);
+
+                    nearestStores.add(nearestStore);
+                    continue;
+                }
                 // Calculate distance using Haversine formula
                 double distance = calculateDistance(userLatitude, userLongitude, storeLatitude, storeLongitude);
 
                 // Check if the current store is within the specified maximum distance of the user's address
                 if (distance <= maxDistance && distance < minDistance) {
                     minDistance = distance;
-                    nearestStore = store;
+                    Map<String, Object> nearestStore = new HashMap<>(store); // Create a new map to store distance
+                    nearestStore.put("distance", distance);
+                    nearestStores.add(nearestStore);
                 }
             }
 
-            if (nearestStore == null) {
-                throw new RuntimeException("No store found within " + maxDistance + " km of the user's address");
+            if (nearestStores == null || nearestStores.size() < 1) {
+                return ResponseEntity.ok(new MessageResponse(1, "No store near by available at the moment.",  nearestStores));
             }
 
-            return ResponseEntity.ok(new MessageResponse(1, "Nearest store within " + maxDistance + " km found", nearestStore));
+            return ResponseEntity.ok(new MessageResponse(1, "Nearest store within " + maxDistance + " km found", nearestStores));
         } catch (Exception e) {
             return ResponseEntity.ok(new MessageResponse(-1, e.getMessage(), null));
         }

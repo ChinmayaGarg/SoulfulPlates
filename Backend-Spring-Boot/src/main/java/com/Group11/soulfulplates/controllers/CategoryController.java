@@ -1,85 +1,69 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Category;
-import com.Group11.soulfulplates.models.SubCategory;
-import com.Group11.soulfulplates.payload.request.CategoryRequest;
-import com.Group11.soulfulplates.payload.request.SubcategoryRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.CategoryService;
-import com.Group11.soulfulplates.services.SubcategoryService;
+import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
+import com.Group11.soulfulplates.payload.response.OrdersResponse;
+import com.Group11.soulfulplates.services.impl.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
 @RequestMapping("/api")
 public class CategoryController {
-
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private SubcategoryService subcategoryService;
-
-    // Create category
-    @PostMapping("/category")
-    public MessageResponse createCategory(@RequestBody CategoryRequest request) {
-        Category category = new Category(request.getCategoryName(), request.getStoreId());
-        categoryService.createCategory(category);
-        return new MessageResponse(1, "Category Created.",null);
+    @GetMapping("/getAllCategories")
+    public ResponseEntity getAllByStoreId() {
+        try {
+            List<Category> categories = categoryService.getAllByStoreId();
+            return ResponseEntity.ok(new MessageResponse(1, "Category fetched.", categories));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error creating category: " + e.getMessage(), null));
+        }
     }
 
-    // Edit category
-    @PutMapping("/category/{categoryId}")
-    public MessageResponse editCategory(@RequestBody CategoryRequest request, @PathVariable Long categoryId) {
-        Category category = categoryService.getCategoryById(categoryId);
-        category.setCategoryName(request.getCategoryName());
-        categoryService.editCategory(category);
-        return new MessageResponse(1, "Category updated.",null);
-
+    @PostMapping("/categories")
+    public ResponseEntity createCategory(@RequestBody Category category) {
+        try {
+            Category createdCategory = categoryService.createCategory(category);
+            return ResponseEntity.ok(new MessageResponse(1, "Category created.", createdCategory));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error creating category: " + e.getMessage(), null));
+        }
     }
 
-    // Delete category
-    @DeleteMapping("/category/{categoryId}")
-    public MessageResponse deleteCategory(@PathVariable Long categoryId) {
-        categoryService.deleteCategory(categoryId);
-        return new MessageResponse(1, "Category deleted.",null);
+    // Update Category
+    @PutMapping("/categories/{categoryId}")
+    public ResponseEntity updateCategory(@PathVariable Long categoryId, @RequestBody Category updatedCategory) {
+        try {
+            Category category = categoryService.updateCategory(categoryId, updatedCategory);
+            return ResponseEntity.ok(new MessageResponse(1, "Category updated.", category));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error updating category: " + e.getMessage(), null));
+        }
     }
 
-    // Create subcategory
-    @PostMapping("/subcategory")
-    public MessageResponse createSubcategory(@RequestBody SubcategoryRequest request) {
-        Category category = categoryService.getCategoryById(request.getCategoryId());
-        SubCategory subcategory = new SubCategory(request.getSubcategoryName(), category, request.getStoreId());
-        subcategoryService.createSubcategory(subcategory);
-        return new MessageResponse(1, "Subcategory Created.",null);
+    // Delete Category
+    @DeleteMapping("/categories/{categoryId}")
+    public ResponseEntity deleteCategory(@PathVariable Long categoryId) {
+        try {
+            categoryService.deleteCategory(categoryId);
+            return ResponseEntity.ok(new MessageResponse(1, "Category deleted.", null));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error deleting category: " + e.getMessage(), null));
+        }
     }
 
-    // Edit subcategory
-    @PutMapping("/subcategory/{subcategoryId}")
-    public MessageResponse editSubcategory(@RequestBody SubcategoryRequest request, @PathVariable Long subcategoryId) {
-        SubCategory subcategory = subcategoryService.getSubcategoryById(subcategoryId);
-        subcategory.setSubcategoryName(request.getSubcategoryName());
-        subcategoryService.editSubcategory(subcategory);
-        return new MessageResponse(1, "Subcategory updated.",null);
 
-    }
-
-    // Delete subcategory
-    @DeleteMapping("/subcategory/{subcategoryId}")
-    public MessageResponse deleteSubcategory(@PathVariable Long subcategoryId) {
-        subcategoryService.deleteSubcategory(subcategoryId);
-        return new MessageResponse(1, "Subcategory deleted.",null);
-
-    }
-
-    @GetMapping("/categories/{storeId}")
-    public MessageResponse getAllCategoriesWithSubcategoriesByStoreId(@PathVariable Long storeId) {
-         List<Category> categories =         categoryService.findAllCategoriesWithSubcategoriesByStoreId(storeId);
-
-        return new MessageResponse(1,  "Categories with Subcategories", categories);
-
-    }
 }

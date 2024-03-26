@@ -1,5 +1,6 @@
 package com.Group11.soulfulplates.services.impl;
 
+import com.Group11.soulfulplates.models.Order;
 import com.Group11.soulfulplates.models.Rating;
 import com.Group11.soulfulplates.payload.request.CreateRatingRequest;
 import com.Group11.soulfulplates.repository.OrderRepository;
@@ -12,10 +13,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class RatingServiceImplTest {
 
@@ -72,5 +74,59 @@ class RatingServiceImplTest {
         Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingRequest));
         assertEquals("Order is Null in request", exception.getMessage());
     }
+
+    @Test
+    void addRatingAndLinkToOrder_OrderIdNull() {
+        // Mock request with null order ID
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(null);
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Order is Null in request", exception.getMessage());
+
+        // Verify mocks
+        verifyNoInteractions(orderRepository);
+        verifyNoInteractions(storeRepository);
+        verifyNoInteractions(ratingRepository);
+    }
+
+    @Test
+    void addRatingAndLinkToOrder_StoreIdNull() {
+        // Mock request with null store ID
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(1L); // Setting a valid order ID
+        ratingData.setStoreId(null);
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Store Id is Null in request", exception.getMessage());
+
+        // Verify mocks
+        verifyNoInteractions(orderRepository);
+        verifyNoInteractions(storeRepository);
+        verifyNoInteractions(ratingRepository);
+    }
+
+    @Test
+    void addRatingAndLinkToOrder_OrderNotFound() {
+        // Mock request with valid order ID
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(1L); // Setting a valid order ID
+        ratingData.setStoreId(1L); // Setting a valid store ID
+
+        // Mock order repository to return an empty Optional (order not found)
+        when(orderRepository.findById(ratingData.getOrderId())).thenReturn(Optional.empty());
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Order not found", exception.getMessage());
+
+        // Verify mocks
+        verify(orderRepository, times(1)).findById(ratingData.getOrderId());
+        verifyNoInteractions(storeRepository);
+        verifyNoInteractions(ratingRepository);
+    }
+
 
 }

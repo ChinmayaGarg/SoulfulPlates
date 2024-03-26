@@ -40,15 +40,29 @@ class LoginController extends BaseController {
           });
       if (userModel != null) {
         await UserPreference.setValue(
-            key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
-        // await UserPreference.setValue(
-        //     key: SharedPrefKey.token.name, value: userModel.token);
+            key: SharedPrefKey.userProfileData.name,
+            value: userModel.toRawJson());
         AppSingleton.loggedInUserProfile = userModel;
+        print(
+            "This is AppSingleton.loggedInUserProfile ${AppSingleton.loggedInUserProfile}");
+        print(
+            "This is AppSingleton.loggedInUserProfile ${userModel.toRawJson()}");
+        print(
+            "This is AppSingleton.loggedInUserProfile ${UserPreference.getValue(key: SharedPrefKey.userProfileData.name)}");
+
         setLoaderState(ViewStateEnum.idle);
         Utils.showSuccessToast("Logged in successfully.", false);
-        onWidgetDidBuild(callback: () {
-          Get.offAllNamed(dashboardViewRoute);
-        });
+        await UserPreference.setValue(
+            key: SharedPrefKey.isLogin.name, value: true);
+        if (!AppSingleton.isBuyer() && userModel.sellerName.isNullOrEmpty) {
+          onWidgetDidBuild(callback: () {
+            Get.offAllNamed(storeDetailsViewRoute);
+          });
+        } else {
+          onWidgetDidBuild(callback: () {
+            Get.offAllNamed(dashboardViewRoute);
+          });
+        }
       } else {
         setLoaderState(ViewStateEnum.idle);
         Utils.showSuccessToast(

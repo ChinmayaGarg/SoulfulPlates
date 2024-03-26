@@ -2,60 +2,84 @@ package com.Group11.soulfulplates.controllers;
 
 
 import com.Group11.soulfulplates.models.MenuItem;
-import com.Group11.soulfulplates.payload.request.MenuItemRequest;
+import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.MenuItemService;
+import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
+import com.Group11.soulfulplates.services.impl.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/menu-items")
+@RequestMapping("/api")
 public class MenuItemController {
 
     @Autowired
     private MenuItemService menuItemService;
+    // Insert MenuItem
+    @PostMapping("/menu-items")
+    public ResponseEntity createMenuItem(@RequestBody MenuItem menuItem) {
+        try {
+            MenuItem createdMenuItem = menuItemService.createMenuItem(menuItem);
+            return ResponseEntity.ok(new MessageResponse(1, "Menu item created.", createdMenuItem));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error creating menu item: " + e.getMessage(), null));
+        }
 
-    @PostMapping
-    public MessageResponse createMenuItem(@RequestBody MenuItemRequest menuItemRequest) {
-        MenuItem menuItem = new MenuItem();
-        mapRequestToMenuItem(menuItemRequest, menuItem);
-        menuItemService.createMenuItem(menuItem);
-        return new MessageResponse(1, "Menu item created.", null);
     }
 
-    @PutMapping("/{menuItemId}")
-    public MessageResponse editMenuItem(@PathVariable Long menuItemId, @RequestBody MenuItemRequest menuItemRequest) {
-
-        MenuItem menuItem = menuItemService.findMenuById(menuItemId);
-
-        if (menuItem != null) {
-            mapRequestToMenuItem(menuItemRequest, menuItem);
-            menuItemService.editMenuItem(menuItemId, menuItem);
-            return new MessageResponse(1, "Menu item updated successfully.", null);
-        } else {
-            return new MessageResponse(0, "Menu item not found.", null);
+    // Update MenuItem
+    @PutMapping("/menu-items/{menuItemId}")
+    public ResponseEntity updateMenuItem(@PathVariable Long menuItemId, @RequestBody MenuItem updatedMenuItem) {
+        try {
+            MenuItem menuItem = menuItemService.updateMenuItem(menuItemId, updatedMenuItem);
+            return ResponseEntity.ok(new MessageResponse(1, "Menu item updated.", menuItem));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error updating menu item: " + e.getMessage(), null));
         }
     }
 
-    @DeleteMapping("/{menuItemId}")
-    public MessageResponse deleteMenuItem(@PathVariable Long menuItemId) {
-        menuItemService.deleteMenuItem(menuItemId);
-        return new MessageResponse(1, "Menu item deleted successfully.", null);
+    // Delete MenuItem
+    @DeleteMapping("/menu-items/{menuItemId}")
+    public ResponseEntity deleteMenuItem(@PathVariable Long menuItemId) {
+        try {
+            menuItemService.deleteMenuItem(menuItemId);
+            return ResponseEntity.ok(new MessageResponse(1, "Menu item deleted.", null));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(-1,
+                    "Error deleting menu item: " + e.getMessage(), null));
+        }
+
+    }
+
+    @GetMapping("/getMenuItems")
+    public ResponseEntity getAllMenuItemsWithDetails() {
+        try {
+            var menuItems =  menuItemService.getAllMenuItemsWithDetails();
+            return ResponseEntity.ok(new MessageResponse(1, "Menu item fetched.", menuItems));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(-1,
+                    "Error fetching menu item: " + e.getMessage(), null));
+        }
+
     }
 
 
-    private void mapRequestToMenuItem(MenuItemRequest menuItemRequest, MenuItem menuItem) {
-        menuItem.setStoreId(menuItemRequest.getStoreId());
-        menuItem.setItemName(menuItemRequest.getItemName());
-        menuItem.setItemImage(menuItemRequest.getItemImage());
-        menuItem.setItemPrice(menuItemRequest.getItemPrice());
-        menuItem.setType(menuItemRequest.getType());
-        menuItem.setCategoryId(menuItemRequest.getCategoryId());
-        menuItem.setSubCategoryId(menuItemRequest.getSubCategoryId());
-        menuItem.setServingType(menuItemRequest.getServingType());
-        menuItem.setPortion(menuItemRequest.getPortion());
-        menuItem.setInStock(menuItemRequest.getInStock());
-        menuItem.setIsRecommended(menuItemRequest.getIsRecommended());
-        menuItem.setDescription(menuItemRequest.getDescription());
+    @GetMapping("/getMenuItemsByStore/{storeId}")
+    public ResponseEntity getAllMenuItemsWithDetails(@PathVariable Long storeId) {
+        try {
+            var menuItems =  menuItemService.getMenuItemByStore(storeId);
+            return ResponseEntity.ok(new MessageResponse(1, "Menu item fetched.", menuItems));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(-1,
+                    "Error fetching menu item: " + e.getMessage(), null));
+        }
     }
+
+
 }

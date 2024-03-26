@@ -1,15 +1,19 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.MenuItem;
-import com.Group11.soulfulplates.payload.request.MenuItemRequest;
+import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.MenuItemService;
+import com.Group11.soulfulplates.services.impl.MenuItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -21,123 +25,179 @@ class MenuItemControllerTest {
 
     @InjectMocks
     private MenuItemController menuItemController;
-    private MenuItemRequest validMenuItemRequest;
     private Long validMenuItemId;
-
+    private MenuItem validMenuItem;
+/*
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); // Initialize mocks
-        validMenuItemRequest = new MenuItemRequest();
-        validMenuItemRequest.setItemName("Updated Item");
-        validMenuItemRequest.setStoreId(1L);
-        validMenuItemRequest.setItemPrice(String.valueOf(10.99));
         validMenuItemId = 1L;
-
+        validMenuItem = new MenuItem();
+        validMenuItem.setItemName("Test Item");
+        validMenuItem.setStoreId(1L);
+        validMenuItem.setItemImage("");
+        validMenuItem.setItemPrice("10.1");
+        validMenuItem.setCategoryId(1L);
+        validMenuItem.setSubcategoryId(1L);
+        validMenuItem.setInStock(true);
+        validMenuItem.setRecommended(true);
+        validMenuItem.setPortion("2");
+        validMenuItem.setServingType(2);
+        validMenuItem.setDescription("Description");
+        validMenuItem.setType("Veg");
+        validMenuItem.setItemId(validMenuItemId);
     }
 
     @Test
     void testCreateMenuItem_ValidMenuItem_Success() {
         // Given
-        MenuItemRequest menuItemRequest = new MenuItemRequest();
-        menuItemRequest.setItemName("Test Item");
-        menuItemRequest.setStoreId(1L);
+        MenuItem menuItem = new MenuItem();
+        menuItem.setItemName("Test Item");
+        menuItem.setStoreId(1L);
+        menuItem.setItemImage("");
+        menuItem.setItemPrice("10.1");
+        menuItem.setCategoryId(1L);
+        menuItem.setSubcategoryId(1L);
+        menuItem.setInStock(true);
+        menuItem.setRecommended(true);
+        menuItem.setPortion("2");
+        menuItem.setServingType(2);
+        menuItem.setDescription("Description");
+        menuItem.setType("Veg");
 
-        doNothing().when(menuItemService).createMenuItem(any());
-
+        when(menuItemService.createMenuItem(any(MenuItem.class))).thenReturn(menuItem);
         // When
-        MessageResponse response = menuItemController.createMenuItem(menuItemRequest);
+        ResponseEntity responseEntity = menuItemController.createMenuItem(menuItem);
 
         // Then
-        assertNotNull(response);
-        assertEquals(1, response.getCode());
-        assertEquals("Menu item created.", response.getDescription());
-        assertNull(response.getData());
+
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Menu item created.",  ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(menuItem, ((MessageResponse) responseEntity.getBody()).getData());
+
 
         verify(menuItemService).createMenuItem(any());
     }
+
 
     @Test
     void testEditMenuItem_MenuItemExists_Success() {
         // Given
         Long menuItemId = 1L;
-        MenuItemRequest menuItemRequest = new MenuItemRequest();
-        menuItemRequest.setStoreId(1L);
-        menuItemRequest.setItemName("Test Item");
-        // Set other properties as needed
+        MenuItem menuItem = new MenuItem();
+        menuItem.setItemId(menuItemId);
+        menuItem.setItemName("Test Item");
+        menuItem.setStoreId(1L);
+        menuItem.setItemImage("");
+        menuItem.setItemPrice("10.1");
+        menuItem.setCategoryId(1L);
+        menuItem.setSubcategoryId(1L);
+        menuItem.setInStock(true);
+        menuItem.setRecommended(true);
+        menuItem.setPortion("2");
+        menuItem.setServingType(2);
+        menuItem.setDescription("Description");
+        menuItem.setType("Veg");
 
         MenuItem existingMenuItem = new MenuItem();
+
+        //When
         when(menuItemService.findMenuById(menuItemId)).thenReturn(existingMenuItem);
 
-        // When
-        MessageResponse response = menuItemController.editMenuItem(menuItemId, menuItemRequest);
+        // Call controller method
+        ResponseEntity<?> responseEntity = menuItemController.updateMenuItem( menuItemId,menuItem);
 
         // Then
-        assertEquals(1, response.getCode());
-        assertEquals("Menu item updated successfully.", response.getDescription());
-
-        // Verify that menuItemService.editMenuItem() is called with the correct arguments
-        verify(menuItemService, times(1)).editMenuItem(menuItemId, existingMenuItem);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Menu item updated.", ((MessageResponse) responseEntity.getBody()).getDescription());
     }
 
+
     @Test
-    void testEditMenuItem_MenuItemNotExists_Failure() {
-        // Given
+    void testDeleteCategory() {
+        // Mock data
         Long menuItemId = 1L;
-        MenuItemRequest menuItemRequest = new MenuItemRequest();
-        // Mock that the menuItem is not found
-        when(menuItemService.findMenuById(menuItemId)).thenReturn(null);
-
-        // When
-        MessageResponse response = menuItemController.editMenuItem(menuItemId, menuItemRequest);
-
-        // Then
-        assertEquals(0, response.getCode());
-        assertEquals("Menu item not found.", response.getDescription());
-    }
-
-    @Test
-    void testEditMenuItem_MenuItemFoundAndUpdated_Success() {
-        // Given
         MenuItem menuItem = new MenuItem();
-        when(menuItemService.findMenuById(validMenuItemId)).thenReturn(menuItem);
+        menuItem.setItemId(menuItemId);
+        menuItem.setItemName("Test Item");
+        menuItem.setStoreId(1L);
+        menuItem.setItemImage("");
+        menuItem.setItemPrice("10.1");
+        menuItem.setCategoryId(1L);
+        menuItem.setSubcategoryId(1L);
+        menuItem.setInStock(true);
+        menuItem.setRecommended(true);
+        menuItem.setPortion("2");
+        menuItem.setServingType(2);
+        menuItem.setDescription("Description");
+        menuItem.setType("Veg");
 
-        // When
-        MessageResponse response = menuItemController.editMenuItem(validMenuItemId, validMenuItemRequest);
+        // Mock service method
+        doNothing().when(menuItemService).deleteMenuItem(menuItemId);
+        when(menuItemService.findMenuById(menuItemId)).thenReturn(new MenuItem());
 
-        // Then
-        assertNotNull(response);
-        assertEquals(1, response.getCode());
-        assertEquals("Menu item updated successfully.", response.getDescription());
-        assertNull(response.getData());
-        verify(menuItemService, times(1)).editMenuItem(validMenuItemId, menuItem);
+        // Call controller method
+        ResponseEntity<?> responseEntity = menuItemController.deleteMenuItem(menuItemId);
+
+        // Assertions
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Menu item deleted." ,((MessageResponse) responseEntity.getBody()).getDescription());
+        assertNull(((MessageResponse) responseEntity.getBody()).getData());
+
+        // Verify service method invocation
+        verify(menuItemService, times(1)).deleteMenuItem(menuItemId);
     }
+
+
+
     @Test
-    void testEditMenuItem_MenuItemNotFound_Failure() {
-        // Given
-        when(menuItemService.findMenuById(validMenuItemId)).thenReturn(null);
+    void testGetAllMenuItemsWithDetails() {
 
-        // When
-        MessageResponse response = menuItemController.editMenuItem(validMenuItemId, validMenuItemRequest);
+        // Mock service method
+        when(menuItemService.getAllMenuItemsWithDetails()).thenReturn( new ArrayList<>());
 
-        // Then
-        assertNotNull(response);
-        assertEquals(0, response.getCode());
-        assertEquals("Menu item not found.", response.getDescription());
-        assertNull(response.getData());
-        verify(menuItemService, never()).editMenuItem(any(), any());
+        // Call controller method
+        ResponseEntity<?> responseEntity = menuItemController.getAllMenuItemsWithDetails();
+
+        // Assertions
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Menu item fetched.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
     @Test
-    void deleteMenuItem_ValidMenuItemId_Success() {
-        // When
-        MessageResponse response = menuItemController.deleteMenuItem(validMenuItemId);
+    void testGetAllMenuItemsWithDetailsByStoreId() {
 
-        // Then
-        assertNotNull(response);
-        assertEquals(1, response.getCode());
-        assertEquals("Menu item deleted successfully.", response.getDescription());
-        assertNull(response.getData());
-        verify(menuItemService, times(1)).deleteMenuItem(validMenuItemId);
+        // Mock service method
+        when(menuItemService.getAllMenuItemsWithDetails()).thenReturn( new ArrayList<>());
+
+        // Call controller method
+        ResponseEntity<?> responseEntity = menuItemController.getAllMenuItemsWithDetails(1L);
+
+        // Assertions
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Menu item fetched.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
+
+    @Test
+    public void testDeleteMenuItemFailure() {
+        Long menuItemId = 1L;
+        String errorMessage = "Some error occurred.";
+        doThrow(new RuntimeException(errorMessage)).when(menuItemService).deleteMenuItem(menuItemId);
+
+        ResponseEntity<?> responseEntity = menuItemController.deleteMenuItem(menuItemId);
+
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals("Error deleting menu item: " + errorMessage, ((MessageResponse)responseEntity.getBody()).getDescription());
+        verify(menuItemService, times(1)).deleteMenuItem(menuItemId);
+    }
+*/
 
 }

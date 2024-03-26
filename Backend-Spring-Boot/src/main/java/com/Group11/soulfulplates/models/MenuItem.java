@@ -1,26 +1,26 @@
 package com.Group11.soulfulplates.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "menu_items")
+@Data
 public class MenuItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_item_id")
-    private Long menuItemId;
-
-    @Column(name = "store_id")
-    private Long storeId;
+    private Long itemId;
 
     @Column(name = "item_name")
     private String itemName;
 
-    @Column(name = "item_image")
-    private String itemImage;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "item_price")
     private String itemPrice;
@@ -28,25 +28,29 @@ public class MenuItem {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @Column(name = "in_stock")
+    private boolean inStock;
 
-    @Column(name = "sub_category_id")
-    private Long subCategoryId;
+    @Column(name = "is_recommended")
+    private boolean isRecommended;
+
+    @Column(name = "item_image")
+    private String itemImage;
 
     @Column(name = "serving_type")
-    private Integer servingType;
+    private int servingType;
 
     @Column(name = "portion")
     private String portion;
 
-    @Column(name = "in_stock")
-    private Boolean inStock;
+    @Column(name = "store_id")
+    private Long storeId;
 
-    @Column(name = "is_recommended")
-    private Boolean isRecommended;
+    @Column(name = "subcategory_id")
+    private Long subcategoryId;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "category_id")
+    private Long categoryId;
+
 
 }

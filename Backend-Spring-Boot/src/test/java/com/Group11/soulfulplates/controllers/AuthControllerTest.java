@@ -2,11 +2,13 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
+import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
 import com.Group11.soulfulplates.payload.request.ResetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.SignupRequest;
+import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
 import com.Group11.soulfulplates.repository.StoreRepository;
@@ -22,10 +24,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,8 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class AuthControllerTest {
@@ -266,5 +269,7 @@ public class AuthControllerTest {
         assertEquals(-1, responseEntity.getBody().getCode());
         assertNull(responseEntity.getBody().getData());
     }
+
+
 
 }

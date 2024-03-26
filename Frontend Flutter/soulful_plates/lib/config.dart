@@ -6,19 +6,19 @@ const role = 'buyer'; //possible values seller / buyer
 // const Color primaryColor = Color(0xff242F34); //seller
 
 const Color primaryColor = Color(0xff02690B); //buyer
-// do means ui is pending
+// do means ui is Done
 /*
 Buyer
   Login - Done
   Register - Done
   ResetPassword - Done
   Dashboard - do
-    HomeScreen(Restaurant listing) - Do
-      Restaurant Details(Item listing) - Do
+    HomeScreen(Restaurant listing) - Done
+      Restaurant Details(Item listing) - Done
       CartDetails - Done
-      Cart Payment Screen - Do
-      OrderSuccess - Do
-    WishList - Do
+      Cart Payment Screen - Done
+      OrderSuccess - Done
+    WishList - Done
     OrderHistory(Buyer) - Do
       OrderDetail - Do
         RatingReview - Do

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:soulful_plates/utils/shared_prefs.dart';
 
 import '../../app_singleton.dart';
 import '../../model/profile/user_profile.dart';
@@ -25,9 +24,8 @@ class DioSing implements IDioSing {
   @override
   // String url = 'http://192.168.1.9:8080';
   // String url = 'http://192.168.2.143:8080/api/';
-  String url = 'http://134.190.134.158:8080/api/';
+  String url = 'http://192.168.2.145:8080/api/';
   // String url = 'http://localhost:8080/api';
-
   /// Use dio as below
   /// using the baseUrl and customHeaders
   @override
@@ -45,22 +43,20 @@ class DioSing implements IDioSing {
         break;
 
       case ApiCallType.user:
-        String token =
-            await UserPreference.getValue(key: SharedPrefKey.token.name) ?? '';
         UserProfile? userModel = AppSingleton.loggedInUserProfile;
         debugPrint('This is called user model $userModel ${userModel?.id}');
         headers = <String, dynamic>{
           'Content-Type': 'application/json',
-          'token': token,
-          'user-id': userModel?.id
+          'Authorization': 'Bearer ${userModel?.token}',
+          // 'Authorization':
+          //     'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXllciIsImlhdCI6MTcxMDk5MjIwMiwiZXhwIjoxNzExMDc4NjAyfQ.9YxgeNnJI5S_MSnNvzb01kkn2C30SMuTQ8YSQWqLt_Y',
         };
         break;
       case ApiCallType.seller:
-        //todo staff handling pending
+        UserProfile? userModel = AppSingleton.loggedInUserProfile;
         headers = <String, dynamic>{
           'Content-Type': 'application/json',
-          "seller-id": 2,
-          "token": "9b409f3787947d509079bee2a60dc1d3"
+          'Authorization': 'Bearer ${userModel?.token}',
         };
         break;
       case ApiCallType.imageCall:

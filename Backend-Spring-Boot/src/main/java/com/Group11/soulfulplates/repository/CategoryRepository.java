@@ -11,6 +11,4 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query("SELECT DISTINCT c FROM Category c LEFT JOIN FETCH c.subcategories WHERE c.storeId = :storeId")
-    List<Category> findAllCategoriesWithSubcategoriesByStoreId(Long storeId);
 }

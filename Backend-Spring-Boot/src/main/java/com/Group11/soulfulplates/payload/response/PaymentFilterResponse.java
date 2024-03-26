@@ -23,6 +23,7 @@ public class PaymentFilterResponse {
     private Date createdDate;
     private Date updatedDate;
 
+    public PaymentFilterResponse(){}
     public PaymentFilterResponse(Long userId, Long storeId, BigDecimal amount, Long orderId, String cardNumber,
                                  String cardExpiry, String cvv, String paymentStatus, Long paymentId,
                                  Long transactionId, String status, Date createdDate, Date updatedDate) {

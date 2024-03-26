@@ -1,14 +1,10 @@
 package com.Group11.soulfulplates.models;
 
-import com.Group11.soulfulplates.models.CartItem;
-import com.Group11.soulfulplates.models.Store;
-import com.Group11.soulfulplates.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Entity
 @Data

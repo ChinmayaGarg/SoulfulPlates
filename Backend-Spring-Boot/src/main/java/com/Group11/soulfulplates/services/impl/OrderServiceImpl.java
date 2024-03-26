@@ -107,18 +107,24 @@ public class OrderServiceImpl implements OrderService {
         return new OrderDetailsResponse(1, "Success", data);
     }
 
-    private OrderDetailsResponse.OrderDetails mapOrderToOrderDetailsData(Order order) throws Exception{
+    private OrderDetailsResponse.OrderDetails mapOrderToOrderDetailsData(Order order) throws Exception {
         OrderDetailsResponse.OrderDetails orderDetails = new OrderDetailsResponse.OrderDetails();
 
         orderDetails.setOrderId(order.getOrderId());
         orderDetails.setOrderStatus(order.getStatus());
         orderDetails.setCreatedDate(order.getCreatedAt());
-//                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        orderDetails.setUserId(order.getUser().getId());
+
+        // Check if user is null
+        if (order.getUser() != null) {
+            orderDetails.setUserId(order.getUser().getId());
+        } else {
+            throw new Exception("User not found for order");
+        }
+
         orderDetails.setStoreId(order.getStore().getStoreId());
         orderDetails.setInstructions(order.getInstructions());
 
-        if(order.getRating()!= null){
+        if (order.getRating() != null) {
             orderDetails.setRating(order.getRating().getRating());
             orderDetails.setFeedback(order.getRating().getFeedback());
         } else {
@@ -126,22 +132,18 @@ public class OrderServiceImpl implements OrderService {
             orderDetails.setFeedback(null);
         }
 
-        if(order.getOrderId() != null){
+        if (order.getOrderId() != null) {
             Optional<Payment> payment = paymentRepository.findFirstByOrderOrderIdOrderByPaymentIdDesc(order.getOrderId());
-            if(!payment.isEmpty()){
+            if (payment.isPresent()) {
                 orderDetails.setPaymentStatus(payment.get().getStatus());
             }
         }
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
-        List<Long> itemIds = null;
-        Double totalAmount = null;
-        if(cartItems.size() > 0){
-            itemIds = CartItemUtils.extractItemIds(cartItems);
-            totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
-        }
+        List<Long> itemIds = CartItemUtils.extractItemIds(cartItems);
+        Double totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
 
-        if(itemIds == null){
+        if (itemIds.isEmpty()) {
             throw new Exception("Menu Items not found");
         }
 
@@ -156,9 +158,10 @@ public class OrderServiceImpl implements OrderService {
         return orderDetails;
     }
 
+
     private OrderDetailsResponse.OrderDetails.MenuItemDTO mapMenuItemToDTO(MenuItem menuItem) {
         OrderDetailsResponse.OrderDetails.MenuItemDTO menuItemDTO = new OrderDetailsResponse.OrderDetails.MenuItemDTO();
-        menuItemDTO.setItemId(menuItem.getMenuItemId());
+        menuItemDTO.setItemId(menuItem.getItemId());
         menuItemDTO.setStoreId(menuItem.getStoreId());
         menuItemDTO.setItemName(menuItem.getItemName());
         menuItemDTO.setItemImage(menuItem.getItemImage());
@@ -170,16 +173,16 @@ public class OrderServiceImpl implements OrderService {
             menuItemDTO.setCategory(category.getCategoryName());
         }
 
-        menuItemDTO.setSubCategoryId(menuItem.getSubCategoryId());
-        SubCategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubCategoryId());
+        menuItemDTO.setSubCategoryId(menuItem.getSubcategoryId());
+        Subcategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubcategoryId());
         if(subCategory != null){
-            menuItemDTO.setSubCategory(subCategory.getSubcategoryName());
+            menuItemDTO.setSubCategory(subCategory.getSubCategoryName());
         }
 
         menuItemDTO.setServingType(menuItem.getServingType());
         menuItemDTO.setPortion(menuItem.getPortion());
-        menuItemDTO.setInStock(menuItem.getInStock());
-        menuItemDTO.setIsRecommended(menuItem.getIsRecommended());
+        menuItemDTO.setInStock(menuItem.isInStock());
+        menuItemDTO.setIsRecommended(menuItem.isRecommended());
         menuItemDTO.setDescription(menuItem.getDescription());
 
         return menuItemDTO;
@@ -201,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
         return new OrdersResponse(1, "Success", orderDataList);
     }
 
-    private OrdersResponse.OrderData convertToOrderData(Order order) {
+    OrdersResponse.OrderData convertToOrderData(Order order) {
         OrdersResponse.OrderData orderData = new OrdersResponse.OrderData();
         orderData.setOrderId(order.getOrderId());
         orderData.setOrderStatus(order.getStatus());
@@ -245,7 +248,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrdersResponse.OrderData.ItemData convertToItemData(MenuItem menuItem) {
         OrdersResponse.OrderData.ItemData itemData = new OrdersResponse.OrderData.ItemData();
-        itemData.setItemId(menuItem.getMenuItemId());
+        itemData.setItemId(menuItem.getItemId());
         itemData.setStoreId(menuItem.getStoreId());
         itemData.setItemName(menuItem.getItemName());
         itemData.setItemImage(menuItem.getItemImage());
@@ -260,18 +263,18 @@ public class OrderServiceImpl implements OrderService {
             itemData.setCategory(null);
         }
 
-        itemData.setSubCategoryId(menuItem.getSubCategoryId());
-        SubCategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubCategoryId());
+        itemData.setSubCategoryId(menuItem.getSubcategoryId());
+        Subcategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubcategoryId());
         if(subCategory != null){
-            itemData.setSubCategory(subCategory.getSubcategoryName());
+            itemData.setSubCategory(subCategory.getSubCategoryName());
         } else {
             itemData.setSubCategory(null);
         }
 
         itemData.setServingType(menuItem.getServingType());
         itemData.setPortion(menuItem.getPortion());
-        itemData.setInStock(menuItem.getInStock());
-        itemData.setIsRecommended(menuItem.getIsRecommended());
+        itemData.setInStock(menuItem.isInStock());
+        itemData.setIsRecommended(menuItem.isRecommended());
         itemData.setDescription(menuItem.getDescription());
 
         return itemData;

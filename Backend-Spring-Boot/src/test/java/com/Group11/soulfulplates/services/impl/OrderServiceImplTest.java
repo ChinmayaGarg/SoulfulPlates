@@ -6,17 +6,22 @@ import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.CreateOrderRequest;
 import com.Group11.soulfulplates.payload.response.CreateOrderResponse;
-import com.Group11.soulfulplates.repository.CartItemRepository;
-import com.Group11.soulfulplates.repository.OrderRepository;
-import com.Group11.soulfulplates.repository.StoreRepository;
-import com.Group11.soulfulplates.repository.UserRepository;
+import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
+import com.Group11.soulfulplates.payload.response.OrdersResponse;
+import com.Group11.soulfulplates.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,13 +33,19 @@ class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private MenuItemRepository menuItemRepository;
+
+    @Mock
+    private PaymentRepository paymentRepository;
+
+
+    @Mock
     private UserRepository userRepository;
 
     @Mock
     private StoreRepository storeRepository;
-
-    @Mock
-    private OrderRepository orderRepository;
 
     @Mock
     private CartItemRepository cartItemRepository;

@@ -1,34 +1,38 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:soulful_plates/app_singleton.dart';
+import 'package:soulful_plates/routing/route_names.dart';
+import 'package:soulful_plates/utils/extensions.dart';
 
+import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
 import '../../../model/store_details/store_detail_model.dart';
+import '../../../network/network_interfaces/end_points.dart';
+import '../../../network/network_interfaces/i_dio_singleton.dart';
+import '../../../network/network_utils/api_call.dart';
 import '../../../utils/utils.dart';
 
 class StoreDetailsController extends BaseController {
   bool isEditable = false;
-  StoreDetails? storeDetails = Utils.storeDetails;
+  StoreDetails? storeDetails; // = Utils.storeDetails;
 
   @override
   void onInit() {
     super.onInit();
+    initData();
   }
 
-  TextEditingController emailEditingController =
-      TextEditingController(text: Utils.storeDetails?.email);
-  TextEditingController mobileEditingController =
-      TextEditingController(text: Utils.storeDetails?.mobile);
-  TextEditingController firstNameEditingController =
-      TextEditingController(text: Utils.storeDetails?.firstName);
-  TextEditingController streetEditingController =
-      TextEditingController(text: Utils.storeDetails?.street);
-  TextEditingController cityEditingController =
-      TextEditingController(text: Utils.storeDetails?.city);
-  TextEditingController stateEditingController =
-      TextEditingController(text: Utils.storeDetails?.state);
-  TextEditingController postalCodeEditingController =
-      TextEditingController(text: Utils.storeDetails?.postalCode);
+  TextEditingController emailEditingController = TextEditingController();
+  TextEditingController descriptionEditingController = TextEditingController();
+  TextEditingController mobileEditingController = TextEditingController();
+  TextEditingController firstNameEditingController = TextEditingController();
+  TextEditingController streetEditingController = TextEditingController();
+  TextEditingController cityEditingController = TextEditingController();
+  TextEditingController stateEditingController = TextEditingController();
+  TextEditingController postalCodeEditingController = TextEditingController();
 
   FocusNode emailFocusNode = FocusNode();
+  FocusNode descriptionFocusNode = FocusNode();
   FocusNode mobileFocusNode = FocusNode();
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode streetFocusNode = FocusNode();
@@ -37,18 +41,37 @@ class StoreDetailsController extends BaseController {
   FocusNode postalCodeFocusNode = FocusNode();
 
   // Function to update data
-  void updateData() {
-    StoreDetails updatedStoreDetails = StoreDetails(
-      email: emailEditingController.text,
-      mobile: mobileEditingController.text,
-      firstName: firstNameEditingController.text,
-      street: streetEditingController.text,
-      city: cityEditingController.text,
-      state: stateEditingController.text,
-      postalCode: postalCodeEditingController.text,
-    );
+  updateData() async {
+    setLoaderState(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint:
+            "${EndPoints.sellerUpdateDetails}/${AppSingleton.loggedInUserProfile?.sellerId}",
+        apiCallType: ApiCallType.seller,
+        parameters: {
+          "storeName": firstNameEditingController.text.trim(),
+          "storeEmail": emailEditingController.text.trim(),
+          "storeDescription": descriptionEditingController.text.trim(),
+          "storeContactNumber": mobileEditingController.text.trim()
+        });
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("Store details updated successfully.", false);
+    } else {
+      Utils.showSuccessToast("Error while updating store details.", true);
+    }
+    setLoaderState(ViewStateEnum.idle);
+    Get.offAllNamed(dashboardViewRoute);
+  }
 
-    Utils.storeDetails = updatedStoreDetails;
-    storeDetails = updatedStoreDetails;
+  void initData() {
+    if (AppSingleton.loggedInUserProfile?.sellerName.isNullOrEmpty == true) {
+      isEditable = true;
+    }
+    emailEditingController.text =
+        AppSingleton.loggedInUserProfile?.sellerEmail ?? '';
+    mobileEditingController.text =
+        AppSingleton.loggedInUserProfile?.sellerContactNumber ?? '';
+    firstNameEditingController.text =
+        AppSingleton.loggedInUserProfile?.sellerName ?? '';
   }
 }

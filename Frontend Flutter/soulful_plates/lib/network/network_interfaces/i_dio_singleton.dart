@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 enum ApiCallType { imageCall, simple, user, seller }
 
-enum RequestMethod { get, put, post, delete }
+enum RequestMethod { get, put, post, delete, getPost }
 
 /// DioSingleton interface for using the dio method for common api calls.
 abstract class IDioSing {

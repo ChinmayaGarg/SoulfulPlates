@@ -31,6 +31,7 @@ class AppColor {
   static const Color whiteColor = Colors.white;
   static const Color blackColor = Colors.black;
   static const Color greenColor = Color(0xFF31D0AA);
+  static const Color emeraldGreen = Color(0xFF183D3D);
 }
 
 class ColorThemeModel {

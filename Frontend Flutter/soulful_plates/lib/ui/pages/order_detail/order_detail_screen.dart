@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/Utils/Extensions.dart';
+import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
 import '../../../constants/enums/view_state.dart';
-import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
 import 'order_detail_controller.dart';
 
 class OrderDetailScreen extends GetView<OrderDetailController>
     with BaseCommonWidget {
-  OrderDetailScreen({Key? key}) : super(key: key);
+  // final String orderId;
+
+  const OrderDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +49,14 @@ class OrderDetailScreen extends GetView<OrderDetailController>
       children: [
         12.rVerticalSizedBox(),
         Expanded(
-          child: Stack(children: [
-            Text("Response data ${controller.dataModel?.toString() ?? ''}"),
-            controller.state == ViewStateEnum.busy
-                ? const Center(child: CircularProgressIndicator())
-                : AppSizedBox.sizedBox0
-          ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
+          child: Stack(
+            children: [
+              // Removed the Text widget that displays response data
+              controller.state == ViewStateEnum.busy
+                  ? const Center(child: CircularProgressIndicator())
+                  : AppSizedBox.sizedBox0
+            ],
+          ).paddingSymmetricSide(vertical: 8, horizontal: 16),
         ),
         12.rVerticalSizedBox(),
       ],

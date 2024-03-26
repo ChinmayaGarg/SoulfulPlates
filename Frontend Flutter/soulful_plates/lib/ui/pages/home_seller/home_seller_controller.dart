@@ -1,3 +1,5 @@
+import 'package:soulful_plates/app_singleton.dart';
+
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
 import '../../../model/data_model.dart';
@@ -8,6 +10,10 @@ class HomeSellerController extends BaseController
   @override
   void onInit() {
     super.onInit();
+    print("This is current token ${AppSingleton.loggedInUserProfile?.id}");
+    print(
+        "This is current token ${AppSingleton.loggedInUserProfile?.sellerId}");
+    print("This is current token ${AppSingleton.loggedInUserProfile?.token}");
     initPagination();
   }
 

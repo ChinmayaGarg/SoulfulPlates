@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                         auth
                                 .requestMatchers("/public/uploads/**").permitAll() // Allow access without
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/api/cart/**").permitAll()
                                 .anyRequest().authenticated()

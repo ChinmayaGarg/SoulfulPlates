@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/constants/app_colors.dart';
 import 'package:soulful_plates/constants/app_paddings.dart';
+import 'package:soulful_plates/constants/app_sized_box.dart';
+import 'package:soulful_plates/constants/app_text_styles.dart';
+import 'package:soulful_plates/constants/enums/view_state.dart';
+import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/model/location/location_model.dart';
 import 'package:soulful_plates/routing/route_names.dart';
-
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
-import '../../../constants/size_config.dart';
-import '../../../model/location/location_model.dart';
-import '../../../utils/extensions.dart';
-import '../../../utils/utils.dart';
-import '../../widgets/base_common_widget.dart';
-import 'saved_location_controller.dart';
+import 'package:soulful_plates/ui/pages/saved_location/saved_location_controller.dart';
+import 'package:soulful_plates/ui/widgets/base_common_widget.dart';
+import 'package:soulful_plates/utils/extensions.dart';
+import 'package:soulful_plates/utils/utils.dart';
 
 class SavedLocationScreen extends GetView<SavedLocationController>
     with BaseCommonWidget {
@@ -21,33 +20,31 @@ class SavedLocationScreen extends GetView<SavedLocationController>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Saved Location"),
+      appBar: AppBar(
+        title: const Text("Saved Location"),
+      ),
+      backgroundColor: AppColor.whiteColor,
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Go to add location",
+        child: const Icon(
+          Icons.add_location_alt_outlined,
+          size: 24,
+          color: AppColor.whiteColor,
         ),
-        backgroundColor: AppColor.whiteColor,
-        floatingActionButton: FloatingActionButton(
-            tooltip: "Go to add location",
-            child: const Icon(
-              Icons.add_location_alt_outlined,
-              size: 24,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () async {
-              var response = await Get.toNamed(editLocationViewRoute);
-              if (response == null) {
-                print("This is respose");
-              }
-              controller.update();
-            }),
-        body: SafeArea(
-          child: GetBuilder(
-            init: controller,
-            initState: (state) async {},
-            builder: (SavedLocationController model) {
-              return getBody(context);
-            },
-          ),
-        ));
+        onPressed: () {
+          Get.toNamed(editLocationViewRoute);
+        },
+      ),
+      body: SafeArea(
+        child: GetBuilder(
+          init: controller,
+          initState: (state) async {},
+          builder: (SavedLocationController model) {
+            return getBody(context);
+          },
+        ),
+      ),
+    );
   }
 
   Widget getBody(BuildContext context) {
@@ -55,13 +52,14 @@ class SavedLocationScreen extends GetView<SavedLocationController>
       children: [
         12.rVerticalSizedBox(),
         Expanded(
-          child: Stack(children: [
-            Utils.locationList.isNotEmpty
-                ? RefreshIndicator(
-                    onRefresh: () async {
-                      controller.resetPagination();
-                    },
-                    child: NotificationListener<ScrollNotification>(
+          child: Stack(
+            children: [
+              Utils.locationList.isNotEmpty
+                  ? RefreshIndicator(
+                      onRefresh: () async {
+                        controller.resetPagination();
+                      },
+                      child: NotificationListener<ScrollNotification>(
                         onNotification: (scrollNotification) {
                           if (scrollNotification.metrics.pixels >=
                                   scrollNotification.metrics.maxScrollExtent &&
@@ -85,8 +83,8 @@ class SavedLocationScreen extends GetView<SavedLocationController>
                               return ListTile(
                                 title: Text(
                                     Utils.locationList[index].locationName),
-                                subtitle: Text(
-                                    'Latitude: ${Utils.locationList[index].latitude}, Longitude: ${Utils.locationList[index].longitude}'),
+                                subtitle: Text(Utils.locationList[index]
+                                    .address), // Display address
                                 onTap: () {
                                   _editLocation(context, index);
                                   controller.update();
@@ -100,35 +98,37 @@ class SavedLocationScreen extends GetView<SavedLocationController>
                               return AppSizedBox.sizedBox0;
                             }
                           },
-                        )),
-                  )
-                : Center(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        controller.resetPagination();
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.refresh_outlined,
-                            size: 24.rSize(),
-                            color: AppColor.primaryColor,
-                          ),
-                          Text(
-                            'No data available!',
-                            style: AppTextStyles.textStyleBlack16With400,
-                          ),
-                        ],
-                      ).paddingAll12(),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          controller.resetPagination();
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.refresh_outlined,
+                              size: 24.rSize(),
+                              color: AppColor.primaryColor,
+                            ),
+                            Text(
+                              'No data available!',
+                              style: AppTextStyles.textStyleBlack16With400,
+                            ),
+                          ],
+                        ).paddingAll12(),
+                      ),
                     ),
-                  ),
-            controller.state == ViewStateEnum.busy
-                ? const Center(child: CircularProgressIndicator())
-                : AppSizedBox.sizedBox0
-          ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
+              controller.state == ViewStateEnum.busy
+                  ? const Center(child: CircularProgressIndicator())
+                  : AppSizedBox.sizedBox0
+            ],
+          ).paddingSymmetricSide(vertical: 8, horizontal: 16),
         ),
       ],
     );

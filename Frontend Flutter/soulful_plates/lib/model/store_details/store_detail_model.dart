@@ -5,19 +5,19 @@ class StoreDetails {
   String email;
   String mobile;
   String firstName;
-  String street;
-  String city;
-  String state;
-  String postalCode;
+  String? street;
+  String? city;
+  String? state;
+  String? postalCode;
 
   StoreDetails({
     required this.email,
     required this.mobile,
     required this.firstName,
-    required this.street,
-    required this.city,
-    required this.state,
-    required this.postalCode,
+    this.street,
+    this.city,
+    this.state,
+    this.postalCode,
   });
 
   String shortName() {

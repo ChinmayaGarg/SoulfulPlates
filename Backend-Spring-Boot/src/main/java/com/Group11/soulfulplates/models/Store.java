@@ -89,6 +89,14 @@ public class Store {
         this.storeDescription = storeDescription;
     }
 
+    public String getStoreImageUrl() {
+        return storeImageUrl;
+    }
+
+    public void setStoreImageUrl(String storeImageUrl) {
+        this.storeImageUrl = storeImageUrl;
+    }
+
     @Override
     public String toString() {
         return "Store{" +

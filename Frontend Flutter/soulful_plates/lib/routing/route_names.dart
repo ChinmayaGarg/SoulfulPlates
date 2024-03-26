@@ -12,6 +12,7 @@ const String dashboardViewRoute = 'dashboardViewRoute';
 
 const String restaurantDetailViewRoute = 'restaurantDetailViewRoute';
 const String viewCartViewRoute = 'viewCartViewRoute';
+
 //buyer - to do
 const String cartPaymentViewRoute = 'cartPaymentViewRoute';
 const String profileViewRoute = 'profileViewRoute';
