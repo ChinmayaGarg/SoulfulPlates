@@ -27,7 +27,7 @@ backend_test:
   tags:
     - test-runner-2
   script:
-    - cd backend
+    - 'cd Backend-Spring-Boot'
     - echo "Running tests..."
     - mvn test
     - echo "Backend Tests Complete"
