@@ -21,10 +21,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import static java.lang.Math.*;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -247,8 +245,8 @@ public class UserController {
     private Double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
         final int rEarth = 6371; // Radius of the earth
         int two = 2;
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
+        double latDistance = toRadians(lat2 - lat1);
+        double lonDistance = toRadians(lon2 - lon1);
         double sinLatDistanceOver2 = sin(latDistance / two);
         double cosLat1 = cos(toRadians(lat1));
         double cosLat2 = cos(toRadians(lat2));
