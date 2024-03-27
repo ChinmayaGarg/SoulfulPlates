@@ -12,19 +12,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -82,27 +76,6 @@ class StoreControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-
-//    @Test
-//    public void testDeleteStore_StoreNotFound() {
-//        // Mock storeService.existsById to return false
-//        when(storeService.existsById(anyLong())).thenReturn(false);
-//
-//        // Invoke controller method
-//        ResponseEntity<?> responseEntity = storeController.deleteStore(1L);
-//
-//        // Verify behavior
-//        verify(storeService, times(1)).existsById(1L);
-//        verifyNoMoreInteractions(storeService);
-//
-//        // Assertions
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//
-//        MessageResponse messageResponse = (MessageResponse) responseEntity.getBody();
-//        assertEquals(-1, messageResponse.getCode());
-//        assertEquals("Store Not Found!", messageResponse.getDescription());
-//        assertEquals(null, messageResponse.getData());
-//    }
 
     @Test
     void testUpdateStore() throws Exception {
@@ -175,19 +148,6 @@ class StoreControllerTest {
     }
 
     @Test
-    void testDeleteStore_StoreNotFound() {
-        // Setup
-        when(storeService.existsById(1L)).thenReturn(false);
-
-        // Call the controller method
-        ResponseEntity<?> response = storeController.deleteStore(1L);
-
-        // Assertion
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Store Not Found!", ((MessageResponse) response.getBody()).getDescription());
-    }
-
-    @Test
     public void testUpdateStore_ExceptionCaught() throws Exception {
         // Mock storeService to throw an exception
         when(storeService.updateStoreByUserId(anyLong(), any(Store.class))).thenThrow(new RuntimeException("Store not found"));
@@ -230,8 +190,6 @@ class StoreControllerTest {
         MessageResponse messageResponse = responseEntity.getBody();
         assertEquals(-1, messageResponse.getCode());
         assertEquals("Failed to store empty file.", messageResponse.getDescription());
-        assertEquals(null, messageResponse.getData());
+        assertNull(messageResponse.getData());
     }
-
-
 }

@@ -1,9 +1,8 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.MenuItem;
-import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.MenuItemService;
+import com.Group11.soulfulplates.services.impl.MenuItemServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,22 +11,22 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 class MenuItemControllerTest {
 
     @Mock
-    private MenuItemService menuItemService;
+    private MenuItemServiceImpl menuItemService;
 
     @InjectMocks
     private MenuItemController menuItemController;
     private Long validMenuItemId;
     private MenuItem validMenuItem;
-/*
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); // Initialize mocks
@@ -198,6 +197,4 @@ class MenuItemControllerTest {
         assertEquals("Error deleting menu item: " + errorMessage, ((MessageResponse)responseEntity.getBody()).getDescription());
         verify(menuItemService, times(1)).deleteMenuItem(menuItemId);
     }
-*/
-
 }

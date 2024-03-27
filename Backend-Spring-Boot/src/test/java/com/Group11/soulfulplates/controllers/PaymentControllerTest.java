@@ -15,10 +15,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 class PaymentControllerTest {
@@ -114,25 +116,25 @@ class PaymentControllerTest {
         assertEquals(payments, ((MessageResponse) responseEntity.getBody()).getData());
     }
 
-//    @Test
-//    public void testFilterSellerPayments_Exception() {
-//        PaymentFilterRequestSeller request = new PaymentFilterRequestSeller();
-//        request.setStoreId(1L);
-//        request.setStatus("success");
-//        request.setLimit(10);
-//        request.setOffset(0);
-//
-//        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
-//
-//        ResponseEntity<?> responseEntity = paymentController.filterSellerPayments(request);
-//
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
-//        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
-//        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
-//
-//        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
-//    }
+    @Test
+    public void testFilterSellerPayments_Exception() {
+        PaymentFilterRequestSeller request = new PaymentFilterRequestSeller();
+        request.setStoreId(1L);
+        request.setStatus("success");
+        request.setLimit(10);
+        request.setOffset(0);
+
+        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
+
+        ResponseEntity<?> responseEntity = paymentController.filterSellerPayments(request);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
+
+        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
+    }
 
     @Test
     public void testFilterPayments_Success() {
@@ -160,26 +162,24 @@ class PaymentControllerTest {
 
         verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
     }
-//    @Test
-//    public void testFilterPayments_Exception() {
-//        PaymentFilterRequestBuyer request = new PaymentFilterRequestBuyer();
-//        request.setUserId(1L);
-//        request.setStatus("success");
-//        request.setLimit(10);
-//        request.setOffset(0);
-//
-//        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
-//
-//        ResponseEntity<?> responseEntity = paymentController.filterPayments(request);
-//
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
-//        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
-//        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
-//
-//        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
-//    }
+    @Test
+    public void testFilterPayments_Exception() {
+        PaymentFilterRequestBuyer request = new PaymentFilterRequestBuyer();
+        request.setUserId(1L);
+        request.setStatus("success");
+        request.setLimit(10);
+        request.setOffset(0);
 
+        when(paymentService.filterPayments(anyLong(), anyString(), anyInt(), anyInt())).thenThrow(new RuntimeException("Test Exception"));
 
+        ResponseEntity<?> responseEntity = paymentController.filterPayments(request);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Failure", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(null, ((MessageResponse) responseEntity.getBody()).getData());
+
+        verify(paymentService, times(1)).filterPayments(anyLong(), anyString(), anyInt(), anyInt());
+    }
 }
 
