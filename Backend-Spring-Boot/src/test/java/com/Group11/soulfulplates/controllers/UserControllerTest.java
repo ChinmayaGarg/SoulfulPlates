@@ -42,6 +42,9 @@ class UserControllerTest {
     @Mock
     private UserDetailsService userDetailsService;
 
+    static int expected200= 200;
+
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -63,7 +66,7 @@ class UserControllerTest {
 
         // Then
         assertNotNull(responseEntity);
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
         MessageResponse response = responseEntity.getBody();
         assertNotNull(response);
         assertEquals(1, response.getCode());
@@ -89,7 +92,7 @@ class UserControllerTest {
         ResponseEntity<MessageResponse> responseEntity = userController.createAddressForUser(userId, address);
 
         // Then
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
         MessageResponse response = responseEntity.getBody();
         assertEquals(1, response.getCode());
         assertEquals("Address saved successfully!", response.getDescription());
@@ -124,7 +127,7 @@ class UserControllerTest {
 
         // Then
         assertNotNull(responseEntity);
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
         MessageResponse response = responseEntity.getBody();
         assertNotNull(response);
         assertEquals(1, response.getCode());
@@ -165,7 +168,7 @@ class UserControllerTest {
 
         // Then
         assertNotNull(responseEntity);
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
         MessageResponse response = responseEntity.getBody();
         assertNotNull(response);
         assertEquals(1, response.getCode());
@@ -203,7 +206,7 @@ class UserControllerTest {
 
         // Then
         assertNotNull(responseEntity);
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
         MessageResponse response = responseEntity.getBody();
         assertNotNull(response);
         assertEquals(1, response.getCode());
@@ -222,15 +225,20 @@ class UserControllerTest {
         // Given
         Long addressId = 1L;
         Double maxDistance = 10.0;
-
+        Double latitude = 40.7128;
+        Double longitude = -74.0060;
         Address userAddress = new Address();
         userAddress.setAddressId(addressId);
-        userAddress.setLatitude(40.7128);
-        userAddress.setLongitude(-74.0060);
+        userAddress.setLatitude(latitude);
+        userAddress.setLongitude(longitude);
 
+        Double lat1 = 40.7129;
+        Double lat2 = 40.7127;
+        Double lon1 = -74.0061;
+        Double lon2 = -74.0059;
         List<Map<String, Object>> storesLatLon = new ArrayList<>();
-        Map<String, Object> store1 = Map.of("lat", 40.7129, "lon", -74.0061);
-        Map<String, Object> store2 = Map.of("lat", 40.7127, "lon", -74.0059);
+        Map<String, Object> store1 = Map.of("lat", lat1, "lon", lon1);
+        Map<String, Object> store2 = Map.of("lat", lat2, "lon",lon2);
         storesLatLon.add(store1);
         storesLatLon.add(store2);
 
@@ -242,7 +250,7 @@ class UserControllerTest {
 
         // Then
         assertNotNull(responseEntity);
-        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
         MessageResponse response = responseEntity.getBody();
         assertNotNull(response);
         assertEquals(1, response.getCode());

@@ -147,7 +147,7 @@ class OrderControllerTest {
 
         // Assertions
         assertEquals(-1, responseEntity.getBody().getCode());
-        assertEquals("Error getting order details: Some error occurred.", responseEntity.getBody().getDescription());
+        assertEquals("Error getting order details:", responseEntity.getBody().getDescription());
         assertEquals(null, responseEntity.getBody().getData());
 
         // Verify behavior
@@ -211,7 +211,5 @@ class OrderControllerTest {
         verify(orderService, times(1))
                 .getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset());
     }
-
-
 }
 

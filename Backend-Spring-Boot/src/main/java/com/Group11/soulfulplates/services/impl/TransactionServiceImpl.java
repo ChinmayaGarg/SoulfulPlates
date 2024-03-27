@@ -24,8 +24,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public Transaction createTransaction(Map<String, Object> request) throws Exception {
         Transaction transaction = new Transaction();
-        transaction.setUser(userRepository.findById(Long.valueOf((Integer) request.get("user_id")))
-                .orElseThrow(() -> new Exception("User not found")));
+        Exception userNotFound = new Exception("User not found");
+        Integer req = (Integer) request.get("user_id");
+        transaction.setUser(userRepository.findById(Long.valueOf(req)).orElseThrow(() ->userNotFound ));
         transaction.setCardNumber((String) request.get("card_number"));
         transaction.setCardExpiry((String) request.get("card_expiry")); // Adjust based on your entity's date type
         transaction.setCvv((String) request.get("cvv"));
@@ -38,8 +39,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void updateTransactionStatus(Long transactionId, String status) throws Exception {
-        Transaction transaction = transactionRepository.findById(transactionId)
-                .orElseThrow(() -> new Exception("Transaction not found"));
+        Exception transactionNotFound = new Exception("Transaction not found");
+        Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() -> transactionNotFound);
         transaction.setStatus(status);
         transaction.setUpdatedAt(new Date());
         transactionRepository.save(transaction);

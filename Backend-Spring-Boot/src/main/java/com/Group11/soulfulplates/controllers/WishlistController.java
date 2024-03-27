@@ -30,7 +30,12 @@ public class WishlistController {
     @GetMapping( "/{id}")
     public ResponseEntity<MessageResponse> getWishlistById(@PathVariable Long id) {
         Optional<Wishlist> wishlist = wishlistService.getWishlistById(id);
-        return wishlist.map(value -> ResponseEntity.ok(new MessageResponse(1, "Wishlist found", value))).orElseGet(() -> ResponseEntity.ok(new MessageResponse(-1, "Wishlist not found", null)));
+        MessageResponse notFoundResponse = new MessageResponse(-1, "Wishlist not found", null);
+        return wishlist.map(this::createWishlistFoundResponse).orElseGet(() -> ResponseEntity.ok(notFoundResponse));
+    }
+
+    private ResponseEntity<MessageResponse> createWishlistFoundResponse(Wishlist value) {
+        return ResponseEntity.ok(new MessageResponse(1, "Wishlist found", value));
     }
 
 //    Needs Improvement

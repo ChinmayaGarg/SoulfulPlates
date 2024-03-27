@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import static java.lang.Math.*;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,8 +40,8 @@ public class UserController {
 
     @PutMapping("/toggle-notification/{userId}")
     public ResponseEntity<MessageResponse> toggleNotificationFlag(@PathVariable Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> userNotFound);
 
 
         // Toggle the value of notificationFlag
@@ -102,11 +103,11 @@ public class UserController {
     // Update an existing address for a user
     @PostMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> updateAddressForUser(@PathVariable Long userId, @PathVariable Long addressId, @RequestBody Address addressDetails) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
+        RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
+        User user = userRepository.findById(userId).orElseThrow(() -> userNotFound);
 
-        Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
 
         address.setStreet(addressDetails.getStreet());
         address.setCity(addressDetails.getCity());
@@ -125,11 +126,10 @@ public class UserController {
     // Delete an address for a user
     @DeleteMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> deleteAddressForUser(@PathVariable Long userId, @PathVariable Long addressId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
-        Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
+        RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
+        User user = userRepository.findById(userId).orElseThrow(() ->userNotFound);
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
 
         addressRepository.delete(address);
 
@@ -188,8 +188,8 @@ public class UserController {
 
         try {
             // Fetch the address by addressId
-            Address userAddress = addressRepository.findById(addressId)
-                    .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+            RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
+            Address userAddress = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
 
             // Check if the fetched address belongs to the given user
             if (userAddress == null) {
@@ -243,15 +243,18 @@ public class UserController {
 
     // Method to calculate distance using Haversine formula
     private Double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
-        final int R = 6371; // Radius of the earth
+        final int rEarth = 6371; // Radius of the earth
+        int two = 2;
+        double latDistance = toRadians(lat2 - lat1);
+        double lonDistance = toRadians(lon2 - lon1);
+        double sinLatDistanceOver2 = sin(latDistance / two);
+        double cosLat1 = cos(toRadians(lat1));
+        double cosLat2 = cos(toRadians(lat2));
+        double sinLonDistanceOver2 = sin(lonDistance / two);
+        double a = sinLatDistanceOver2 * sinLatDistanceOver2
+                + cosLat1 * cosLat2 * sinLonDistanceOver2 * sinLonDistanceOver2;
+        double c = two * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c;
+        return rEarth * c;
     }
 }

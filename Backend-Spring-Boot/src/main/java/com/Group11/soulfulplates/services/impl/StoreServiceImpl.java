@@ -24,8 +24,8 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public Store updateStoreByUserId(Long userId, Store storeDetails) throws Exception {
-        Store store = storeRepository.findByUser_Id(userId)
-                .orElseThrow(() -> new Exception("Store not found for this user: " + userId));
+        Exception storeNotFound = new Exception("Store not found for this user: " + userId);
+        Store store = storeRepository.findByUser_Id(userId).orElseThrow(() -> storeNotFound);
 
         store.setStoreName(storeDetails.getStoreName());
         store.setStoreEmail(storeDetails.getStoreEmail());

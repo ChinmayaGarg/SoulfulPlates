@@ -1,6 +1,7 @@
 stages: # List of stages for jobs, and their order of execution
   - build
-  # - test
+  - test
+  - quality
   - package
   - publish
   - deploy
@@ -20,14 +21,35 @@ build-job: # This job runs in the build stage, which runs first.
     untracked: true
     expire_in: 30 days
 
-# test-job: # This job runs in the test stage.
-#   image: maven:latest
-#   stage: test # It only starts when the job in the build stage completes successfully.
-#   script:
-#     - 'cd Backend-Spring-Boot'
-#     - echo "Running unit tests... This will take about 60 seconds."
-#     - mvn test
-#     - echo "Code coverage is 90%"
+
+test-job:
+  image: maven:latest
+  stage: test
+  tags:
+    - test-runner-2
+  script:
+    - 'cd Backend-Spring-Boot'
+    - echo "Running tests..."
+    - mvn test
+    - echo "Backend Tests Complete"
+  artifacts:
+    untracked: true
+    expire_in: 30 days
+
+
+code_quality:
+  image: openjdk:17
+  stage: quality
+  tags:
+    - test-runner-2
+  script:
+    - 'cd Backend-Spring-Boot'
+    - rm -rf code_smells
+    - mkdir code_smells
+    - java -jar ./designite/DesigniteJava.jar -i ./src -o ./designite/result
+  artifacts:
+    untracked: true
+    expire_in: 30 days
 
 package-job: # This job runs in the package stage.
   image: maven:latest
@@ -88,7 +110,7 @@ deploy-job:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f my-app || true"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8073:8073 --name my-app docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name my-app docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA"
   environment:
     name: production
     url: http://172.17.1.211:8073

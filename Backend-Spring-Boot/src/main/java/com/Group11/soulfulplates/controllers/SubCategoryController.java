@@ -2,7 +2,7 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.SubcategoryService;
+import com.Group11.soulfulplates.services.impl.SubcategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class SubCategoryController {
     @Autowired
-    private SubcategoryService subcategoryService;
+    private SubcategoryServiceImpl subcategoryService;
 
     @GetMapping("/getSubCategories")
     public ResponseEntity getAllSubCategories() {

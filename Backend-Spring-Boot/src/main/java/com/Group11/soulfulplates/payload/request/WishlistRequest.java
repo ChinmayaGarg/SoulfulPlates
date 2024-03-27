@@ -11,8 +11,6 @@ public class WishlistRequest {
     private LocalDateTime createdDate;
     private Long userId; // Added user_id field
 
-    // Constructors, getters, and setters
-
     public WishlistRequest() {
     }
 
@@ -21,7 +19,5 @@ public class WishlistRequest {
         this.createdDate = createdDate;
         this.userId = userId;
     }
-
-    // Getters and setters for fields
 
 }

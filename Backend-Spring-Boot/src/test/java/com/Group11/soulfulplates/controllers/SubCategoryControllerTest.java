@@ -1,10 +1,8 @@
 package com.Group11.soulfulplates.controllers;
 
-import com.Group11.soulfulplates.models.Category;
 import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.CategoryService;
-import com.Group11.soulfulplates.services.impl.SubcategoryService;
+import com.Group11.soulfulplates.services.impl.SubcategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +21,7 @@ import static org.mockito.Mockito.*;
 class SubCategoryControllerTest {
 
     @Mock
-    private SubcategoryService subcategoryService;
+    private SubcategoryServiceImpl subcategoryService;
 
     @InjectMocks
     private SubCategoryController subCategoryController;
@@ -32,7 +30,7 @@ class SubCategoryControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-/*
+
     @Test
     void testCreateCategory() {
         // Mock data
@@ -111,5 +109,4 @@ class SubCategoryControllerTest {
         assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
-*/
 }

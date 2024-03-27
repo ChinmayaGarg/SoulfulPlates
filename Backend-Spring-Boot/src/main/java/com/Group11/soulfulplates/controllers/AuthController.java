@@ -59,35 +59,35 @@ public class AuthController {
   public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest()
-              .body(new MessageResponse(-1, "Error: Username is already taken!", null));
+          .body(new MessageResponse(-1, "Error: Username is already taken!", null));
     }
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity.badRequest()
-              .body(new MessageResponse(-1, "Error: Email is already in use!", null));
+          .body(new MessageResponse(-1, "Error: Email is already in use!", null));
     }
 
     // Create a new user entity
     User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
+        encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
 
     // Set user's roles
     Set<Role> roles = new HashSet<>();
     if (signUpRequest.getRole() == null) {
       Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(buyerRole);
     } else {
       signUpRequest.getRole().forEach(role -> {
         switch (role) {
           case "admin":
             Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(adminRole);
             break;
           case "seller":
             Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(sellerRole);
 
             // Create a new store entity and associate it with the user
@@ -97,7 +97,7 @@ public class AuthController {
             break;
           default:
             Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(buyerRole);
         }
       });
@@ -112,33 +112,59 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
+      return ResponseEntity.badRequest()
+              .body(new MessageResponse(-1, "Error: Username is required!", null));
+    }
+
     try {
-      Authentication authentication = authenticationManager.authenticate(
-              new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+      String loginUsername = loginRequest.getUsername();
+      String loginPassword = loginRequest.getPassword();
+      UsernamePasswordAuthenticationToken userpass = new UsernamePasswordAuthenticationToken(loginUsername, loginPassword);
+      Authentication authentication = authenticationManager.authenticate(userpass);
 
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      String jwt = jwtUtils.generateJwtToken(authentication);
+      if (authentication != null && authentication.isAuthenticated()) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-      List<String> roles = userDetails.getAuthorities().stream()
-              .map(Object::toString)
-              .collect(Collectors.toList());
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
 
-      // Fetch store information if exists
-      Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
+        // Fetch store information if exists
+        Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
 
-      // If store details exist, append them to JwtResponse
-      if (storeOptional.isPresent()) {
-        Store store = storeOptional.get();
-        JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-                userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
-                store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber(),store.getStoreDescription());
+        Long id = userDetails.getId();
+        String username = userDetails.getUsername();
+        String email = userDetails.getEmail();
+        String contactNumber = userDetails.getContactNumber();
+        String firstname = userDetails.getFirstname();
+        boolean isNotificationFlag = userDetails.isNotificationFlag();
+
+        JwtResponse jwtResponse;
+
+        // If store details exist, append them to JwtResponse
+        if (storeOptional.isPresent()) {
+          Store store = storeOptional.get();
+          Long storeId = store.getStoreId();
+          String storeName = store.getStoreName();
+          String storeEmail = store.getStoreEmail();
+          String storeContactNumber = store.getContactNumber();
+          String storeDescription = store.getStoreDescription();
+
+          jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
+                  isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber,storeDescription);
+        } else {
+          // Create JwtResponse without store details
+          jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
+                  isNotificationFlag);
+        }
+
         return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
       } else {
-        // Create JwtResponse without store details
-        JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-                userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
-        return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new MessageResponse(-1, "Invalid username or password", null));
       }
     } catch (BadCredentialsException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -148,25 +174,39 @@ public class AuthController {
 
 
 
+
   @PostMapping("/forget-password")
-  public ResponseEntity<MessageResponse> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
+  public ResponseEntity<MessageResponse> generateForgetPasswordCode(
+      @RequestBody ForgetPasswordRequest forgetPasswordRequest) {
     try {
+      String responseDescription;
+      int responseCode;
+      Map<String, String> responseData;
+      MessageResponse messageResponse;
+
       if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
-        return ResponseEntity.ok(new MessageResponse(1, "Forget password code generated successfully!",
-                Collections.singletonMap("OTP_Code", OtpResponse.OtpCode())));
+        responseDescription = "Forget password code generated successfully!";
+        responseCode = 1;
+        responseData = Collections.singletonMap("OTP_Code", OtpResponse.OtpCode());
+        messageResponse = new MessageResponse(responseCode, responseDescription, responseData);
+        return ResponseEntity.ok(messageResponse);
       } else {
-        return ResponseEntity.badRequest()
-                .body(new MessageResponse(-1, "Error: Email does not exist!", null));
+        responseDescription = "Error: Email does not exist!";
+        responseCode = -1;
+        responseData = null;
+        messageResponse = new MessageResponse(responseCode, responseDescription, responseData);
+        return ResponseEntity.ok(messageResponse);
       }
     } catch (RuntimeException e) {
+      MessageResponse badRes = new MessageResponse(-1, "Error occurred while generating forget password code.", null);
       return ResponseEntity.badRequest()
-              .body(new MessageResponse(-1, "Error occurred while generating forget password code.", null));
+          .body(badRes);
     }
   }
 
-
   @PostMapping("/reset-password")
-//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+  // @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or
+  // hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
     if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
       try {
@@ -179,17 +219,17 @@ public class AuthController {
           return ResponseEntity.ok(new MessageResponse(1, "Password reset successfully!", null));
         } else {
           return ResponseEntity.badRequest()
-                  .body(new MessageResponse(-1, "Error: User with provided email not found.", null));
+              .body(new MessageResponse(-1, "Error: User with provided email not found.", null));
         }
       } catch (Exception e) {
         return ResponseEntity.badRequest()
-                .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
+            .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
       }
 
     } else {
       return ResponseEntity
-              .badRequest()
-              .body(new MessageResponse(-1, "Error: Email does not exist!", null));
+          .badRequest()
+          .body(new MessageResponse(-1, "Error: Email does not exist!", null));
     }
   }
 }

@@ -87,6 +87,4 @@ public class TransactionServiceImplTest {
         Assertions.assertEquals("Completed", existingTransaction.getStatus());
         Assertions.assertNotNull(existingTransaction.getUpdatedAt());
     }
-
-    // Add more test cases for other scenarios (e.g., user not found, transaction not found)
 }

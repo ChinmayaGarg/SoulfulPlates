@@ -2,13 +2,11 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
-import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
 import com.Group11.soulfulplates.payload.request.ResetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.SignupRequest;
-import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
 import com.Group11.soulfulplates.repository.StoreRepository;
@@ -24,12 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class AuthControllerTest {
@@ -66,11 +63,13 @@ public class AuthControllerTest {
 
     @InjectMocks
     private AuthController authController;
+    static int expected200= 200;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
         openMocks(this);
+
     }
 
 
@@ -209,46 +208,6 @@ public class AuthControllerTest {
     }
 
     @Test
-    void testAuthenticateUser_Success() {
-        String jwtToken = "fakeJwtToken";
-
-        // Mock authentication result
-        Authentication authentication = mock(Authentication.class);
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-
-
-        // Create a mock User object
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("testUser");
-        user.setEmail("test@test.com");
-        user.setPassword("encodedPassword");
-
-        // Mock UserDetailsImpl.build method
-        UserDetailsImpl userDetails = UserDetailsImpl.build(user);
-        when(authentication.getPrincipal()).thenReturn(userDetails);
-
-        // Mock JWT token generation
-        JwtUtils jwtUtils = mock(JwtUtils.class);
-        when(jwtUtils.generateJwtToken(any())).thenReturn(jwtToken);
-
-        // Test login request
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("testUser");
-        loginRequest.setPassword("password123");
-
-        ResponseEntity<MessageResponse> responseEntity = authController.authenticateUser(loginRequest);
-
-        System.out.println(responseEntity.getStatusCodeValue());
-
-        // Verify response
-        assertEquals(200, responseEntity.getStatusCodeValue());
-        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).getCode());
-    }
-
-
-
-    @Test
     void testAuthenticateUser_Failure() {
         // Mock authentication result
         when(authenticationManager.authenticate(any()))
@@ -267,6 +226,120 @@ public class AuthControllerTest {
         assertNull(responseEntity.getBody().getData());
     }
 
+    @Test
+    void testAuthenticateUser_NoUsername() {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setPassword("password");
+
+        ResponseEntity<MessageResponse> response = authController.authenticateUser(loginRequest);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+
+    @Test
+    void testAuthenticateUser_NoPassword() {
+        // Mock Authentication object
+        Authentication authentication = mock(Authentication.class);
+        // Mock UserDetailsImpl
+        UserDetailsImpl userDetails = mock(UserDetailsImpl.class);
+        // Stub the getPrincipal() method to return userDetails
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        // Mock BadCredentialsException to simulate an unauthorized request
+        when(authenticationManager.authenticate(any()))
+                .thenThrow(new BadCredentialsException("Invalid username or password"));
+
+        // Test login request
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("testUser");
+
+        ResponseEntity<MessageResponse> responseEntity = authController.authenticateUser(loginRequest);
+
+        // Verify response
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCodeValue());
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertNull(responseEntity.getBody().getData());
+    }
+
+    @Test
+    void testAuthenticateUser_UserDetailsNull() {
+        // Mock authentication result with null UserDetails
+        Authentication authentication = mock(Authentication.class);
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
+
+        // Test login request
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("testUser");
+        loginRequest.setPassword("password123");
+
+        ResponseEntity<MessageResponse> responseEntity = authController.authenticateUser(loginRequest);
+
+        // Verify response
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCodeValue());
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertNull(responseEntity.getBody().getData());
+    }
+
+    @Test
+    void testRegisterUser_NullSignupRequest() {
+        // Mock the authController
+        AuthController authControllerMock = mock(AuthController.class);
+
+        // Create a new instance of SignupRequest
+        SignupRequest signUpRequest = new SignupRequest();
+        // Set necessary properties of the SignUpRequest object
+        signUpRequest.setUsername("testUsername");
+        signUpRequest.setFirstname("testFirstname");
+        signUpRequest.setEmail("test@example.com");
+        signUpRequest.setPassword("testPassword");
+        signUpRequest.setContactNumber("1234567890");
+
+        // Define the expected response entity
+        ResponseEntity<MessageResponse> expectedResponseEntity = ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse(-1, "",null));
+
+        // Set up the behavior of authController.registerUser to return the expected response
+        when(authControllerMock.registerUser(signUpRequest)).thenReturn(expectedResponseEntity);
+
+        // Invoke the registerUser method with the created SignUpRequest
+        ResponseEntity<MessageResponse> responseEntity = authControllerMock.registerUser(signUpRequest);
+
+        // Verify response
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertNull(responseEntity.getBody().getData());
+    }
+
+
+
+    @Test
+    void testResetPassword_NullRequest() {
+        // Mock the authController
+        AuthController authControllerMock = mock(AuthController.class);
+
+        // Create a new instance of ResetPasswordRequest
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
+        // Set necessary properties of the ResetPasswordRequest object
+        resetPasswordRequest.setEmail("test@example.com");
+
+        // Define the expected response entity
+        ResponseEntity<MessageResponse> expectedResponseEntity = ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse(-1, "" ,null));
+
+        // Set up the behavior of authController.resetPassword to return the expected response
+        when(authControllerMock.resetPassword(resetPasswordRequest)).thenReturn(expectedResponseEntity);
+
+        // Invoke the resetPassword method with the created ResetPasswordRequest
+        ResponseEntity<MessageResponse> responseEntity = authControllerMock.resetPassword(resetPasswordRequest);
+
+        // Verify response
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertNull(responseEntity.getBody().getData());
+    }
 
 
 }

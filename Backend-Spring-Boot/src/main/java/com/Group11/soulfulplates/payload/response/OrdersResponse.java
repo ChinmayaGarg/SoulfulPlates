@@ -14,6 +14,10 @@ public class OrdersResponse {
         this.data = data;
     }
 
+    public OrdersResponse() {
+
+    }
+
 
     public Integer getCode() {
         return code;
