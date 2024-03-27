@@ -149,6 +149,8 @@ class LoginScreen extends GetView<LoginController> with BaseCommonWidget {
     return BaseButton(
         text: 'Sign In',
         onSubmit: () async {
+          // Get.offAllNamed(dashboardViewRoute);
+          // return;
           if (controller.formKey.currentState!.validate()) {
             controller.login();
           }
