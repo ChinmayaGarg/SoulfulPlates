@@ -31,7 +31,7 @@ public class PaymentController {
             boolean validate = true;
             validate  = validate && FormatValidations.verifyCardExpiry(request.getCardExpiry());
             validate  = validate && FormatValidations.verifyCvv(request.getCvv());
-            validate  = validate && FormatValidations.verifyCardNumber(request.getCvv());
+            validate  = validate && FormatValidations.verifyCardNumber(request.getCardNumber());
             if (!validate){
                 throw new Exception("Invalid details");
             }

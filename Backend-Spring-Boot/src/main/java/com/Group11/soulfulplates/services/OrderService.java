@@ -12,4 +12,5 @@ public interface OrderService {
     OrderDetailsResponse getOrderDetails(Long userId, Long orderId) throws Exception;
     OrdersResponse getOrdersForUser(Long userId, String status, Integer limit, Integer offset) throws Exception;
     OrdersResponse getOrdersForStore(Long storeId, String status, Integer limit, Integer offset) throws Exception;
+    Long getOrderCountForStoreAndMonth(int storeId, int month);
 }
