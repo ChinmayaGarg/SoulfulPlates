@@ -132,7 +132,7 @@ public class AuthController {
         Store store = storeOptional.get();
         JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
                 userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
-                store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber());
+                store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber(),store.getStoreDescription());
         return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
       } else {
         // Create JwtResponse without store details
