@@ -3,7 +3,7 @@ package com.Group11.soulfulplates.utils;
 public class FormatValidations {
     // Verifies the card number format: 1234-5678-9101
     public static boolean verifyCardNumber(String cardNumber) {
-        return cardNumber.matches("\\d{4}-\\d{4}-\\d{4}");
+        return cardNumber.matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}");
     }
 
     // Verifies the card expiry format: MM/YY
