@@ -1,5 +1,6 @@
 package com.Group11.soulfulplates.services.impl;
 
+import com.Group11.soulfulplates.models.Order;
 import com.Group11.soulfulplates.models.Rating;
 import com.Group11.soulfulplates.payload.request.CreateRatingRequest;
 import com.Group11.soulfulplates.repository.OrderRepository;
@@ -126,4 +127,59 @@ class RatingServiceImplTest {
         verifyNoInteractions(storeRepository);
         verifyNoInteractions(ratingRepository);
     }
+
+    @Test
+    void addRatingAndLinkToOrder_NewRating() throws Exception {
+        // Mocking data
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(1L); // Providing order ID
+        ratingData.setStoreId(1L); // Providing store ID
+        ratingData.setRating((int) 4.5);
+        ratingData.setFeedback("Good service");
+
+        Order order = new Order();
+        order.setOrderId(ratingData.getOrderId());
+
+        // Mock order repository to return a valid order
+        when(orderRepository.findById(ratingData.getOrderId())).thenReturn(Optional.of(order));
+
+        // Mock store repository to return an empty Optional (store not found)
+        when(storeRepository.findById(ratingData.getStoreId())).thenReturn(Optional.empty());
+
+        // Test
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Store not found", exception.getMessage());
+
+        // Verify that repositories were called
+        verify(orderRepository, times(1)).findById(ratingData.getOrderId());
+        verify(storeRepository, times(1)).findById(ratingData.getStoreId());
+        verifyNoInteractions(ratingRepository); // Ensure rating repository was not called
+    }
+
+
+    @Test
+    void addRatingAndLinkToOrder_StoreNotFound() {
+        // Mock request with valid order ID but invalid store ID
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(1L); // Setting a valid order ID
+        ratingData.setStoreId(1L); // Setting an invalid store ID
+
+        // Mock order repository to return a valid order
+        Order order = new Order();
+        order.setOrderId(ratingData.getOrderId());
+        when(orderRepository.findById(ratingData.getOrderId())).thenReturn(Optional.of(order));
+
+        // Mock store repository to return an empty Optional (store not found)
+        when(storeRepository.findById(ratingData.getStoreId())).thenReturn(Optional.empty());
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Store not found", exception.getMessage());
+
+        // Verify mocks
+        verify(orderRepository, times(1)).findById(ratingData.getOrderId());
+        verify(storeRepository, times(1)).findById(ratingData.getStoreId());
+        verifyNoInteractions(ratingRepository);
+    }
+
 }

@@ -1,18 +1,20 @@
 package com.Group11.soulfulplates.services.impl;
 
-import com.Group11.soulfulplates.models.CartItem;
-import com.Group11.soulfulplates.models.Order;
-import com.Group11.soulfulplates.models.Store;
-import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.models.*;
 import com.Group11.soulfulplates.payload.request.CreateOrderRequest;
 import com.Group11.soulfulplates.payload.response.CreateOrderResponse;
+import com.Group11.soulfulplates.payload.response.OrdersResponse;
 import com.Group11.soulfulplates.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -26,6 +28,13 @@ class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private CategoryRepository categoryRepository;
+
+    @Mock
+    private SubcategoryRepository subcategoryRepository;
+
     @Mock
     private MenuItemRepository menuItemRepository;
 
@@ -42,9 +51,22 @@ class OrderServiceImplTest {
     @Mock
     private CartItemRepository cartItemRepository;
 
+    @Mock
+    private SubcategoryRepository subCategoryRepository;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        orderService = new OrderServiceImpl(
+                    userRepository,
+                    storeRepository,
+                    orderRepository,
+                    cartItemRepository,
+                    menuItemRepository,
+                    paymentRepository,
+                    categoryRepository,
+                    subCategoryRepository
+            );
     }
 
     @Test
@@ -147,5 +169,261 @@ class OrderServiceImplTest {
         assertThrows(Exception.class, () -> orderService.getOrderDetails(userId, orderId));
         verify(orderRepository, times(1)).findByOrderIdAndUserId(orderId, userId);
     }
+    @Test
+    void testConvertToOrderData() {
+        // Given
+        Order order = new Order();
+        order.setOrderId(1L);
+        order.setStatus("Pending");
+        order.setCreatedAt(null); // Set created date as needed
+        order.setUser(null); // Set user as needed
+        order.setStore(null); // Set store as needed
+        order.setInstructions("Some instructions");
+        order.setRating(null); // Set rating as needed
+
+        OrdersResponse.OrderData expectedOrderData = new OrdersResponse.OrderData();
+        expectedOrderData.setOrderId(1L);
+        expectedOrderData.setOrderStatus("Pending");
+        expectedOrderData.setCreatedDate(null); // Set created date as needed
+        expectedOrderData.setUserId(null); // Set user ID as needed
+        expectedOrderData.setStoreId(null); // Set store ID as needed
+        expectedOrderData.setInstructions("Some instructions");
+        expectedOrderData.setRating(null); // Set rating as needed
+
+        // When
+        OrdersResponse.OrderData result = orderService.convertToOrderData(order);
+
+        // Then
+        assertEquals(expectedOrderData.getOrderId(), result.getOrderId());
+        assertEquals(expectedOrderData.getOrderStatus(), result.getOrderStatus());
+        assertEquals(expectedOrderData.getCreatedDate(), result.getCreatedDate());
+        assertEquals(expectedOrderData.getUserId(), result.getUserId());
+        assertEquals(expectedOrderData.getStoreId(), result.getStoreId());
+        assertEquals(expectedOrderData.getInstructions(), result.getInstructions());
+        assertEquals(expectedOrderData.getRating(), result.getRating());
+    }
+
+    @Test
+    void testConvertToItemData() {
+        // Given
+        MenuItem menuItem = new MenuItem();
+        menuItem.setItemId(1L);
+        menuItem.setStoreId(1L);
+        menuItem.setItemName("Item");
+        menuItem.setItemImage("image.jpg");
+        menuItem.setItemPrice("10.00");
+        menuItem.setType("Type");
+        menuItem.setCategoryId(1L);
+        menuItem.setSubcategoryId(1L);
+        menuItem.setServingType(1);
+        menuItem.setPortion("Portion");
+        menuItem.setInStock(true);
+        menuItem.setRecommended(true);
+        menuItem.setDescription("Description");
+
+        when(categoryRepository.getReferenceById(1L)).thenReturn(null);
+        when(subcategoryRepository.getReferenceById(1L)).thenReturn(null);
+
+        OrdersResponse.OrderData.ItemData expectedItemData = new OrdersResponse.OrderData.ItemData();
+        expectedItemData.setItemId(1L);
+        expectedItemData.setStoreId(1L);
+        expectedItemData.setItemName("Item");
+        expectedItemData.setItemImage("image.jpg");
+        expectedItemData.setItemPrice("10.00");
+        expectedItemData.setType("Type");
+        expectedItemData.setCategoryId(1L);
+        expectedItemData.setCategory(null);
+        expectedItemData.setSubCategoryId(1L);
+        expectedItemData.setSubCategory(null);
+        expectedItemData.setServingType(1);
+        expectedItemData.setPortion("Portion");
+        expectedItemData.setInStock(true);
+        expectedItemData.setIsRecommended(true);
+        expectedItemData.setDescription("Description");
+
+        // When
+        OrdersResponse.OrderData.ItemData result = orderService.convertToItemData(menuItem);
+
+        // Then
+        assertEquals(expectedItemData.getItemId(), result.getItemId());
+        assertEquals(expectedItemData.getStoreId(), result.getStoreId());
+        assertEquals(expectedItemData.getItemName(), result.getItemName());
+        assertEquals(expectedItemData.getItemImage(), result.getItemImage());
+        assertEquals(expectedItemData.getItemPrice(), result.getItemPrice());
+        assertEquals(expectedItemData.getType(), result.getType());
+        assertEquals(expectedItemData.getCategoryId(), result.getCategoryId());
+        assertEquals(expectedItemData.getCategory(), result.getCategory());
+        assertEquals(expectedItemData.getSubCategoryId(), result.getSubCategoryId());
+        assertEquals(expectedItemData.getSubCategory(), result.getSubCategory());
+        assertEquals(expectedItemData.getServingType(), result.getServingType());
+        assertEquals(expectedItemData.getPortion(), result.getPortion());
+        assertEquals(expectedItemData.getInStock(), result.getInStock());
+        assertEquals(expectedItemData.getIsRecommended(), result.getIsRecommended());
+        assertEquals(expectedItemData.getDescription(), result.getDescription());
+    }
+
+    @Test
+    void testGetOrdersForStore_Success() throws Exception {
+        // Given
+        Long storeId = 1L;
+        String status = "Pending";
+        Integer limit = 10;
+        Integer offset = 0;
+
+        // Mock PageRequest and Page
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Order> ordersPage = mock(Page.class);
+
+        when(orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest)).thenReturn(ordersPage);
+        when(ordersPage.getContent()).thenReturn(Collections.emptyList());
+
+        // When
+        OrdersResponse response = orderService.getOrdersForStore(storeId, status, limit, offset);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Success", response.getDescription());
+        assertNotNull(response.getData());
+        assertEquals(0, response.getData().size());
+
+        verify(orderRepository, times(1)).findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+    }
+
+    @Test
+    void testGetOrdersForUser_Success() throws Exception {
+        // Given
+        Long userId = 1L;
+        String status = "Pending";
+        Integer limit = 10;
+        Integer offset = 0;
+
+        // Mock PageRequest and Page
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Order> ordersPage = mock(Page.class);
+
+        when(orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest)).thenReturn(ordersPage);
+        when(ordersPage.getContent()).thenReturn(Collections.emptyList());
+
+        // When
+        OrdersResponse response = orderService.getOrdersForUser(userId, status, limit, offset);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Success", response.getDescription());
+        assertNotNull(response.getData());
+        assertEquals(0, response.getData().size());
+
+        verify(orderRepository, times(1)).findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+    }
+
+    @Test
+    void testGetOrdersForUser_OrdersFound_Success() throws Exception {
+        // Given
+        Long userId = 1L;
+        String status = "Pending";
+        Integer limit = 10;
+        Integer offset = 0;
+
+        // Mock PageRequest and Page
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Order> ordersPage = mock(Page.class);
+
+        Order order1 = new Order();
+        order1.setOrderId(1L);
+        Order order2 = new Order();
+        order2.setOrderId(2L);
+
+        when(orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest)).thenReturn(ordersPage);
+        when(ordersPage.getContent()).thenReturn(Arrays.asList(order1, order2));
+
+        // When
+        OrdersResponse response = orderService.getOrdersForUser(userId, status, limit, offset);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Success", response.getDescription());
+        assertNotNull(response.getData());
+        assertEquals(2, response.getData().size());
+
+        verify(orderRepository, times(1)).findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+    }
+
+    @Test
+    void testGetOrdersForStore_OrdersFound_Success() throws Exception {
+        // Given
+        Long storeId = 1L;
+        String status = "Pending";
+        Integer limit = 10;
+        Integer offset = 0;
+
+        // Mock PageRequest and Page
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Order> ordersPage = mock(Page.class);
+
+        Order order1 = new Order();
+        order1.setOrderId(1L);
+        Order order2 = new Order();
+        order2.setOrderId(2L);
+
+        when(orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest)).thenReturn(ordersPage);
+        when(ordersPage.getContent()).thenReturn(Arrays.asList(order1, order2));
+
+        // When
+        OrdersResponse response = orderService.getOrdersForStore(storeId, status, limit, offset);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Success", response.getDescription());
+        assertNotNull(response.getData());
+        assertEquals(2, response.getData().size());
+
+        verify(orderRepository, times(1)).findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+    }
+
+    @Test
+    void testCreateOrder_MissingUser_ReturnsNull() {
+        // Given
+        Long userId = 1L;
+        Long storeId = 2L;
+        String instructions = "Some instructions";
+
+        CreateOrderRequest request = new CreateOrderRequest();
+        request.setUserId(userId);
+        request.setStoreId(storeId);
+        request.setInstructions(instructions);
+        // Ensure that selectedItems is null
+        request.setSelectedItems(null);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+
+        // When
+        CreateOrderResponse response = orderService.createOrder(request);
+
+        // Then
+        assertNull(response); // Check that response is null
+        verify(userRepository, times(1)).findById(userId); // Verify that findById was called once with the provided userId
+        verify(orderRepository, never()).save(any(Order.class)); // Verify that orderRepository.save was never called
+        verify(cartItemRepository, never()).save(any(CartItem.class)); // Verify that cartItemRepository.save was never called
+    }
+
+
+    @Test
+    void testGetOrderDetails_NonExistentOrder_ThrowsException() {
+        // Given
+        Long userId = 1L;
+        Long orderId = 1L;
+
+        when(orderRepository.findByOrderIdAndUserId(orderId, userId)).thenReturn(Optional.empty());
+
+        // When, Then
+        assertThrows(Exception.class, () -> orderService.getOrderDetails(userId, orderId));
+        verify(orderRepository, times(1)).findByOrderIdAndUserId(orderId, userId);
+    }
+
 
 }
