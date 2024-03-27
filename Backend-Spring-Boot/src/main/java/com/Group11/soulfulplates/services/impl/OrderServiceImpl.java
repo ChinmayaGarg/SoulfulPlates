@@ -31,30 +31,32 @@ public class OrderServiceImpl implements OrderService {
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subCategoryRepository;
 
-        @Autowired
+    @Autowired
     public OrderServiceImpl(UserRepository userRepository, StoreRepository storeRepository, OrderRepository orderRepository, CartItemRepository cartItemRepository, MenuItemRepository menuItemRepository, PaymentRepository paymentRepository, CategoryRepository categoryRepository, SubcategoryRepository subCategoryRepository) {
-            this.userRepository = userRepository;
-            this.storeRepository = storeRepository;
-            this.orderRepository = orderRepository;
-            this.cartItemRepository = cartItemRepository;
-            this.menuItemRepository = menuItemRepository;
-            this.paymentRepository = paymentRepository;
-            this.categoryRepository = categoryRepository;
-            this.subCategoryRepository = subCategoryRepository;
+        this.userRepository = userRepository;
+        this.storeRepository = storeRepository;
+        this.orderRepository = orderRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.paymentRepository = paymentRepository;
+        this.categoryRepository = categoryRepository;
+        this.subCategoryRepository = subCategoryRepository;
     }
-
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderRequest request) {
         // Find user by orderId
         Optional<User> user = userRepository.findById(request.getUserId());
         // Find store by storeId
-        Store store = storeRepository.getReferenceById(request.getUserId());
+        Store store = storeRepository.getReferenceById(request.getStoreId());
+
+        // If user is missing, return null
+        if (!user.isPresent()) {
+            return null;
+        }
 
         Order order = new Order();
-        if(user.isPresent()){
-            order.setUser(user.get());
-        }
+        order.setUser(user.get());
         order.setStore(store);
         order.setInstructions(request.getInstructions());
         order.setStatus("Pending");
@@ -64,26 +66,35 @@ public class OrderServiceImpl implements OrderService {
 
         order = orderRepository.save(order);
 
-        // Logic to create and save CartItem entities
-        for (CreateOrderRequest.SelectedItem item : request.getSelectedItems()) {
-            CartItem cartItem = new CartItem();
-            cartItem.setOrder(order);
-            cartItem.setItemId(item.getMenuItemId());
-            cartItem.setName(item.getItemName());
-            cartItem.setQuantity(item.getQuantity());
-            cartItem.setPrice(item.getPrice());
-            // Save each CartItem
-            cartItemRepository.save(cartItem);
+        // Check if selectedItems is not null before iterating
+        if (request.getSelectedItems() != null) {
+            // Logic to create and save CartItem entities
+            for (CreateOrderRequest.SelectedItem item : request.getSelectedItems()) {
+                CartItem cartItem = new CartItem();
+                cartItem.setOrder(order);
+                cartItem.setItemId(item.getMenuItemId());
+                cartItem.setName(item.getItemName());
+                cartItem.setQuantity(item.getQuantity());
+                cartItem.setPrice(item.getPrice());
+                // Save each CartItem
+                cartItemRepository.save(cartItem);
+            }
         }
 
-        CreateOrderResponse.Data temp = new CreateOrderResponse.Data(order.getOrderId());
-
-        return new CreateOrderResponse(1, temp, "Order Created.");
+        // Check if order is not null before accessing its properties
+        if (order != null) {
+            CreateOrderResponse.Data temp = new CreateOrderResponse.Data(order.getOrderId());
+            return new CreateOrderResponse(1, temp, "Order Created.");
+        } else {
+            // Handle the case where order is null
+            return new CreateOrderResponse(-1, null, "Failed to create order.");
+        }
     }
+
 
     @Override
     public Order updateOrderStatus(Long orderId, String status) {
-        if(!orderRepository.existsById(orderId)){
+        if (!orderRepository.existsById(orderId)) {
             return null;
         }
         RuntimeException orderNotFound = new RuntimeException("Order not found with id: " + orderId);
@@ -93,12 +104,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDetailsResponse getOrderDetails(Long userId, Long orderId) throws Exception{
+    public OrderDetailsResponse getOrderDetails(Long userId, Long orderId) throws Exception {
         // Find the order by id and check if it belongs to the user
         RuntimeException orderNotFound = new RuntimeException("Order not found or does not belong to the user");
         Order order = orderRepository.findByOrderIdAndUserId(orderId, userId).orElseThrow(() -> orderNotFound);
-
-
 
         // Convert the order entity to OrderDetailsData
         OrderDetailsResponse.OrderDetails data = mapOrderToOrderDetailsData(order);
@@ -158,7 +167,6 @@ public class OrderServiceImpl implements OrderService {
         return orderDetails;
     }
 
-
     private OrderDetailsResponse.OrderDetails.MenuItemDTO mapMenuItemToDTO(MenuItem menuItem) {
         OrderDetailsResponse.OrderDetails.MenuItemDTO menuItemDTO = new OrderDetailsResponse.OrderDetails.MenuItemDTO();
         menuItemDTO.setItemId(menuItem.getItemId());
@@ -169,13 +177,13 @@ public class OrderServiceImpl implements OrderService {
         menuItemDTO.setType(menuItem.getType());
         menuItemDTO.setCategoryId(menuItem.getCategoryId());
         Category category = categoryRepository.getReferenceById(menuItem.getCategoryId());
-        if(category != null){
+        if (category != null) {
             menuItemDTO.setCategory(category.getCategoryName());
         }
 
         menuItemDTO.setSubCategoryId(menuItem.getSubcategoryId());
         Subcategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubcategoryId());
-        if(subCategory != null){
+        if (subCategory != null) {
             menuItemDTO.setSubCategory(subCategory.getSubCategoryName());
         }
 
@@ -209,18 +217,31 @@ public class OrderServiceImpl implements OrderService {
         orderData.setOrderId(order.getOrderId());
         orderData.setOrderStatus(order.getStatus());
         orderData.setCreatedDate(order.getCreatedAt());
-        orderData.setUserId(order.getUser().getId());
-        orderData.setStoreId(order.getStore().getStoreId());
+
+        if (order.getUser() != null) {
+            orderData.setUserId(order.getUser().getId());
+        } else {
+            orderData.setUserId(null);
+        }
+
+        // Check if the store is null
+        if (order.getStore() != null) {
+            orderData.setStoreId(order.getStore().getStoreId());
+        } else {
+            // Handle the case when the store is null
+            orderData.setStoreId(null);
+        }
+
         orderData.setInstructions(order.getInstructions());
 
-        if(order.getRating()!= null) {
+        if (order.getRating() != null) {
             orderData.setRating(order.getRating().getRating());
             orderData.setFeedback(order.getRating().getFeedback());
         }
 
-        if(order.getOrderId() != null){
+        if (order.getOrderId() != null) {
             Optional<Payment> payment = paymentRepository.findFirstByOrderOrderIdOrderByPaymentIdDesc(order.getOrderId());
-            if(!payment.isEmpty()){
+            if (!payment.isEmpty()) {
                 orderData.setPaymentStatus(payment.get().getStatus());
             }
         }
@@ -229,14 +250,14 @@ public class OrderServiceImpl implements OrderService {
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
         List<Long> itemIds = null;
         Double totalAmount = null;
-        if(cartItems.size() > 0){
+        if (cartItems.size() > 0) {
             itemIds = CartItemUtils.extractItemIds(cartItems);
             totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
         }
 
         orderData.setTotalAmount(totalAmount);
 
-        if(itemIds != null){
+        if (itemIds != null) {
             List<MenuItem> menuItems = menuItemRepository.findAllById(itemIds);
             orderData.setItems(menuItems.stream()
                     .map(this::convertToItemData)
@@ -246,7 +267,7 @@ public class OrderServiceImpl implements OrderService {
         return orderData;
     }
 
-    private OrdersResponse.OrderData.ItemData convertToItemData(MenuItem menuItem) {
+    OrdersResponse.OrderData.ItemData convertToItemData(MenuItem menuItem) {
         OrdersResponse.OrderData.ItemData itemData = new OrdersResponse.OrderData.ItemData();
         itemData.setItemId(menuItem.getItemId());
         itemData.setStoreId(menuItem.getStoreId());
@@ -257,7 +278,7 @@ public class OrderServiceImpl implements OrderService {
 
         itemData.setCategoryId(menuItem.getCategoryId());
         Category category = categoryRepository.getReferenceById(menuItem.getCategoryId());
-        if(category != null){
+        if (category != null) {
             itemData.setCategory(category.getCategoryName());
         } else {
             itemData.setCategory(null);
@@ -265,7 +286,7 @@ public class OrderServiceImpl implements OrderService {
 
         itemData.setSubCategoryId(menuItem.getSubcategoryId());
         Subcategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubcategoryId());
-        if(subCategory != null){
+        if (subCategory != null) {
             itemData.setSubCategory(subCategory.getSubCategoryName());
         } else {
             itemData.setSubCategory(null);
@@ -295,5 +316,4 @@ public class OrderServiceImpl implements OrderService {
         // Return the response
         return new OrdersResponse(1, "Success", orderDataList);
     }
-
 }

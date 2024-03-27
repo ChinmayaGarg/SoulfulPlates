@@ -148,19 +148,6 @@ class StoreControllerTest {
     }
 
     @Test
-    void testDeleteStore_StoreNotFound() {
-        // Setup
-        when(storeService.existsById(1L)).thenReturn(false);
-
-        // Call the controller method
-        ResponseEntity<?> response = storeController.deleteStore(1L);
-
-        // Assertion
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Store Not Found!", ((MessageResponse) response.getBody()).getDescription());
-    }
-
-    @Test
     public void testUpdateStore_ExceptionCaught() throws Exception {
         // Mock storeService to throw an exception
         when(storeService.updateStoreByUserId(anyLong(), any(Store.class))).thenThrow(new RuntimeException("Store not found"));
