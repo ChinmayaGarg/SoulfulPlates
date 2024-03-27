@@ -7,6 +7,7 @@ import com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest;
 import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.services.PaymentService;
+import com.Group11.soulfulplates.utils.FormatValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,13 @@ public class PaymentController {
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> createPaymentAndTransaction(@RequestBody(required = false) CreatePaymentRequest request) {
         try {
+            boolean validate = true;
+            validate  = validate && FormatValidations.verifyCardExpiry(request.getCardExpiry());
+            validate  = validate && FormatValidations.verifyCvv(request.getCvv());
+            validate  = validate && FormatValidations.verifyCardNumber(request.getCvv());
+            if (!validate){
+                throw new Exception("Invalid details");
+            }
             Map<String, Object> response = paymentService.createPaymentAndTransaction(request);
             return ResponseEntity.ok().body(Map.of("code", 1, "data", response, "description", "Transaction created."));
         } catch (Exception e) {
