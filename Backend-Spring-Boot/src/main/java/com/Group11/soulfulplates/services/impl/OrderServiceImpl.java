@@ -304,9 +304,14 @@ public class OrderServiceImpl implements OrderService {
     public OrdersResponse getOrdersForStore(Long storeId, String status, Integer limit, Integer offset) throws Exception {
         // Create a PageRequest object for pagination and sorting
         PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        // Fetch the orders using the repository
-        Page<Order> ordersPage = orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+        Page<Order> ordersPage;
+        if(status.isEmpty()){
+            ordersPage = orderRepository.findByStoreStoreIdOrderByCreatedAtDesc(storeId, status, pageRequest);
+        }
+        else{
+            // Fetch the orders using the repository
+            ordersPage = orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+        }
 
         // Convert the Page<Order> to List<OrderData>
         List<OrdersResponse.OrderData> orderDataList = ordersPage.getContent().stream()
