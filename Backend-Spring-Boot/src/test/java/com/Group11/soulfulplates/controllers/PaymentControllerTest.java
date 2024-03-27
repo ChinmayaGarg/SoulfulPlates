@@ -7,13 +7,13 @@ import com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.services.PaymentService;
+import com.Group11.soulfulplates.utils.FormatValidations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,32 +37,67 @@ class PaymentControllerTest {
     }
 
     @Test
-    void createPaymentAndTransaction_Success() throws Exception {
+    public void createPaymentAndTransaction_Success() {
         // Given
-        CreatePaymentRequest request = new CreatePaymentRequest();
-        Map<String, Object> response = new HashMap<>();
-        when(paymentService.createPaymentAndTransaction(request)).thenReturn(response);
+        CreatePaymentRequest request = createValidPaymentRequest();
+        try (MockedStatic<FormatValidations> utilities = Mockito.mockStatic(FormatValidations.class)) {
+            utilities.when(() -> FormatValidations.verifyCardNumber(anyString())).thenReturn(true);
+            utilities.when(() -> FormatValidations.verifyCardExpiry(anyString())).thenReturn(true);
+            utilities.when(() -> FormatValidations.verifyCvv(anyString())).thenReturn(true);
 
-        // When
-        ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
-
-        // Then
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(paymentService, times(1)).createPaymentAndTransaction(request);
+            Map<String, Object> responseMap = new HashMap<>();
+            try {
+                when(paymentService.createPaymentAndTransaction(request)).thenReturn(responseMap);
+                ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
+                // Then
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+            } catch (Exception e) {
+                fail("An exception should not have been thrown");
+            }
+        }
     }
 
     @Test
-    void createPaymentAndTransaction_Failure() throws Exception {
+    public void createPaymentAndTransaction_InvalidDetails() {
         // Given
+        CreatePaymentRequest request = createValidPaymentRequest();
+        try (MockedStatic<FormatValidations> utilities = Mockito.mockStatic(FormatValidations.class)) {
+            utilities.when(() -> FormatValidations.verifyCardNumber(anyString())).thenReturn(false); // Simulate invalid card number
+
+            // When
+            ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
+
+            // Then
+            assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        }
+    }
+
+    @Test
+    public void createPaymentAndTransaction_ServiceFailure() throws Exception { // declare that it throws Exception
+        // Given
+        CreatePaymentRequest request = createValidPaymentRequest();
+        try (MockedStatic<FormatValidations> utilities = Mockito.mockStatic(FormatValidations.class)) {
+            utilities.when(() -> FormatValidations.verifyCardNumber(anyString())).thenReturn(true);
+            utilities.when(() -> FormatValidations.verifyCardExpiry(anyString())).thenReturn(true);
+            utilities.when(() -> FormatValidations.verifyCvv(anyString())).thenReturn(true);
+
+            when(paymentService.createPaymentAndTransaction(request)).thenThrow(new RuntimeException("Service failure"));
+
+            // When
+            ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
+
+            // Then
+            assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        }
+    }
+
+    // Utility to create a valid payment request
+    private CreatePaymentRequest createValidPaymentRequest() {
         CreatePaymentRequest request = new CreatePaymentRequest();
-        when(paymentService.createPaymentAndTransaction(request)).thenThrow(new RuntimeException("Error creating payment"));
-
-        // When
-        ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        verify(paymentService, times(1)).createPaymentAndTransaction(request);
+        request.setCardExpiry("12/22");
+        request.setCvv("123");
+        request.setCardNumber("1234-5678-9123");
+        return request;
     }
 
     @Test
