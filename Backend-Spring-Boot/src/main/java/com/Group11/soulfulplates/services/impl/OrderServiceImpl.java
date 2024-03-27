@@ -200,8 +200,14 @@ public class OrderServiceImpl implements OrderService {
         // Create a PageRequest object for pagination and sorting
         PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        // Fetch the orders using the repository
-        Page<Order> ordersPage = orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+        Page<Order> ordersPage;
+        if(status.isEmpty()){
+            ordersPage = orderRepository.findByUserIdOrderByCreatedAtDesc(userId, status, pageRequest);
+        }
+        else{
+            // Fetch the orders using the repository
+            ordersPage = orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+        }
 
         // Convert the Page<Order> to List<OrderData>
         List<OrdersResponse.OrderData> orderDataList = ordersPage.getContent().stream()
