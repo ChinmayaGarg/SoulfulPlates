@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_address_picker/map_address_picker.dart';
-import 'package:map_address_picker/models/location_result.dart';
+// import 'package:map_address_picker/map_address_picker.dart';
+// import 'package:map_address_picker/models/location_result.dart';
 import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/ui/widgets/app_text_field.dart';
 import 'package:soulful_plates/ui/widgets/base_button.dart';
@@ -59,22 +59,22 @@ class EditLocationScreen extends GetView<EditLocationController>
                   child: ElevatedButton(
                     onPressed: () async {
                       // Open the map location picker
-                      LocationResult? result = await showLocationPicker(
-                        context,
-                        title: '', // Pass an empty string for the API key
-                        //apikey:'',
-                        initialCenter: LatLng(0.0, 0.0), // Initial map center
-                        automaticallyAnimateToCurrentLocation:
-                            true, // Auto center to user location
-                      );
-
-                      if (result != null) {
-                        // Update latitude and longitude text fields
-                        controller.latitudeController.text =
-                            result.latLng?.latitude.toString() ?? '';
-                        controller.longitudeController.text =
-                            result.latLng?.longitude.toString() ?? '';
-                      }
+                      // LocationResult? result = await showLocationPicker(
+                      //   context,
+                      //   title: '', // Pass an empty string for the API key
+                      //   //apikey:'',
+                      //   initialCenter: LatLng(0.0, 0.0), // Initial map center
+                      //   automaticallyAnimateToCurrentLocation:
+                      //       true, // Auto center to user location
+                      // );
+                      //
+                      // if (result != null) {
+                      //   // Update latitude and longitude text fields
+                      //   controller.latitudeController.text =
+                      //       result.latLng?.latitude.toString() ?? '';
+                      //   controller.longitudeController.text =
+                      //       result.latLng?.longitude.toString() ?? '';
+                      // }
                     },
                     child: Text('Select Location'),
                   ),
