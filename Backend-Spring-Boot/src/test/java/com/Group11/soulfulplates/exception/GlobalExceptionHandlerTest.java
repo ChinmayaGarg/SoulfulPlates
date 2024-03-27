@@ -30,8 +30,8 @@ class GlobalExceptionHandlerTest {
         when(exception.getMessage()).thenReturn("Invalid input format.");
 
         ResponseEntity<?> responseEntity = exceptionHandler.handleTypeMismatchException(exception);
-
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        int errorCode = 400;
+        assertEquals(errorCode, responseEntity.getStatusCodeValue());
         Map<String, Object> responseBody = (Map<String, Object>) responseEntity.getBody();
         assertEquals(-1, responseBody.get("code"));
         assertEquals("Invalid input format. Expected a numeric value.", responseBody.get("description"));
@@ -61,8 +61,8 @@ class GlobalExceptionHandlerTest {
         when(exception.getMethod()).thenReturn("GET");
 
         ResponseEntity<?> responseEntity = exceptionHandler.handleHttpRequestMethodNotSupportedException(exception);
-
-        assertEquals(405, responseEntity.getStatusCodeValue());
+        int errorCode = 405;
+        assertEquals(errorCode, responseEntity.getStatusCodeValue());
         Map<String, Object> responseBody = (Map<String, Object>) responseEntity.getBody();
         assertEquals(-1, responseBody.get("code"));
         assertEquals("HTTP method not supported for this request: GET", responseBody.get("description"));
@@ -74,11 +74,12 @@ class GlobalExceptionHandlerTest {
         DataIntegrityViolationException exception = new DataIntegrityViolationException("Data integrity violation");
 
         ResponseEntity<?> responseEntity = exceptionHandler.handleDataIntegrityViolationException(exception);
-
-        assertEquals(400, responseEntity.getStatusCodeValue());
+        int errorCode = 400;
+        assertEquals(errorCode, responseEntity.getStatusCodeValue());
         Map<String, Object> responseBody = (Map<String, Object>) responseEntity.getBody();
         assertEquals(-1, responseBody.get("code"));
-        assertEquals("Data integrity violation - possibly duplicate entries or foreign key constraint failure.", responseBody.get("description"));
+        String expectedDescription = "Data integrity violation - possibly duplicate entries or foreign key constraint failure.";
+        assertEquals(expectedDescription, responseBody.get("description"));
         assertEquals(null, responseBody.get("data"));
     }
 }
