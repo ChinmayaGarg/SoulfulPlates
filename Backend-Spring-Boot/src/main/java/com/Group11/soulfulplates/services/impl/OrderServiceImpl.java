@@ -226,16 +226,20 @@ public class OrderServiceImpl implements OrderService {
 
         if (order.getUser() != null) {
             orderData.setUserId(order.getUser().getId());
+            orderData.setUsername(order.getUser().getUsername());
         } else {
             orderData.setUserId(null);
+            orderData.setUsername("");
         }
 
         // Check if the store is null
         if (order.getStore() != null) {
             orderData.setStoreId(order.getStore().getStoreId());
+            orderData.setStoreName(order.getStore().getStoreName());
         } else {
             // Handle the case when the store is null
             orderData.setStoreId(null);
+            orderData.setStoreName("");
         }
 
         orderData.setInstructions(order.getInstructions());

@@ -48,7 +48,9 @@ public class OrdersResponse {
         private String orderStatus;
         private Date createdDate;
         private Long userId;
+        private String username;
         private Long storeId;
+        private String storeName;
         private Integer rating;
         private String feedback;
         private String paymentStatus;
@@ -90,12 +92,28 @@ public class OrdersResponse {
             this.userId = userId;
         }
 
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String userName) {
+            this.username = username;
+        }
+
         public Long getStoreId() {
             return storeId;
         }
 
         public void setStoreId(Long storeId) {
             this.storeId = storeId;
+        }
+
+        public String getStoreName() {
+            return storeName;
+        }
+
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
         }
 
         public Integer getRating() {
