@@ -10,7 +10,9 @@ import java.util.List;
 @Data
 public class PaymentFilterResponse {
     private Long userId;
+    private String username;
     private Long storeId;
+    private String storeName;
     private BigDecimal amount;
     private Long orderId;
     private String cardNumber;
@@ -24,11 +26,13 @@ public class PaymentFilterResponse {
     private Date updatedDate;
 
     public PaymentFilterResponse(){}
-    public PaymentFilterResponse(Long userId, Long storeId, BigDecimal amount, Long orderId, String cardNumber,
+    public PaymentFilterResponse(Long userId, String username, Long storeId, String storeName, BigDecimal amount, Long orderId, String cardNumber,
                                  String cardExpiry, String cvv, String paymentStatus, Long paymentId,
                                  Long transactionId, String status, Date createdDate, Date updatedDate) {
         this.userId = userId;
+        this.username = username;
         this.storeId = storeId;
+        this.storeName = storeName;
         this.amount = amount;
         this.orderId = orderId;
         this.cardNumber = cardNumber;

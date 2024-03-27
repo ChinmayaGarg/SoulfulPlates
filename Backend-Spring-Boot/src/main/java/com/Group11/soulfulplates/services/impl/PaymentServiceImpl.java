@@ -134,7 +134,9 @@ public class PaymentServiceImpl implements PaymentService {
             Transaction transaction = payment.getTransaction();
             return new PaymentFilterResponse(
                     transaction.getUser().getId(),
+                    transaction.getUser().getUsername(),
                     payment.getStore().getStoreId(),
+                    payment.getStore().getStoreName(),
                     payment.getAmount(),
                     payment.getOrder().getOrderId(),
                     maskCardNumber(payment.getTransaction().getCardNumber()),
@@ -196,7 +198,9 @@ public class PaymentServiceImpl implements PaymentService {
             Transaction transaction = payment.getTransaction();
             return new PaymentFilterResponse(
                     transaction.getUser().getId(),
+                    transaction.getUser().getUsername(),
                     payment.getStore().getStoreId(),
+                    payment.getStore().getStoreName(),
                     payment.getAmount(),
                     payment.getOrder().getOrderId(),
                     "12**-****-**61",
