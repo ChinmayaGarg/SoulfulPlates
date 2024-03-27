@@ -73,5 +73,7 @@ class StoreDetailsController extends BaseController {
         AppSingleton.loggedInUserProfile?.sellerContactNumber ?? '';
     firstNameEditingController.text =
         AppSingleton.loggedInUserProfile?.sellerName ?? '';
+    descriptionEditingController.text =
+        AppSingleton.loggedInUserProfile?.storeDescription ?? '';
   }
 }
