@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/constants/app_text_styles.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_icons.dart';
+import '../../../constants/app_sized_box.dart';
+import '../../../constants/enums/view_state.dart';
 import '../../../constants/size_config.dart';
 import '../../../utils/extensions.dart';
 import '../../widgets/base_common_widget.dart';
+import '../../widgets/payment_item_widget.dart';
 import 'transaction_seller_controller.dart';
 
 class TransactionSellerScreen extends GetView<TransactionSellerController>
@@ -29,12 +32,39 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
           ),
         ));
   }
-/*
 
   Widget getBody(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const CardOne(),
         12.rVerticalSizedBox(),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: AppColor.black5TextColor),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search with Order No',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black, // specify border color here
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black, // specify focused border color here
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ).paddingAll4(),
+        8.rVerticalSizedBox(),
         Expanded(
           child: Stack(children: [
             controller.dataList.isNotEmpty
@@ -53,23 +83,21 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
                           }
                           return false;
                         },
-                        child: ListView.separated(
+                        child: ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: controller.dataList.length + 1,
-                          separatorBuilder: (context, index) {
-                            return 2.rVerticalGreySizedBox();
-                          },
                           itemBuilder: (context, index) {
                             if (index < controller.dataList.length) {
                               return InkWell(
                                 onTap: () async {
                                   //todo tap on the item
                                 },
-                                child: //todo change widget with item widget
-                                    Text("Item number $index")
-                                        .paddingAllDefault(),
+                                child: PaymentItemWidget(
+                                        paymentModel:
+                                            controller.dataList[index])
+                                    .paddingVertical8(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {
@@ -107,70 +135,10 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
             controller.state == ViewStateEnum.busy
                 ? const Center(child: CircularProgressIndicator())
                 : AppSizedBox.sizedBox0
-          ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
-        ),
-        CardOne(),
+          ]).paddingAllDefault(),
+        )
       ],
-      //10.rVerticalSizedBox(),
-    );
-  }
-}
-*/
-
-  Widget getBody(BuildContext context) {
-    return ListView(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CardOne(),
-            10.rVerticalSizedBox(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-              child: Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.lightGreen.shade100.withOpacity(0.9),
-                        //spreadRadius: 2,
-                        //offset: Offset(0, 2), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search Order No',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color: Colors.white, // specify border color here
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color:
-                              Colors.black, // specify focused border color here
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            20.rVerticalSizedBox(),
-            CardTwo(),
-            20.rVerticalSizedBox(),
-            CardTwo(),
-            20.rVerticalSizedBox(),
-            CardTwo(),
-          ],
-        ).paddingAll16(),
-      ],
-    );
+    ).paddingAll16();
   }
 }
 
@@ -184,312 +152,87 @@ class CardOne extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: 500),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: Card(
-          elevation: 1,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColor.emeraldGreen,
-                  Colors.green.shade900.withOpacity(0.8)
-                ], // Change colors as needed
-              ),
-            ),
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(8),
-            //   color: AppColor.emeraldGreen, // Change to your desired color
-            // ),
-            width: double.infinity,
-            constraints: BoxConstraints(maxWidth: 500),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Flex(
-                direction: Axis.vertical,
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '12',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Paid',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '05',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Unpaid',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '02',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Overdue',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '03',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Draft',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                  colors: [AppColor.greenStart, AppColor.greenEnd],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(1.0, 1.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+              borderRadius: BorderRadius.circular(12.rSize())),
 
-class CardTwo extends StatelessWidget {
-  const CardTwo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(10),
-      elevation: 4, // Added elevation
-      child: Container(
-        width: double.infinity,
-        constraints: BoxConstraints(maxWidth: 400),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black, width: 1), // Add border
-        ),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          elevation: 0, // Removed elevation from the Card
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(8),
+          //   color: AppColor.emeraldGreen, // Change to your desired color
+          // ),
+          child: Flex(
+            direction: Axis.vertical,
+            children: [
+              Column(
                 children: [
-                  // First Column for Profile pic and Store Name
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(width: 8), // Add horizontal spacing
-                          // Profile pic
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.lightGreen
-                                .shade200, // Change background color as needed
-                            child: Image.asset(
-                                AppIcons.appIcon), // Add your image asset here
+                          Text(
+                            '12',
+                            style: AppTextStyles.textStyleWhite22With700,
                           ),
-                          SizedBox(width: 8), // Add horizontal spacing
-                          // Text for store name
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.purple.shade500,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              'Anjali Rachel',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 8), // Add horizontal spacing between columns
-                  // Second Column for Paid Status
-                  Expanded(
-                    // Use Expanded to occupy remaining space
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.end, // Align children at the end
-                      children: [
-                        // Text for paid status
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors
-                                .teal.shade700, // Change button color as needed
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
+                          Text(
                             'Paid',
-                            style: TextStyle(color: Colors.white),
+                            style: AppTextStyles.textStyleWhite14With400,
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '05',
+                            style: AppTextStyles.textStyleWhite22With700,
+                          ),
+                          Text(
+                            'Unpaid',
+                            style: AppTextStyles.textStyleWhite14With400,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '02',
+                            style: AppTextStyles.textStyleWhite22With700,
+                          ),
+                          Text(
+                            'Overdue',
+                            style: AppTextStyles.textStyleWhite14With400,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '03',
+                            style: AppTextStyles.textStyleWhite22With700,
+                          ),
+                          Text(
+                            'Draft',
+                            style: AppTextStyles.textStyleWhite14With400,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
-
-              SizedBox(height: 20), // Add vertical spacing
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.greenAccent.shade100,
-                ),
-                padding: EdgeInsets.all(6),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Amount Column
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Order No',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '#0023',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    // Divider
-                    Container(
-                      width: 1,
-                      height: 40,
-                      color: Colors.black,
-                    ),
-                    // No Column
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Date',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Dec 4, 2022',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    // Divider
-                    Container(
-                      width: 1,
-                      height: 40,
-                      color: Colors.black,
-                    ),
-                    // Date Column
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Amount',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '\$50',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 5), // Add vertical spacing
             ],
-          ).paddingAll(10),
-        ),
+          ).paddingAll16(),
+        ).paddingHorizontal4(),
       ),
     );
   }
