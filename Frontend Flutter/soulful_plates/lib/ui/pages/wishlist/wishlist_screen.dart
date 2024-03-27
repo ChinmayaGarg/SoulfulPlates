@@ -157,7 +157,7 @@ class WishlistScreen extends GetView<WishlistController> with BaseCommonWidget {
               //   "feedback": "Excellent service"
               // });
 
-              controller.getAverageRating();
+              // controller.getAverageRating();
               //
               // controller.updateTransactionStatus(
               //     data: {"transactionId": 1, "status": "completed"});

@@ -61,6 +61,7 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                     onTap: () {
                       controller.isNotificationEnabled =
                           !controller.isNotificationEnabled;
+                      controller.updateNotificationStatus();
                       controller.update();
                     },
                     child: Row(

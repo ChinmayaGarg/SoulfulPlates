@@ -52,8 +52,9 @@ public class JwtResponseTest {
         String sellerName = "SellerName";
         String sellerEmail = "seller@example.com";
         String sellerContactNumber = "9876543210";
+        String sellerDescription = "SelerDetails";
 
-        JwtResponse jwtResponse = new JwtResponse(accessToken, id, username, email, roles, contactNumber, firstname, notificationFlag, sellerId, sellerName, sellerEmail, sellerContactNumber);
+        JwtResponse jwtResponse = new JwtResponse(accessToken, id, username, email, roles, contactNumber, firstname, notificationFlag, sellerId, sellerName, sellerEmail, sellerContactNumber,sellerDescription);
 
         assertEquals(accessToken, jwtResponse.getToken());
         assertEquals(id, jwtResponse.getId());
@@ -68,5 +69,6 @@ public class JwtResponseTest {
         assertEquals(sellerName, jwtResponse.getSellerName());
         assertEquals(sellerEmail, jwtResponse.getSellerEmail());
         assertEquals(sellerContactNumber, jwtResponse.getSellerContactNumber());
+        assertEquals(sellerDescription, jwtResponse.getStoreDescription());
     }
 }

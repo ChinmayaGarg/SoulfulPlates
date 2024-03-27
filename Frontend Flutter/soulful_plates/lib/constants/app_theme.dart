@@ -110,4 +110,82 @@ class AppTheme {
         AppColor.primaryColorLight.withOpacity(0.08)
       ], begin: Alignment.topLeft, end: Alignment.bottomRight),
       borderRadius: BorderRadius.circular(10.rSize()));
+
+  static BoxDecoration boxDecorationCard = BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: const [
+        BoxShadow(
+          color: AppColor.black4TextColor,
+          spreadRadius: 1,
+          blurRadius: 4,
+          offset: Offset(0, 1), // changes position of shadow
+        ),
+      ],
+      color: AppColor.whiteColor);
+
+  static BoxDecoration boxItemDecorationCard = BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: const [
+        BoxShadow(
+          color: AppColor.black4TextColor,
+          spreadRadius: 1,
+          blurRadius: 3,
+          offset: Offset(0, 3), // changes position of shadow
+        ),
+      ],
+      color: AppColor.whiteColor);
+
+  static getStatusBackgroundColor(OrderStatus orderStatus) {
+    switch (orderStatus) {
+      case OrderStatus.Completed:
+        return BoxDecoration(
+          color: AppColor.successGreen.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+      case OrderStatus.Pending:
+        return BoxDecoration(
+          color: AppColor.redColor.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+      case OrderStatus.FoodPreparing:
+        return BoxDecoration(
+          color: AppColor.purpleColor.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+      case OrderStatus.OutForDelivery:
+        return BoxDecoration(
+          color: AppColor.orangeColor.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+    }
+  }
+
+  static getStatusColor(OrderStatus orderStatus) {
+    switch (orderStatus) {
+      case OrderStatus.Completed:
+        return TextStyle(color: AppColor.successGreen);
+      case OrderStatus.Pending:
+        return TextStyle(color: AppColor.redColor);
+      case OrderStatus.FoodPreparing:
+        return TextStyle(color: AppColor.purpleColor);
+      case OrderStatus.OutForDelivery:
+        return TextStyle(color: AppColor.orangeColor);
+    }
+  }
 }
+
+enum OrderStatus { Completed, Pending, FoodPreparing, OutForDelivery }
+
+enum PaymentStatus { Completed, Error, Pending }

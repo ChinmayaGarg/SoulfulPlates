@@ -4,12 +4,15 @@ import 'package:soulful_plates/constants/app_sized_box.dart';
 import 'package:soulful_plates/constants/app_text_styles.dart';
 import 'package:soulful_plates/constants/enums/view_state.dart';
 import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/model/menu/sub_category_model.dart';
 import 'package:soulful_plates/ui/widgets/app_text_field.dart';
 import 'package:soulful_plates/ui/widgets/base_button.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../model/menu/menu_item_model.dart';
+import '../../../constants/app_paddings.dart';
+import '../../../model/menu/menu_category_model.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/base_common_widget.dart';
 import 'menu_category_controller.dart';
 
@@ -21,7 +24,7 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("MenuCategory"),
+          title: const Text("Menu Category"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -45,15 +48,25 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
             style: AppTextStyles.textStyleBlack16With700,
           ),
           ListView.separated(
-            itemCount: controller.menuCategories.length,
+            itemCount: Utils.menuCategoryList.length,
             shrinkWrap: true,
             itemBuilder: (context, categoryIndex) {
-              MenuCategory category = controller.menuCategories[categoryIndex];
+              MenuCategory category = Utils.menuCategoryList[categoryIndex];
               return ListTile(
-                title: Text(category.name),
-                onTap: () {
+                title: Text(category.categoryName ?? ''),
+                trailing: InkWell(
+                  onTap: () {
+                    updateCategoryDialog(context, category);
+                  },
+                  child: Icon(
+                    Icons.edit_outlined,
+                    size: 24.rSize(),
+                  ),
+                ),
+                onTap: () async {
                   controller.selectedCategory = category;
                   // controller.categoryController.text = category.name;
+                  await controller.fetchSubCategory();
                   controller.update();
                 },
               );
@@ -70,8 +83,8 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
               .rVerticalSizedBox()
               .visibleWhen(isVisible: controller.selectedCategory == null),
           (controller.state == ViewStateEnum.busy
-                  ? Center(
-                      child: const CircularProgressIndicator(),
+                  ? const Center(
+                      child: CircularProgressIndicator(),
                     )
                   : BaseButton(
                       onSubmit: () {
@@ -97,7 +110,7 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
         children: [
           Expanded(
             child: Text(
-              'Selected Categories for: ${controller.selectedCategory?.name}',
+              'Selected Categories for: ${controller.selectedCategory?.categoryName}',
               style: AppTextStyles.textStyleBlack14With700,
             ),
           ),
@@ -116,15 +129,24 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
       16.rVerticalSizedBox(),
       ListView.separated(
         shrinkWrap: true,
-        itemCount: controller.selectedCategory?.subcategories.length ?? 0,
+        itemCount: Utils.menuSubCategoryList.length ?? 0,
         separatorBuilder: (BuildContext context, int index) {
           return 1.rVerticalGreySizedBox();
         },
         itemBuilder: (context, subcategoryIndex) {
-          SubCategory subcategory =
-              controller.selectedCategory!.subcategories[subcategoryIndex];
+          SubCategoryModel subcategory =
+              Utils.menuSubCategoryList[subcategoryIndex];
           return ListTile(
-            title: Text(subcategory.name),
+            title: Text(subcategory.subCategoryName ?? ''),
+            trailing: InkWell(
+              onTap: () {
+                updateSubCategoryDialog(context, subcategory);
+              },
+              child: Icon(
+                Icons.edit_outlined,
+                size: 24.rSize(),
+              ),
+            ),
             // You can add more details or functionality here
           );
         },
@@ -135,8 +157,8 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
         hintText: 'Add New Subcategory Name',
       ),
       controller.state == ViewStateEnum.busy
-          ? Center(
-              child: const CircularProgressIndicator(),
+          ? const Center(
+              child: CircularProgressIndicator(),
             )
           : BaseButton(
               onSubmit: () {
@@ -146,5 +168,91 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
             ),
       16.rVerticalSizedBox(),
     ];
+  }
+
+  Future<void> updateCategoryDialog(
+      BuildContext context, MenuCategory menuCategory) async {
+    // Controllers for text fields
+    TextEditingController nameController =
+        TextEditingController(text: menuCategory.categoryName);
+
+    // Show dialog
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: AppPaddings.defaultPadding16,
+          backgroundColor: AppColor.whiteColor,
+          title: const Text('Edit Category Name'),
+          content: TextField(
+            controller: nameController,
+            decoration: const InputDecoration(labelText: 'Category Name'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await controller.updateCategoryName(
+                    menuCategory, nameController.text);
+                controller.update();
+                Get.back();
+              },
+              child: controller.state == ViewStateEnum.busy
+                  ? const CircularProgressIndicator()
+                  : const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> updateSubCategoryDialog(
+      BuildContext context, SubCategoryModel subCategoryModel) async {
+    // Controllers for text fields
+    TextEditingController nameController =
+        TextEditingController(text: subCategoryModel.subCategoryName);
+
+    // Show dialog
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: AppPaddings.defaultPadding16,
+          backgroundColor: AppColor.whiteColor,
+          title: const Text('Edit SubCategory Name'),
+          content: TextField(
+            controller: nameController,
+            decoration: const InputDecoration(labelText: 'SubCategory Name'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await controller.updateSubCategoryName(
+                    subCategoryModel, nameController.text);
+                controller.update();
+                Get.back();
+              },
+              child: controller.state == ViewStateEnum.busy
+                  ? const CircularProgressIndicator()
+                  : const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -3,12 +3,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/constants/app_text_styles.dart';
+import 'package:soulful_plates/model/store_details/restaurant_model.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_paddings.dart';
+import '../../../constants/app_sized_box.dart';
+import '../../../constants/app_theme.dart';
+import '../../../constants/enums/view_state.dart';
 import '../../../constants/size_config.dart';
 import '../../../routing/route_names.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/base_common_widget.dart';
 import 'home_controller.dart';
 
@@ -93,35 +98,95 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
             style: AppTextStyles.textStyleBlack22With700,
           ).paddingHorizontal16(),
           16.rVerticalSizedBox(),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return InkWell(
-                    onTap: () {
-                      Get.toNamed(restaurantDetailViewRoute);
+          Stack(children: [
+            controller.dataList.isNotEmpty
+                ? RefreshIndicator(
+                    onRefresh: () async {
+                      controller.resetPagination();
                     },
-                    child: getRestaurantCard());
-              })
-
-          // BaseButton(
-          //     text: "Go to restaurant details",
-          //     onSubmit: () {
-          //       Get.toNamed(restaurantDetailViewRoute);
-          //     }).paddingHorizontal16(),
-          // 16.rVerticalSizedBox(),
-          // 12.rVerticalSizedBox(),
+                    child: NotificationListener<ScrollNotification>(
+                        onNotification: (scrollNotification) {
+                          if (scrollNotification.metrics.pixels >=
+                                  scrollNotification.metrics.maxScrollExtent &&
+                              !controller.hasReachedMax &&
+                              !controller.isLoading()) {
+                            controller.pageNo = (controller.pageNo + 1);
+                            controller.loadMore();
+                          }
+                          return false;
+                        },
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: controller.dataList.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index < controller.dataList.length) {
+                              return InkWell(
+                                onTap: () async {
+                                  Get.toNamed(restaurantDetailViewRoute,
+                                      arguments: controller.dataList[index]);
+                                },
+                                child: getRestaurantCard(
+                                        controller.dataList[index])
+                                    .paddingVertical8(),
+                              );
+                            } else if (controller.moreLoading ==
+                                ViewStateEnum.busy) {
+                              return controller.loadMoreLoader(
+                                  color: AppColor.blackColor);
+                            } else {
+                              return AppSizedBox.sizedBox0;
+                            }
+                          },
+                        )),
+                  )
+                : Center(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        controller.resetPagination();
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.refresh_outlined,
+                            size: 24.rSize(),
+                            color: AppColor.primaryColor,
+                          ),
+                          Text(
+                            'No data available!',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
+                        ],
+                      ).paddingAll12(),
+                    ),
+                  ),
+            controller.state == ViewStateEnum.busy
+                ? const Center(child: CircularProgressIndicator())
+                : AppSizedBox.sizedBox0
+          ]),
+          // ListView.builder(
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     itemCount: controller.dataList,
+          //     itemBuilder: (context, index) {
+          //       return InkWell(
+          //           onTap: () {
+          //             Get.toNamed(restaurantDetailViewRoute);
+          //           },
+          //           child: getRestaurantCard(index));
+          //     })
         ],
       ),
     );
   }
 
-  static Widget getRestaurantCard() {
+  static Widget getRestaurantCard(RestaurantModel restaurantModel) {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColor.black5TextColor),
+      decoration: AppTheme.boxDecorationCard,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,21 +198,22 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              4.rVerticalSizedBox(),
               Text(
-                "Limon\'s Foods",
+                restaurantModel.storeName ?? '',
                 style: AppTextStyles.textStyleBlack16With700,
               ),
-              2.rVerticalSizedBox(),
+              4.rVerticalSizedBox(),
               Text(
-                "Fast Food, Burgers, Snacks, Juices",
+                restaurantModel.storeDescription ?? '',
                 style: AppTextStyles.textStyleBlack14With400,
+                maxLines: 2,
               ),
-              2.rVerticalSizedBox(),
               Text(
-                "2 kms away",
+                "${restaurantModel.distance} kms away",
                 style: AppTextStyles.textStyleBlackTwo14With400,
               ),
-              4.rVerticalSizedBox(),
+              8.rVerticalSizedBox(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -157,12 +223,12 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
                         color: AppColor.primaryColor.withOpacity(0.75),
                         borderRadius: BorderRadius.circular(8)),
                     child: Text(
-                      "15 Min",
+                      "Prep Time ${Utils.getRandomTimeLeftPrep()} Min",
                       style: AppTextStyles.textStyleWhite14With400,
                     ).paddingUpSide412(),
                   ),
                   8.rHorizontalSizedBox(),
-                  Icon(
+                  const Icon(
                     Icons.star_border,
                     color: AppColor.primaryColorLight,
                     size: 24,
@@ -174,23 +240,27 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
                   )
                 ],
               ),
-              4.rVerticalSizedBox(),
+              8.rVerticalSizedBox()
             ],
-          ).paddingAllDefault()),
+          ).paddingAll12()),
           ClipRRect(
             borderRadius: const BorderRadius.all(
               Radius.circular(8.0),
             ),
             child: CachedNetworkImage(
               imageUrl:
-                  "https://media.istockphoto.com/id/1457979959/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-french-fries.webp?b=1&s=170667a&w=0&k=20&c=A_MdmsSdkTspk9Mum_bDVB2ko0RKoyjB7ZXQUnSOHl0=",
+                  // index % 2 != 0
+                  //     ?
+                  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              // : "https://static.toiimg.com/photo/62601713.cms",
               fit: BoxFit.fill,
               color: AppColor.blackTextColor.withOpacity(0.1),
               colorBlendMode: BlendMode.color,
               width: 80,
-              height: 60,
+              height: 80,
             ),
-          ).paddingUpSide412(),
+          ),
+          16.rHorizontalSizedBox()
         ],
       ),
     ).paddingUpSide816();

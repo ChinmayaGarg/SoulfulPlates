@@ -1,15 +1,26 @@
+import 'package:soulful_plates/constants/app_theme.dart';
+
+import '../../../app_singleton.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
-import '../../../model/data_model.dart';
+import '../../../model/order_detail_model.dart';
+import '../../../network/network_interfaces/end_points.dart';
+import '../../../network/network_interfaces/i_dio_singleton.dart';
+import '../../../network/network_utils/api_call.dart';
 import '../../../utils/pagination_utils.dart';
 
 class OrderHistoryBuyerController extends BaseController
-    with PaginationUtils<DataModel> {
+    with PaginationUtils<OrderDetailModel> {
+  OrderStatus orderStatus = OrderStatus.Pending;
+
   @override
   void onInit() {
     super.onInit();
     initPagination();
   }
+
+  // @override
+  // int recordsPerPage = 2;
 
   updateLoader(ViewStateEnum state) {
     if (pageNo >= 1) {
@@ -20,19 +31,22 @@ class OrderHistoryBuyerController extends BaseController
   }
 
   void getDataFromAPI() async {
-/*    updateLoader(ViewStateEnum.busy);
+    updateLoader(ViewStateEnum.busy);
 
-    var result = ; //male api call here
+    var result = await ApiCall().call<OrderDetailModel>(
+        method: RequestMethod.getPost,
+        endPoint: EndPoints.getOrdersForUser,
+        apiCallType: ApiCallType.user,
+        obj: OrderDetailModel(),
+        parameters: {
+          "userId": AppSingleton.loggedInUserProfile?.id,
+          "status": orderStatus.name,
+          "limit": recordsPerPage,
+          "offset": pageNo
+        }); //male api call here
 
-    if (result.hasException) {
-      dataList = [];
-      updateLoader(ViewStateEnum.idle);
-      update();
-      return;
-    }
-
-    if (result.data != null && result.data!.containsKey('data')) {
-      List<DataModel> temp = DataModel.fromJsonArray(result.data!['data']);
+    if (result != null) {
+      List<OrderDetailModel> temp = result;
       if (temp.isEmpty || temp.length < recordsPerPage) {
         hasReachedMax = true;
       }
@@ -46,7 +60,7 @@ class OrderHistoryBuyerController extends BaseController
     } else {
       dataList = [];
       updateLoader(ViewStateEnum.idle);
-    }*/
+    }
     update();
   }
 

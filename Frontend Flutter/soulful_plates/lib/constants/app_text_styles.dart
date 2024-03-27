@@ -178,6 +178,11 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppColor.primaryColor,
   );
+  static final textStylePrimary22With700 = TextStyle(
+    fontSize: SizeConfig.font22,
+    fontWeight: FontWeight.bold,
+    color: AppColor.primaryColor,
+  );
   static final textStyleBlack36With700 = TextStyle(
     fontSize: SizeConfig.font36,
     fontWeight: FontWeight.bold,

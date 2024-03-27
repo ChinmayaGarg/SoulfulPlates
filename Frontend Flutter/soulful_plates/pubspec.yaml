@@ -51,8 +51,9 @@ dependencies:
   carousel_slider: ^4.0.0
   dropdown_search: ^5.0.6
   geolocator: ^9.0.2
-  map_location_picker: ^1.0.0
-  map_address_picker: ^0.3.5
+#  map_location_picker:
+#  map_address_picker:
+  cart_stepper: ^4.3.0
 
 dev_dependencies:
   flutter_test:

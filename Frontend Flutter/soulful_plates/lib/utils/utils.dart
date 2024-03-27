@@ -1,18 +1,27 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:soulful_plates/constants/app_icons.dart';
 
+import '../app_singleton.dart';
 import '../constants/app_colors.dart';
+import '../constants/enums/view_state.dart';
 import '../constants/language/language_constants.dart';
 import '../constants/size_config.dart';
 import '../model/location/location_model.dart';
-import '../model/menu/menu_item_model.dart';
+import '../model/menu/menu_category_model.dart';
+import '../model/menu/menu_model.dart';
+import '../model/menu/sub_category_model.dart';
 import '../model/store_details/store_detail_model.dart';
+import '../network/network_interfaces/end_points.dart';
+import '../network/network_interfaces/i_dio_singleton.dart';
+import '../network/network_utils/api_call.dart';
 import '../ui/widgets/base_loading_widget.dart';
 import 'extensions.dart';
 
@@ -36,6 +45,14 @@ class Utils {
     } else {
       return true;
     }
+  }
+
+  static getStringDateFromTime(String inputDate) {
+    String inputDateString = inputDate;
+    DateTime dateTime = DateTime.parse(inputDateString);
+
+    String formattedDate = DateFormat.yMMMd().format(dateTime);
+    return formattedDate;
   }
 
   static String padString(String input, int targetLength, String padChar) {
@@ -146,10 +163,10 @@ class Utils {
   );
 
   String getFoodTypeIcon(String type) {
-    if (type == 'veg') {
+    if (type.toLowerCase() == 'veg') {
       return AppIcons.vegIcon;
     }
-    if (type == 'nonveg') {
+    if (type.toLowerCase() == 'nonveg') {
       return AppIcons.nonVegIcon;
     }
     return AppIcons.eggIcon;
@@ -157,92 +174,115 @@ class Utils {
 
   static List<MenuCategory> menuCategory = [];
 
-// Function to add category, subcategory, and menu items to the list if they don't exist
-  static void addCategoryAndSubCategoryWithItems(
-    String categoryName,
-    String subCategoryName,
-    SubCategory newSubCategory,
-  ) {
-    // Check if the category exists
-    MenuCategory? category = menuCategory.firstWhereOrNull(
-      (element) => element.name == categoryName,
-    );
+  static List<MenuModel> menuItems = [];
 
-    // If the category doesn't exist, add it
-    if (category == null) {
-      category = MenuCategory(categoryName, []);
-      menuCategory.add(category);
-    }
+  static formatMenuItemsToCategory() async {
+    // Create categories and subcategories
+    menuItems.forEach((menuItem) {
+      // Find category by name or create new if not exists
+      MenuCategory category = menuCategory.firstWhere(
+          (cat) => cat.categoryName == menuItem.categoryName, orElse: () {
+        MenuCategory newCategory = MenuCategory(
+            categoryId: menuItem.categoryId ?? 0,
+            categoryName: menuItem.categoryName ?? '',
+            storeId: AppSingleton.storeId.toString());
+        menuCategory.add(newCategory);
+        return newCategory;
+      });
 
-    // Check if the subcategory exists
-    var subCategory = category.subcategories.firstWhereOrNull(
-      (element) => element.name == subCategoryName,
-    );
+      // Check if the item has a subcategory
+      if (menuItem.subcategoryName != null) {
+        // Find subcategory by name or create new if not exists
+        SubCategoryModel subcategory = category.subcategories.firstWhere(
+            (subcat) => subcat.subCategoryName == menuItem.subcategoryName,
+            orElse: () {
+          SubCategoryModel newSubcategory = SubCategoryModel(
+              subCategoryId: menuItem.subcategoryId ?? 0,
+              subCategoryName: menuItem.subcategoryName ?? '',
+              categoryId: menuItem.categoryId);
+          category.addSubCategory(newSubcategory);
+          return newSubcategory;
+        });
 
-    // If the subcategory doesn't exist, add it
-    if (subCategory == null) {
-      subCategory = SubCategory(subCategoryName, []);
-      category.addSubCategory(subCategory);
-    }
+        // Add the menu item to the subcategory
+        subcategory.addMenuItem(menuItem);
+      } else {
+        // Add the menu item to the category directly
+//       category.addMenuItem(menuItem);
+      }
+    });
 
-    // You can add logic here to check if menu items exist before adding
-    // For simplicity, assuming all menu items are unique within a subcategory
-    subCategory.items.addAll(newSubCategory.items);
+    // Print categories and subcategories
+    menuCategory.forEach((category) {
+      print("Category: ${category}");
+      category.subcategories.forEach((subcategory) {
+        print("  Subcategory: ${subcategory.subCategoryName}");
+        subcategory.items.forEach((item) {
+          print("    Item: ${item.itemName}");
+        });
+      });
+    });
   }
 
-  static addMenuItems() {
-    // Creating menu items
-    MenuItemModel pizzaItem = MenuItemModel(
-      itemName: "Pizza",
-      itemImage: "",
-      itemPrice: "13",
-      type: "Veg",
-      category: "Fast Food",
-      subCategory: "Quick Bites",
-      servingType: 2,
-      portion: "Medium",
-      inStock: true,
-      isRecommended: false,
-      description: "It contains mayo and margarita cheese sauce.",
+  static fetchUpdatedMenuItemList(
+      Function(ViewStateEnum state) setLoaderState) async {
+    setLoaderState(ViewStateEnum.busy);
+    var response = await ApiCall().call<MenuModel>(
+      method: RequestMethod.get,
+      endPoint: "${EndPoints.getMenuItem}/${AppSingleton.storeId}",
+      obj: MenuModel(),
+      apiCallType: ApiCallType.seller,
     );
+    menuItems = response;
+    menuCategory = [];
+    await formatMenuItemsToCategory();
+    setLoaderState(ViewStateEnum.idle);
+  }
 
-    MenuItemModel burgerItem = MenuItemModel(
-      itemName: "Chicken Burger",
-      itemImage: "",
-      itemPrice: "8",
-      type: "Eggs",
-      category: "Fast Food",
-      subCategory: "Burgers",
-      servingType: 1,
-      portion: "Regular",
-      inStock: true,
-      isRecommended: false,
-      description: "It contains onions, lettuce, and tomatoes with veg patty.",
+  static getRandomTimeLeft() {
+    // Create an instance of Random class
+    var random = Random();
+    // Generate a random number between 0 and 10
+    int randomNumber =
+        random.nextInt(11); // Generates a random integer from 0 to 10
+    return randomNumber;
+  }
+
+  static getRandomTimeLeftPrep() {
+    // Create an instance of Random class
+    var random = Random(10);
+    // Generate a random number between 0 and 10
+    int randomNumber =
+        random.nextInt(40); // Generates a random integer from 0 to 10
+    return randomNumber;
+  }
+
+  static List<MenuCategory> menuCategoryList = [];
+
+  static fetchCategoryList(Function(ViewStateEnum state) setLoaderState) async {
+    setLoaderState(ViewStateEnum.busy);
+    var response = await ApiCall().call<MenuCategory>(
+      method: RequestMethod.get,
+      endPoint: EndPoints.getAllCategories,
+      obj: MenuCategory(),
+      apiCallType: ApiCallType.seller,
     );
+    menuCategoryList = response;
+    setLoaderState(ViewStateEnum.idle);
+  }
 
-    MenuItemModel friesItem = MenuItemModel(
-      itemName: "French Fries",
-      itemImage: "",
-      itemPrice: "4",
-      type: "Non-Veg",
-      category: "Starter",
-      subCategory: "Veg Starter",
-      servingType: 1,
-      portion: "Regular",
-      inStock: true,
-      isRecommended: false,
-      description: "It contains fresh potatoes with peri-peri sprinkle.",
+  static List<SubCategoryModel> menuSubCategoryList = [];
+
+  static fetchSubCategoryList(
+      Function(ViewStateEnum state) setLoaderState) async {
+    setLoaderState(ViewStateEnum.busy);
+    var response = await ApiCall().call<SubCategoryModel>(
+      method: RequestMethod.get,
+      endPoint: EndPoints.getSubCategories,
+      obj: SubCategoryModel(),
+      apiCallType: ApiCallType.seller,
     );
-
-    // Creating subcategories with menu items
-    SubCategory quickBites = SubCategory("Quick Bites", [pizzaItem]);
-    SubCategory burgers = SubCategory("Quick Bites", [burgerItem]);
-    SubCategory friedItems = SubCategory("Veg Starter", [friesItem]);
-
-    // Adding subcategories with items to categories
-    addCategoryAndSubCategoryWithItems("Fast Food", "Quick Bites", quickBites);
-    addCategoryAndSubCategoryWithItems("Fast Food", "Burgers", burgers);
-    addCategoryAndSubCategoryWithItems("Starter", "Veg Starter", friedItems);
-    print("This is the respon se ${menuCategory}");
+    menuSubCategoryList = response;
+    setLoaderState(ViewStateEnum.idle);
   }
 }
