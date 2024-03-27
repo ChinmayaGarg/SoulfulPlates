@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 class PaymentControllerTest {
@@ -35,6 +35,7 @@ class PaymentControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
 
     @Test
     public void createPaymentAndTransaction_Success() {
