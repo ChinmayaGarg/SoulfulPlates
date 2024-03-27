@@ -1,22 +1,22 @@
 Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main prod class tested,Production classes tested
-.,com.Group11.soulfulplates.controllers,AuthController,registerUser,0,6,1,58,0,com.Group11.soulfulplates.repository.RoleRepository,com.Group11.soulfulplates.repository.RoleRepository; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthController,authenticateUser,35,2,1,113,0,com.Group11.soulfulplates.security.jwt.JwtUtils,com.Group11.soulfulplates.security.jwt.JwtUtils; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.security.services.UserDetailsImpl; com.Group11.soulfulplates.repository.StoreRepository
-.,com.Group11.soulfulplates.controllers,AuthController,generateForgetPasswordCode,26,2,1,170,0,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.payload.response.OtpResponse
-.,com.Group11.soulfulplates.controllers,AuthController,resetPassword,22,3,1,199,0,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,CategoryController,getAllByStoreId,9,1,0,22,0,com.Group11.soulfulplates.services.impl.CategoryService,com.Group11.soulfulplates.services.impl.CategoryService
-.,com.Group11.soulfulplates.controllers,CategoryController,createCategory,9,1,1,33,0,com.Group11.soulfulplates.services.impl.CategoryService,com.Group11.soulfulplates.services.impl.CategoryService
-.,com.Group11.soulfulplates.controllers,CategoryController,updateCategory,9,1,2,45,0,com.Group11.soulfulplates.services.impl.CategoryService,com.Group11.soulfulplates.services.impl.CategoryService
-.,com.Group11.soulfulplates.controllers,CategoryController,deleteCategory,9,1,1,57,0,com.Group11.soulfulplates.services.impl.CategoryService,com.Group11.soulfulplates.services.impl.CategoryService
-.,com.Group11.soulfulplates.controllers,MenuItemController,createMenuItem,9,1,1,23,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
-.,com.Group11.soulfulplates.controllers,MenuItemController,updateMenuItem,9,1,2,36,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
-.,com.Group11.soulfulplates.controllers,MenuItemController,deleteMenuItem,9,1,1,48,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
-.,com.Group11.soulfulplates.controllers,MenuItemController,getAllMenuItemsWithDetails,9,1,0,60,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
-.,com.Group11.soulfulplates.controllers,MenuItemController,getAllMenuItemsWithDetails,9,1,1,73,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
+.,com.Group11.soulfulplates.controllers,AuthController,registerUser,0,6,1,58,0,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.repository.RoleRepository; com.Group11.soulfulplates.models.Store
+.,com.Group11.soulfulplates.controllers,AuthController,authenticateUser,43,4,1,113,0,com.Group11.soulfulplates.security.services.UserDetailsImpl,com.Group11.soulfulplates.security.services.UserDetailsImpl; com.Group11.soulfulplates.repository.StoreRepository; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.security.jwt.JwtUtils
+.,com.Group11.soulfulplates.controllers,AuthController,generateForgetPasswordCode,26,2,1,177,0,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.payload.response.OtpResponse
+.,com.Group11.soulfulplates.controllers,AuthController,resetPassword,22,3,1,206,0,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,CategoryController,getAllByStoreId,9,1,0,20,0,,
+.,com.Group11.soulfulplates.controllers,CategoryController,createCategory,9,1,1,31,0,,
+.,com.Group11.soulfulplates.controllers,CategoryController,updateCategory,9,1,2,43,0,,
+.,com.Group11.soulfulplates.controllers,CategoryController,deleteCategory,9,1,1,55,0,,
+.,com.Group11.soulfulplates.controllers,MenuItemController,createMenuItem,9,1,1,19,0,,
+.,com.Group11.soulfulplates.controllers,MenuItemController,updateMenuItem,9,1,2,32,0,,
+.,com.Group11.soulfulplates.controllers,MenuItemController,deleteMenuItem,9,1,1,44,0,,
+.,com.Group11.soulfulplates.controllers,MenuItemController,getAllMenuItemsWithDetails,9,1,0,56,0,,
+.,com.Group11.soulfulplates.controllers,MenuItemController,getAllMenuItemsWithDetails,9,1,1,69,0,,
 .,com.Group11.soulfulplates.controllers,OrderController,createOrder,4,1,1,26,0,com.Group11.soulfulplates.services.OrderService,com.Group11.soulfulplates.services.OrderService
 .,com.Group11.soulfulplates.controllers,OrderController,updateOrderStatus,9,2,1,33,0,com.Group11.soulfulplates.services.OrderService,com.Group11.soulfulplates.services.OrderService
 .,com.Group11.soulfulplates.controllers,OrderController,getOrderDetails,12,1,1,66,0,com.Group11.soulfulplates.payload.request.GetOrderDetailsRequest,com.Group11.soulfulplates.payload.request.GetOrderDetailsRequest; com.Group11.soulfulplates.services.OrderService
 .,com.Group11.soulfulplates.controllers,OrderController,getOrdersForUser,15,1,1,85,0,com.Group11.soulfulplates.payload.request.GetOrdersRequest,com.Group11.soulfulplates.payload.request.GetOrdersRequest; com.Group11.soulfulplates.services.OrderService
-.,com.Group11.soulfulplates.controllers,OrderController,getOrdersForStore,15,1,1,110,0,com.Group11.soulfulplates.payload.request.GetStoreOrders,com.Group11.soulfulplates.payload.request.GetStoreOrders; com.Group11.soulfulplates.services.OrderService
+.,com.Group11.soulfulplates.controllers,OrderController,getOrdersForStore,15,1,1,110,0,com.Group11.soulfulplates.services.OrderService,com.Group11.soulfulplates.services.OrderService; com.Group11.soulfulplates.payload.request.GetStoreOrders
 .,com.Group11.soulfulplates.controllers,PaymentController,createPaymentAndTransaction,9,1,1,26,0,com.Group11.soulfulplates.services.PaymentService,com.Group11.soulfulplates.services.PaymentService
 .,com.Group11.soulfulplates.controllers,PaymentController,updatePaymentStatus,9,1,1,38,0,com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest,com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest; com.Group11.soulfulplates.services.PaymentService
 .,com.Group11.soulfulplates.controllers,PaymentController,filterPayments,14,1,1,50,0,com.Group11.soulfulplates.payload.request.PaymentFilterRequestBuyer,com.Group11.soulfulplates.payload.request.PaymentFilterRequestBuyer; com.Group11.soulfulplates.services.PaymentService
@@ -29,10 +29,10 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.controllers,StoreController,deleteStore,8,2,1,85,0,com.Group11.soulfulplates.services.StoreService,com.Group11.soulfulplates.services.StoreService
 .,com.Group11.soulfulplates.controllers,StoreController,updateStore,12,1,2,96,0,com.Group11.soulfulplates.services.StoreService,com.Group11.soulfulplates.services.StoreService
 .,com.Group11.soulfulplates.controllers,StoreController,updateUserImage,26,3,2,113,0,com.Group11.soulfulplates.models.Store,com.Group11.soulfulplates.models.Store
-.,com.Group11.soulfulplates.controllers,SubCategoryController,getAllSubCategories,9,1,0,19,0,com.Group11.soulfulplates.services.impl.SubcategoryService,com.Group11.soulfulplates.services.impl.SubcategoryService
-.,com.Group11.soulfulplates.controllers,SubCategoryController,createSubcategory,9,1,1,31,0,com.Group11.soulfulplates.services.impl.SubcategoryService,com.Group11.soulfulplates.services.impl.SubcategoryService
-.,com.Group11.soulfulplates.controllers,SubCategoryController,updateSubcategory,9,1,2,43,0,com.Group11.soulfulplates.services.impl.SubcategoryService,com.Group11.soulfulplates.services.impl.SubcategoryService
-.,com.Group11.soulfulplates.controllers,SubCategoryController,deleteSubcategory,9,1,1,55,0,com.Group11.soulfulplates.services.impl.SubcategoryService,com.Group11.soulfulplates.services.impl.SubcategoryService
+.,com.Group11.soulfulplates.controllers,SubCategoryController,getAllSubCategories,9,1,0,19,0,,
+.,com.Group11.soulfulplates.controllers,SubCategoryController,createSubcategory,9,1,1,31,0,,
+.,com.Group11.soulfulplates.controllers,SubCategoryController,updateSubcategory,9,1,2,43,0,,
+.,com.Group11.soulfulplates.controllers,SubCategoryController,deleteSubcategory,9,1,1,55,0,,
 .,com.Group11.soulfulplates.controllers,TransactionController,updateTransactionStatus,13,2,1,21,0,com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest,com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest; com.Group11.soulfulplates.services.TransactionService; com.Group11.soulfulplates.controllers.TransactionController
 .,com.Group11.soulfulplates.controllers,TransactionController,isValidStatus,3,1,1,39,0,,
 .,com.Group11.soulfulplates.controllers,UserController,toggleNotificationFlag,7,1,1,41,0,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository
@@ -49,63 +49,89 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.controllers,WishlistController,createWishlistFoundResponse,3,1,1,37,0,,
 .,com.Group11.soulfulplates.controllers,WishlistController,createWishlist,10,2,1,42,0,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl
 .,com.Group11.soulfulplates.controllers,WishlistController,deleteWishlist,9,2,1,66,0,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,setUp,4,1,0,71,0,,
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterUserUsernameTaken,10,1,0,79,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterUserEmailTaken,6,1,0,95,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterSuccessful,7,1,0,106,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.repository.RoleRepository; com.Group11.soulfulplates.controllers.AuthController
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_ValidEmail,7,1,0,118,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_InvalidEmail,7,1,0,130,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_Exception,7,1,0,142,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_ValidEmail_NotFound,8,1,0,154,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.controllers.AuthController
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_EmailDoesNotExist,9,1,0,167,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_InvalidEmail,8,1,0,187,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.controllers.AuthController
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_Exception,8,1,0,200,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.controllers.AuthController
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testAuthenticateUser_Success,21,1,0,213,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.security.jwt.JwtUtils; com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.security.services.UserDetailsImpl
-.,com.Group11.soulfulplates.controllers,AuthControllerTest,testAuthenticateUser_Failure,10,1,0,254,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
-.,com.Group11.soulfulplates.controllers,CategoryControllerTest,setUp,3,1,0,34,0,,
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,setUp,4,1,0,68,0,,
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterUserUsernameTaken,10,1,0,76,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterUserEmailTaken,6,1,0,92,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterSuccessful,7,1,0,103,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.RoleRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_ValidEmail,7,1,0,115,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_InvalidEmail,7,1,0,127,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_Exception,7,1,0,139,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_ValidEmail_NotFound,8,1,0,151,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testGenerateForgetPasswordCode_EmailDoesNotExist,9,1,0,164,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_InvalidEmail,8,1,0,184,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_Exception,8,1,0,197,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testAuthenticateUser_Failure,10,1,0,210,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testAuthenticateUser_NoUsername,6,1,0,229,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testAuthenticateUser_NoPassword,12,1,0,240,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testAuthenticateUser_UserDetailsNull,11,1,0,265,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testRegisterUser_NullSignupRequest,15,1,0,284,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,AuthControllerTest,testResetPassword_NullRequest,11,1,0,317,1,com.Group11.soulfulplates.controllers.AuthController,com.Group11.soulfulplates.controllers.AuthController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,setUp,3,1,0,32,0,,
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testCreateCategory,11,1,0,37,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testEditCategory,11,1,0,57,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testDeleteCategory,11,1,0,77,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testGetAllByStoreId,8,1,0,99,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testCreateCategory_Error,10,1,0,115,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.payload.response.OrderDetailsResponse; com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testEditCategory_Error,11,1,0,134,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.payload.response.OrderDetailsResponse; com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testDeleteCategory_Error,9,1,0,156,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,CategoryControllerTest,testGetAllByStoreId_Error,8,1,0,174,1,com.Group11.soulfulplates.controllers.CategoryController,com.Group11.soulfulplates.payload.response.OrderDetailsResponse; com.Group11.soulfulplates.controllers.CategoryController
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,setUp,18,1,0,30,0,,
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,testCreateMenuItem_ValidMenuItem_Success,22,1,0,50,1,com.Group11.soulfulplates.controllers.MenuItemController,com.Group11.soulfulplates.controllers.MenuItemController
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,testEditMenuItem_MenuItemExists_Success,23,1,0,84,1,com.Group11.soulfulplates.controllers.MenuItemController,com.Group11.soulfulplates.controllers.MenuItemController
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,testDeleteCategory,25,1,0,118,1,com.Group11.soulfulplates.controllers.MenuItemController,com.Group11.soulfulplates.controllers.MenuItemController
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,testGetAllMenuItemsWithDetails,8,1,0,156,1,com.Group11.soulfulplates.controllers.MenuItemController,com.Group11.soulfulplates.controllers.MenuItemController
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,testGetAllMenuItemsWithDetailsByStoreId,8,1,0,172,1,com.Group11.soulfulplates.controllers.MenuItemController,com.Group11.soulfulplates.controllers.MenuItemController
+.,com.Group11.soulfulplates.controllers,MenuItemControllerTest,testDeleteMenuItemFailure,9,1,0,188,1,com.Group11.soulfulplates.controllers.MenuItemController,com.Group11.soulfulplates.controllers.MenuItemController
 .,com.Group11.soulfulplates.controllers,OrderControllerTest,setUp,3,1,0,33,0,,
 .,com.Group11.soulfulplates.controllers,OrderControllerTest,testUpdateOrderStatus,10,1,0,39,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.services.OrderService; com.Group11.soulfulplates.controllers.OrderController
-.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrderDetails,8,1,0,58,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.services.OrderService; com.Group11.soulfulplates.controllers.OrderController
+.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrderDetails,8,1,0,58,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.services.OrderService
 .,com.Group11.soulfulplates.controllers,OrderControllerTest,testCreateOrder,8,1,0,75,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.services.OrderService
-.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrdersForUser,12,1,0,92,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.payload.request.GetOrdersRequest; com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.services.OrderService
-.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrdersForStore,12,1,0,113,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.payload.request.GetStoreOrders; com.Group11.soulfulplates.services.OrderService
-.,com.Group11.soulfulplates.controllers,OrderControllerTest,getOrdersForUser_ExceptionCaught,15,1,0,157,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.payload.request.GetOrdersRequest; com.Group11.soulfulplates.payload.response.OrderDetailsResponse; com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.services.OrderService
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,setUp,3,1,0,32,0,,
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,createPaymentAndTransaction_Success,8,1,0,37,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.services.PaymentService; com.Group11.soulfulplates.controllers.PaymentController
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,createPaymentAndTransaction_Failure,7,1,0,52,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.services.PaymentService; com.Group11.soulfulplates.controllers.PaymentController
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,updatePaymentStatus_Success,6,1,0,66,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest; com.Group11.soulfulplates.controllers.PaymentController
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,updatePaymentStatus_Failure,10,1,0,79,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest; com.Group11.soulfulplates.controllers.PaymentController
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,testFilterSellerPayments_Success,10,1,0,99,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.services.PaymentService
-.,com.Group11.soulfulplates.controllers,PaymentControllerTest,testFilterPayments_Success,19,1,0,137,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.payload.request.PaymentFilterRequestBuyer; com.Group11.soulfulplates.services.PaymentService; com.Group11.soulfulplates.controllers.PaymentController
+.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrdersForUser,12,1,0,92,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.payload.request.GetOrdersRequest; com.Group11.soulfulplates.services.OrderService
+.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrdersForStore,12,1,0,113,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.payload.request.GetStoreOrders; com.Group11.soulfulplates.services.OrderService; com.Group11.soulfulplates.controllers.OrderController
+.,com.Group11.soulfulplates.controllers,OrderControllerTest,testGetOrderDetails_ExceptionCaught,12,1,0,134,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.payload.request.GetOrderDetailsRequest; com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.services.OrderService
+.,com.Group11.soulfulplates.controllers,OrderControllerTest,getOrdersForUser_ExceptionCaught,15,1,0,157,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.payload.request.GetOrdersRequest; com.Group11.soulfulplates.controllers.OrderController; com.Group11.soulfulplates.services.OrderService; com.Group11.soulfulplates.payload.response.OrderDetailsResponse
+.,com.Group11.soulfulplates.controllers,OrderControllerTest,getOrdersForStore_ExceptionCaught,15,1,0,186,1,com.Group11.soulfulplates.controllers.OrderController,com.Group11.soulfulplates.services.OrderService; com.Group11.soulfulplates.payload.request.GetStoreOrders; com.Group11.soulfulplates.payload.response.OrderDetailsResponse; com.Group11.soulfulplates.controllers.OrderController
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,setUp,3,1,0,34,0,,
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,createPaymentAndTransaction_Success,8,1,0,39,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.services.PaymentService; com.Group11.soulfulplates.controllers.PaymentController
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,createPaymentAndTransaction_Failure,7,1,0,54,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.services.PaymentService; com.Group11.soulfulplates.controllers.PaymentController
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,updatePaymentStatus_Success,6,1,0,68,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,updatePaymentStatus_Failure,10,1,0,81,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,testFilterSellerPayments_Success,10,1,0,101,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.services.PaymentService
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,testFilterSellerPayments_Exception,14,1,0,119,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.services.PaymentService
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,testFilterPayments_Success,19,1,0,139,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.payload.request.PaymentFilterRequestBuyer; com.Group11.soulfulplates.services.PaymentService
+.,com.Group11.soulfulplates.controllers,PaymentControllerTest,testFilterPayments_Exception,14,1,0,165,1,com.Group11.soulfulplates.controllers.PaymentController,com.Group11.soulfulplates.controllers.PaymentController; com.Group11.soulfulplates.payload.request.PaymentFilterRequestBuyer; com.Group11.soulfulplates.services.PaymentService
 .,com.Group11.soulfulplates.controllers,RatingControllerTest,setUp,3,1,0,26,0,,
 .,com.Group11.soulfulplates.controllers,RatingControllerTest,addRating_Success,11,1,0,31,1,com.Group11.soulfulplates.controllers.RatingController,com.Group11.soulfulplates.controllers.RatingController; com.Group11.soulfulplates.payload.request.CreateRatingRequest
-.,com.Group11.soulfulplates.controllers,RatingControllerTest,getAverageRating_Success,10,1,0,49,1,com.Group11.soulfulplates.controllers.RatingController,com.Group11.soulfulplates.controllers.RatingController; com.Group11.soulfulplates.services.RatingService
-.,com.Group11.soulfulplates.controllers,RatingControllerTest,getAverageRating_Exception,9,1,0,66,1,com.Group11.soulfulplates.controllers.RatingController,com.Group11.soulfulplates.controllers.RatingController; com.Group11.soulfulplates.services.RatingService
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testCreateStore,7,1,0,44,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.models.Store
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testGetStoreById,7,1,0,56,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testGetAllStores,5,1,0,68,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testDeleteStore,5,1,0,77,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore,7,1,0,107,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testGetStoreById_NotFound,6,1,0,120,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore_Success,7,1,0,132,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore_NotFound,7,1,0,148,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testDeleteStore_NotFound,6,1,0,164,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testDeleteStore_StoreNotFound,6,1,0,177,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore_ExceptionCaught,9,1,0,190,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.services.StoreService
-.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateUserImage_EmptyFile,13,1,0,211,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController
-.,com.Group11.soulfulplates.controllers,SubCategoryControllerTest,setUp,3,1,0,31,0,,
-.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_Success,9,1,0,29,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.controllers.TransactionController; com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest
-.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_Failure,9,1,0,47,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.controllers.TransactionController; com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest
+.,com.Group11.soulfulplates.controllers,RatingControllerTest,getAverageRating_Success,10,1,0,49,1,com.Group11.soulfulplates.controllers.RatingController,com.Group11.soulfulplates.services.RatingService; com.Group11.soulfulplates.controllers.RatingController
+.,com.Group11.soulfulplates.controllers,RatingControllerTest,getAverageRating_Exception,9,1,0,66,1,com.Group11.soulfulplates.controllers.RatingController,com.Group11.soulfulplates.services.RatingService; com.Group11.soulfulplates.controllers.RatingController
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testCreateStore,7,1,0,38,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.models.Store
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testGetStoreById,7,1,0,50,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testGetAllStores,5,1,0,62,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testDeleteStore,5,1,0,71,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore,7,1,0,80,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testGetStoreById_NotFound,6,1,0,93,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.services.StoreService
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore_Success,7,1,0,105,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore_NotFound,7,1,0,121,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.StoreService
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testDeleteStore_NotFound,6,1,0,137,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.services.StoreService; com.Group11.soulfulplates.controllers.StoreController
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateStore_ExceptionCaught,9,1,0,150,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController; com.Group11.soulfulplates.services.StoreService
+.,com.Group11.soulfulplates.controllers,StoreControllerTest,testUpdateUserImage_EmptyFile,13,1,0,171,1,com.Group11.soulfulplates.controllers.StoreController,com.Group11.soulfulplates.controllers.StoreController
+.,com.Group11.soulfulplates.controllers,SubCategoryControllerTest,setUp,3,1,0,29,0,,
+.,com.Group11.soulfulplates.controllers,SubCategoryControllerTest,testCreateCategory,11,1,0,34,1,com.Group11.soulfulplates.controllers.SubCategoryController,com.Group11.soulfulplates.controllers.SubCategoryController
+.,com.Group11.soulfulplates.controllers,SubCategoryControllerTest,testEditCategory,11,1,0,54,1,com.Group11.soulfulplates.controllers.SubCategoryController,com.Group11.soulfulplates.controllers.SubCategoryController
+.,com.Group11.soulfulplates.controllers,SubCategoryControllerTest,testDeleteCategory,11,1,0,74,1,com.Group11.soulfulplates.controllers.SubCategoryController,com.Group11.soulfulplates.controllers.SubCategoryController
+.,com.Group11.soulfulplates.controllers,SubCategoryControllerTest,testGetAllSubCategories,8,1,0,96,1,com.Group11.soulfulplates.controllers.SubCategoryController,com.Group11.soulfulplates.controllers.SubCategoryController
+.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_Success,9,1,0,29,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest; com.Group11.soulfulplates.controllers.TransactionController
+.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_Failure,9,1,0,47,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest; com.Group11.soulfulplates.controllers.TransactionController
 .,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_NullRequest,4,1,0,66,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.controllers.TransactionController
-.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_Failure_TransactionNotFound,9,1,0,76,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.controllers.TransactionController; com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest
-.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_InvalidStatus,8,1,0,96,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.controllers.TransactionController; com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest
+.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_Failure_TransactionNotFound,9,1,0,76,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest; com.Group11.soulfulplates.controllers.TransactionController
+.,com.Group11.soulfulplates.controllers,TransactionControllerTest,testUpdateTransactionStatus_InvalidStatus,8,1,0,96,1,com.Group11.soulfulplates.controllers.TransactionController,com.Group11.soulfulplates.payload.request.UpdateTransactionStatusRequest; com.Group11.soulfulplates.controllers.TransactionController
 .,com.Group11.soulfulplates.controllers,UserControllerTest,setUp,3,1,0,48,0,,
 .,com.Group11.soulfulplates.controllers,UserControllerTest,testToggleNotificationFlag_UserExists_NotificationFlagToggled,18,1,0,53,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.controllers.UserController; com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.controllers,UserControllerTest,testCreateAddressForUser_UserExists_AddressCreatedSuccessfully,17,1,0,78,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.controllers.UserController; com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.controllers,UserControllerTest,testGetAllAddressesForUser_UserExists_AddressesFetchedSuccessfully,36,1,0,104,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.controllers.UserController; com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.repository.AddressRepository
 .,com.Group11.soulfulplates.controllers,UserControllerTest,testDeleteAddressForUser_UserAndAddressExist_AddressDeletedSuccessfully,20,1,0,152,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.controllers.UserController
-.,com.Group11.soulfulplates.controllers,UserControllerTest,testUpdateAddressForUser_UserAndAddressExist_AddressUpdatedSuccessfully,28,1,0,183,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.controllers.UserController
-.,com.Group11.soulfulplates.controllers,UserControllerTest,testGetUserAndNearestStore_AddressExists_NearestStoreFound,31,1,0,223,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.services.AddressService; com.Group11.soulfulplates.controllers.UserController
+.,com.Group11.soulfulplates.controllers,UserControllerTest,testUpdateAddressForUser_UserAndAddressExist_AddressUpdatedSuccessfully,28,1,0,183,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.controllers.UserController; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.controllers,UserControllerTest,testGetUserAndNearestStore_AddressExists_NearestStoreFound,31,1,0,223,1,com.Group11.soulfulplates.controllers.UserController,com.Group11.soulfulplates.controllers.UserController; com.Group11.soulfulplates.services.AddressService
 .,com.Group11.soulfulplates.controllers,UserControllerTest,testUpdateAddressForUser_UserAndAddressDoNotExist_ExceptionThrown,10,1,0,264,1,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.controllers,WishlistControllerTest,setUp,4,1,0,32,0,,
 .,com.Group11.soulfulplates.controllers,WishlistControllerTest,getAllWishlists_ReturnsListOfWishlists,6,1,0,38,1,com.Group11.soulfulplates.controllers.WishlistController,com.Group11.soulfulplates.services.impl.WishlistServiceImpl; com.Group11.soulfulplates.controllers.WishlistController
@@ -119,10 +145,10 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.exception,GlobalExceptionHandler,handleHttpRequestMethodNotSupportedException,7,1,1,37,0,,
 .,com.Group11.soulfulplates.exception,GlobalExceptionHandler,handleDataIntegrityViolationException,7,1,1,56,0,,
 .,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,setUp,3,1,0,22,0,,
-.,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleTypeMismatchException,11,1,0,27,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
+.,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleTypeMismatchException,10,1,0,27,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
 .,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleIllegalArgumentException,9,1,0,41,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
-.,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleHttpRequestMethodNotSupportedException,11,1,0,58,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
-.,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleDataIntegrityViolationException,11,1,0,72,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
+.,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleHttpRequestMethodNotSupportedException,10,1,0,58,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
+.,com.Group11.soulfulplates.exception,GlobalExceptionHandlerTest,handleDataIntegrityViolationException,9,1,0,72,1,com.Group11.soulfulplates.exception.GlobalExceptionHandler,com.Group11.soulfulplates.exception.GlobalExceptionHandler
 .,com.Group11.soulfulplates,Group11SoulfulPlates,Group11SoulfulPlates,3,1,1,14,0,,
 .,com.Group11.soulfulplates,Group11SoulfulPlates,main,3,1,1,18,0,,
 .,com.Group11.soulfulplates,Group11SoulfulPlates,run,7,2,1,22,0,com.Group11.soulfulplates.Group11SoulfulPlates,com.Group11.soulfulplates.Group11SoulfulPlates
@@ -159,7 +185,7 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.models,Order,setUpdatedAt,3,1,1,110,0,,
 .,com.Group11.soulfulplates.models,Order,getRating,3,1,0,114,0,,
 .,com.Group11.soulfulplates.models,Order,setRating,3,1,1,118,0,,
-.,com.Group11.soulfulplates.models,Order,toString,3,1,0,122,0,com.Group11.soulfulplates.models.Store,com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.models.Rating
+.,com.Group11.soulfulplates.models,Order,toString,3,1,0,122,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.models.Store
 .,com.Group11.soulfulplates.models,Payment,getPaymentId,3,1,0,51,0,,
 .,com.Group11.soulfulplates.models,Payment,setPaymentId,3,1,1,55,0,,
 .,com.Group11.soulfulplates.models,Payment,getTransaction,3,1,0,59,0,,
@@ -236,30 +262,6 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.models,WishlistItem,setMenuItem,3,1,1,50,0,,
 .,com.Group11.soulfulplates.models,WishlistItem,getAddedDate,3,1,0,54,0,,
 .,com.Group11.soulfulplates.models,WishlistItem,setAddedDate,3,1,1,58,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,CartItemDto,2,1,0,9,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,CartItemDto,5,1,3,11,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,getMenuItemId,3,1,0,18,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,setMenuItemId,3,1,1,22,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,getQuantity,3,1,0,26,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,setQuantity,3,1,1,30,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,getNotes,3,1,0,34,0,,
-.,com.Group11.soulfulplates.payload.request,CartItemDto,setNotes,3,1,1,38,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,CreateCartItemRequest,2,1,0,12,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,CreateCartItemRequest,6,1,4,15,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,getCartId,3,1,0,22,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,setCartId,3,1,1,26,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,getMenuItemId,3,1,0,30,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,setMenuItemId,3,1,1,34,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,getQuantity,3,1,0,38,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,setQuantity,3,1,1,42,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,getNotes,3,1,0,46,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartItemRequest,setNotes,3,1,1,50,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartRequest,CreateCartRequest,2,1,0,10,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartRequest,CreateCartRequest,4,1,2,13,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartRequest,getUserId,3,1,0,18,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartRequest,setUserId,3,1,1,22,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartRequest,getServiceProviderId,3,1,0,26,0,,
-.,com.Group11.soulfulplates.payload.request,CreateCartRequest,setServiceProviderId,3,1,1,30,0,,
 .,com.Group11.soulfulplates.payload.request,CreateOrderRequest,getUserId,3,1,0,13,0,,
 .,com.Group11.soulfulplates.payload.request,CreateOrderRequest,setUserId,3,1,1,17,0,,
 .,com.Group11.soulfulplates.payload.request,CreateOrderRequest,getStoreId,3,1,0,21,0,,
@@ -337,65 +339,10 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.payload.request,UpdateTransactionStatusRequest,setTransactionId,3,1,1,13,0,,
 .,com.Group11.soulfulplates.payload.request,UpdateTransactionStatusRequest,getStatus,3,1,0,17,0,,
 .,com.Group11.soulfulplates.payload.request,UpdateTransactionStatusRequest,setStatus,3,1,1,21,0,,
-.,com.Group11.soulfulplates.payload.request,WishlistRequest,WishlistRequest,2,1,0,16,0,,
-.,com.Group11.soulfulplates.payload.request,WishlistRequest,WishlistRequest,5,1,3,19,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getCartItemId,3,1,0,26,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setCartItemId,3,1,1,30,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getUserId,3,1,0,34,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setUserId,3,1,1,38,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getMenuId,3,1,0,42,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setMenuId,3,1,1,46,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getQuantity,3,1,0,50,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setQuantity,3,1,1,54,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getNotes,3,1,0,58,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setNotes,3,1,1,62,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getCreated,3,1,0,66,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setCreated,3,1,1,70,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getUpdated,3,1,0,74,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setUpdated,3,1,1,78,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getOrderId,3,1,0,82,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setOrderId,3,1,1,86,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getIsActive,3,1,0,90,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setIsActive,3,1,1,94,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getItemDescription,3,1,0,98,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setItemDescription,3,1,1,102,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getItemType,3,1,0,106,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setItemType,3,1,1,110,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getItemName,3,1,0,114,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setItemName,3,1,1,118,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getCategory,3,1,0,122,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setCategory,3,1,1,126,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getPrice,3,1,0,130,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setPrice,3,1,1,134,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,getAvailability,3,1,0,138,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,setAvailability,3,1,1,142,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemDTO,toString,3,1,0,147,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,CartItemResponse,2,1,0,17,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getCartItemId,3,1,0,21,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setCartItemId,3,1,1,25,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getCartId,3,1,0,29,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setCartId,3,1,1,33,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getMenuItemId,3,1,0,37,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setMenuItemId,3,1,1,41,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getQuantity,3,1,0,45,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setQuantity,3,1,1,49,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getAddedDate,3,1,0,53,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setAddedDate,3,1,1,57,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getNotes,3,1,0,61,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setNotes,3,1,1,65,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,getOrderId,3,1,0,69,0,,
-.,com.Group11.soulfulplates.payload.response,CartItemResponse,setOrderId,3,1,1,73,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,CartResponse,2,1,0,15,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,getCartId,3,1,0,19,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,setCartId,3,1,1,23,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,getUserId,3,1,0,27,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,setUserId,3,1,1,31,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,getServiceProviderId,3,1,0,35,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,setServiceProviderId,3,1,1,39,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,getLastUpdatedDate,3,1,0,43,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,setLastUpdatedDate,3,1,1,47,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,getCreatedDate,3,1,0,51,0,,
-.,com.Group11.soulfulplates.payload.response,CartResponse,setCreatedDate,3,1,1,55,0,,
+.,com.Group11.soulfulplates.payload.request,WishlistRequest,WishlistRequest,2,1,0,14,0,,
+.,com.Group11.soulfulplates.payload.request,WishlistRequest,WishlistRequest,5,1,3,17,0,,
+.,com.Group11.soulfulplates.payload.request,SubcategoryRequestTest,testEmptyConstructorSetsDefaultValues,6,1,0,9,1,com.Group11.soulfulplates.payload.request.SubcategoryRequest,com.Group11.soulfulplates.payload.request.SubcategoryRequest
+.,com.Group11.soulfulplates.payload.request,SubcategoryRequestTest,testSetterMethodsUpdateFieldsCorrectly,12,1,0,18,1,com.Group11.soulfulplates.payload.request.SubcategoryRequest,com.Group11.soulfulplates.payload.request.SubcategoryRequest
 .,com.Group11.soulfulplates.payload.response,CreateOrderResponse,CreateOrderResponse,5,1,3,8,0,,
 .,com.Group11.soulfulplates.payload.response,CreateOrderResponse,getCode,3,1,0,34,0,,
 .,com.Group11.soulfulplates.payload.response,CreateOrderResponse,setCode,3,1,1,38,0,,
@@ -403,15 +350,8 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.payload.response,CreateOrderResponse,setDescription,3,1,1,46,0,,
 .,com.Group11.soulfulplates.payload.response,CreateOrderResponse,getData,3,1,0,50,0,,
 .,com.Group11.soulfulplates.payload.response,CreateOrderResponse,setData,3,1,1,54,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,CreatePaymentResponse,5,1,3,11,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,getCode,3,1,0,18,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,setCode,3,1,1,22,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,getData,3,1,0,26,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,setData,3,1,1,30,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,getDescription,3,1,0,34,0,,
-.,com.Group11.soulfulplates.payload.response,CreatePaymentResponse,setDescription,3,1,1,38,0,,
-.,com.Group11.soulfulplates.payload.response,JwtResponse,JwtResponse,10,1,8,26,0,,
-.,com.Group11.soulfulplates.payload.response,JwtResponse,JwtResponse,14,1,12,38,0,,
+.,com.Group11.soulfulplates.payload.response,JwtResponse,JwtResponse,10,1,8,25,0,,
+.,com.Group11.soulfulplates.payload.response,JwtResponse,JwtResponse,14,1,12,37,0,,
 .,com.Group11.soulfulplates.payload.response,MessageResponse,MessageResponse,5,1,3,11,0,,
 .,com.Group11.soulfulplates.payload.response,OrderDetailsResponse,OrderDetailsResponse,5,1,3,12,0,,
 .,com.Group11.soulfulplates.payload.response,OrderDetailsResponse,getCode,3,1,0,19,0,,
@@ -421,22 +361,27 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.payload.response,OrderDetailsResponse,getData,3,1,0,35,0,,
 .,com.Group11.soulfulplates.payload.response,OrderDetailsResponse,setData,3,1,1,39,0,,
 .,com.Group11.soulfulplates.payload.response,OrdersResponse,OrdersResponse,5,1,3,11,0,,
-.,com.Group11.soulfulplates.payload.response,OrdersResponse,getCode,3,1,0,18,0,,
-.,com.Group11.soulfulplates.payload.response,OrdersResponse,setCode,3,1,1,22,0,,
-.,com.Group11.soulfulplates.payload.response,OrdersResponse,getDescription,3,1,0,26,0,,
-.,com.Group11.soulfulplates.payload.response,OrdersResponse,setDescription,3,1,1,30,0,,
-.,com.Group11.soulfulplates.payload.response,OrdersResponse,getData,3,1,0,34,0,,
-.,com.Group11.soulfulplates.payload.response,OrdersResponse,setData,3,1,1,38,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,OrdersResponse,2,1,0,17,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,getCode,3,1,0,22,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,setCode,3,1,1,26,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,getDescription,3,1,0,30,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,setDescription,3,1,1,34,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,getData,3,1,0,38,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponse,setData,3,1,1,42,0,,
 .,com.Group11.soulfulplates.payload.response,OtpResponse,OtpCode,5,1,0,10,0,,
 .,com.Group11.soulfulplates.payload.response,PaymentFilterResponse,PaymentFilterResponse,2,1,0,26,0,,
 .,com.Group11.soulfulplates.payload.response,PaymentFilterResponse,PaymentFilterResponse,15,1,13,27,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,SellerResponse,5,1,3,9,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,getCode,3,1,0,15,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,setCode,3,1,1,19,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,getData,3,1,0,23,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,setData,3,1,1,27,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,getDescription,3,1,0,31,0,,
-.,com.Group11.soulfulplates.payload.response,SellerResponse,setDescription,3,1,1,35,0,,
+.,com.Group11.soulfulplates.payload.response,JwtResponseTest,testJwtResponseConstructorWithoutSeller,23,1,0,13,1,,
+.,com.Group11.soulfulplates.payload.response,JwtResponseTest,testJwtResponseConstructorWithSeller,27,1,0,41,1,,
+.,com.Group11.soulfulplates.payload.response,MenuItemResponseTest,testMenuItemResponse,45,1,0,9,1,,
+.,com.Group11.soulfulplates.payload.response,MenuItemResponseTest,testMenuItemResponseDefaultValues,17,1,0,59,1,,
+.,com.Group11.soulfulplates.payload.response,OrderDetailsResponseTest,testOrderDetailsResponse,10,1,0,14,1,com.Group11.soulfulplates.payload.response.OrderDetailsResponse,com.Group11.soulfulplates.payload.response.OrderDetailsResponse
+.,com.Group11.soulfulplates.payload.response,OrderDetailsResponseTest,createOrderDetails,33,1,0,27,0,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponseTest,testConstructorAndGetters,44,1,0,25,1,com.Group11.soulfulplates.payload.response.OrdersResponse,com.Group11.soulfulplates.payload.response.OrdersResponse
+.,com.Group11.soulfulplates.payload.response,OrdersResponseTest,testSetters,12,1,0,79,1,com.Group11.soulfulplates.payload.response.OrdersResponse,com.Group11.soulfulplates.payload.response.OrdersResponse
+.,com.Group11.soulfulplates.payload.response,OrdersResponseTest,testEmptyConstructor,6,1,0,98,1,com.Group11.soulfulplates.payload.response.OrdersResponse,com.Group11.soulfulplates.payload.response.OrdersResponse
+.,com.Group11.soulfulplates.payload.response,OrdersResponseTest,testOrderDataConstructor,14,1,0,109,1,,
+.,com.Group11.soulfulplates.payload.response,OrdersResponseTest,testItemDataConstructor,18,1,0,128,1,,
 .,com.Group11.soulfulplates.repository,AddressRepository,findByUser,0,1,1,14,0,,
 .,com.Group11.soulfulplates.repository,AddressRepository,findAllStoresLatLon,0,1,0,16,0,,
 .,com.Group11.soulfulplates.repository,CartItemRepository,findByOrderOrderId,0,1,1,11,0,,
@@ -459,12 +404,14 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.repository,UserRepository,existsByEmail,0,1,1,20,0,,
 .,com.Group11.soulfulplates.repository,UserRepository,existsById,0,1,1,22,0,,
 .,com.Group11.soulfulplates.security.jwt,AuthEntryPointJwt,commence,12,1,3,27,0,,
-.,com.Group11.soulfulplates.security.jwt,AuthTokenFilter,doFilterInternal,16,2,3,29,0,com.Group11.soulfulplates.security.jwt.JwtUtils,com.Group11.soulfulplates.security.jwt.JwtUtils; com.Group11.soulfulplates.security.jwt.AuthTokenFilter; com.Group11.soulfulplates.security.services.UserDetailsServiceImpl
+.,com.Group11.soulfulplates.security.jwt,AuthTokenFilter,doFilterInternal,16,2,3,29,0,com.Group11.soulfulplates.security.jwt.AuthTokenFilter,com.Group11.soulfulplates.security.jwt.AuthTokenFilter; com.Group11.soulfulplates.security.jwt.JwtUtils; com.Group11.soulfulplates.security.services.UserDetailsServiceImpl
 .,com.Group11.soulfulplates.security.jwt,AuthTokenFilter,parseJwt,7,2,1,54,0,,
 .,com.Group11.soulfulplates.security.jwt,JwtUtils,generateJwtToken,4,1,1,27,0,com.Group11.soulfulplates.security.jwt.JwtUtils,com.Group11.soulfulplates.security.jwt.JwtUtils; com.Group11.soulfulplates.security.services.UserDetailsImpl
 .,com.Group11.soulfulplates.security.jwt,JwtUtils,key,3,1,0,39,0,,
 .,com.Group11.soulfulplates.security.jwt,JwtUtils,getUserNameFromJwtToken,3,1,1,43,0,com.Group11.soulfulplates.security.jwt.JwtUtils,com.Group11.soulfulplates.security.jwt.JwtUtils
 .,com.Group11.soulfulplates.security.jwt,JwtUtils,validateJwtToken,19,1,1,48,0,com.Group11.soulfulplates.security.jwt.JwtUtils,com.Group11.soulfulplates.security.jwt.JwtUtils
+.,com.Group11.soulfulplates.security.jwt,AuthEntryPointJwtTest,setUp,3,1,0,40,0,,
+.,com.Group11.soulfulplates.security.jwt,AuthEntryPointJwtTest,testCommence,17,1,0,45,1,com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt,com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt
 .,com.Group11.soulfulplates.security.services,UserDetailsImpl,UserDetailsImpl,10,1,8,31,0,,
 .,com.Group11.soulfulplates.security.services,UserDetailsImpl,build,4,1,1,43,0,,
 .,com.Group11.soulfulplates.security.services,UserDetailsImpl,getAuthorities,3,1,0,58,0,,
@@ -477,7 +424,7 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.security.services,UserDetailsImpl,equals,6,3,1,94,0,,
 .,com.Group11.soulfulplates.security.services,UserDetailsImpl,hashCode,3,1,0,104,0,,
 .,com.Group11.soulfulplates.security.services,UserDetailsServiceImpl,UserDetailsServiceImpl,3,1,1,15,0,,
-.,com.Group11.soulfulplates.security.services,UserDetailsServiceImpl,loadUserByUsername,5,1,1,19,0,com.Group11.soulfulplates.security.services.UserDetailsImpl,com.Group11.soulfulplates.security.services.UserDetailsImpl; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.security.services,UserDetailsServiceImpl,loadUserByUsername,8,2,1,19,0,com.Group11.soulfulplates.security.services.UserDetailsImpl,com.Group11.soulfulplates.security.services.UserDetailsImpl; com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.security.services,UserDetailsServiceImplTest,setUp,3,1,0,26,0,,
 .,com.Group11.soulfulplates.security.services,UserDetailsServiceImplTest,loadUserByUsername_UserFound,11,1,0,32,1,com.Group11.soulfulplates.security.services.UserDetailsServiceImpl,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.security.services.UserDetailsServiceImpl
 .,com.Group11.soulfulplates.security.services,UserDetailsServiceImplTest,loadUserByUsername_UserNotFound,9,1,0,54,1,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository
@@ -525,33 +472,33 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.services.impl,AddressServiceImpl,updateAddress,3,1,1,34,0,,
 .,com.Group11.soulfulplates.services.impl,AddressServiceImpl,deleteAddress,3,1,1,39,0,,
 .,com.Group11.soulfulplates.services.impl,AddressServiceImpl,getAllStoresLatLon,3,1,0,44,0,com.Group11.soulfulplates.repository.AddressRepository,com.Group11.soulfulplates.repository.AddressRepository
-.,com.Group11.soulfulplates.services.impl,CategoryService,createCategory,3,1,1,18,0,,
-.,com.Group11.soulfulplates.services.impl,CategoryService,findById,4,1,1,22,0,,
-.,com.Group11.soulfulplates.services.impl,CategoryService,updateCategory,6,1,2,28,0,com.Group11.soulfulplates.services.impl.CategoryService,com.Group11.soulfulplates.services.impl.CategoryService
-.,com.Group11.soulfulplates.services.impl,CategoryService,deleteCategory,4,1,1,35,0,com.Group11.soulfulplates.services.impl.CategoryService,com.Group11.soulfulplates.services.impl.CategoryService
-.,com.Group11.soulfulplates.services.impl,CategoryService,getAllByStoreId,3,1,0,40,0,,
-.,com.Group11.soulfulplates.services.impl,MenuItemService,createMenuItem,3,1,1,31,0,,
-.,com.Group11.soulfulplates.services.impl,MenuItemService,findMenuById,4,1,1,34,0,,
-.,com.Group11.soulfulplates.services.impl,MenuItemService,updateMenuItem,6,1,2,41,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
-.,com.Group11.soulfulplates.services.impl,MenuItemService,deleteMenuItem,4,1,1,47,0,com.Group11.soulfulplates.services.impl.MenuItemService,com.Group11.soulfulplates.services.impl.MenuItemService
-.,com.Group11.soulfulplates.services.impl,MenuItemService,getAllMenuItemsWithDetails,29,4,0,52,0,,
-.,com.Group11.soulfulplates.services.impl,MenuItemService,getMenuItemByStore,29,4,1,88,0,com.Group11.soulfulplates.repository.MenuItemRepository,com.Group11.soulfulplates.repository.MenuItemRepository
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImpl,createCategory,3,1,1,18,0,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImpl,findById,4,1,1,22,0,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImpl,updateCategory,6,1,2,28,0,com.Group11.soulfulplates.services.impl.CategoryServiceImpl,com.Group11.soulfulplates.services.impl.CategoryServiceImpl
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImpl,deleteCategory,4,1,1,35,0,com.Group11.soulfulplates.services.impl.CategoryServiceImpl,com.Group11.soulfulplates.services.impl.CategoryServiceImpl
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImpl,getAllByStoreId,3,1,0,40,0,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImpl,createMenuItem,3,1,1,31,0,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImpl,findMenuById,4,1,1,34,0,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImpl,updateMenuItem,6,1,2,41,0,com.Group11.soulfulplates.services.impl.MenuItemServiceImpl,com.Group11.soulfulplates.services.impl.MenuItemServiceImpl
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImpl,deleteMenuItem,4,1,1,47,0,com.Group11.soulfulplates.services.impl.MenuItemServiceImpl,com.Group11.soulfulplates.services.impl.MenuItemServiceImpl
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImpl,getAllMenuItemsWithDetails,29,4,0,52,0,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImpl,getMenuItemByStore,29,4,1,88,0,com.Group11.soulfulplates.repository.MenuItemRepository,com.Group11.soulfulplates.repository.MenuItemRepository
 .,com.Group11.soulfulplates.services.impl,OrderServiceImpl,OrderServiceImpl,10,1,8,34,0,,
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,createOrder,26,3,1,47,0,com.Group11.soulfulplates.models.CartItem,com.Group11.soulfulplates.models.CartItem; com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.payload.request.CreateOrderRequest; com.Group11.soulfulplates.repository.UserRepository
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,updateOrderStatus,9,2,2,84,0,com.Group11.soulfulplates.models.Order,com.Group11.soulfulplates.models.Order
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,getOrderDetails,6,1,2,95,0,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository; com.Group11.soulfulplates.services.impl.OrderServiceImpl
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,mapOrderToOrderDetailsData,38,6,1,110,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.repository.PaymentRepository; com.Group11.soulfulplates.models.Payment
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,mapMenuItemToDTO,25,3,1,162,0,,
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,getOrdersForUser,6,1,4,191,0,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,convertToOrderData,33,6,1,207,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.repository.PaymentRepository; com.Group11.soulfulplates.models.Payment
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,convertToItemData,31,3,1,249,0,,
-.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,getOrdersForStore,6,1,4,283,0,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
-.,com.Group11.soulfulplates.services.impl,PaymentServiceImpl,createPaymentAndTransaction,54,7,1,49,0,com.Group11.soulfulplates.payload.request.CreatePaymentRequest,com.Group11.soulfulplates.payload.request.CreatePaymentRequest; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.repository.CartItemRepository
-.,com.Group11.soulfulplates.services.impl,PaymentServiceImpl,updatePaymentStatus,9,2,3,108,0,com.Group11.soulfulplates.models.Transaction,com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.models.Payment
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,createOrder,34,5,1,46,0,com.Group11.soulfulplates.models.Order,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.models.CartItem; com.Group11.soulfulplates.payload.request.CreateOrderRequest; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,updateOrderStatus,9,2,2,95,0,com.Group11.soulfulplates.models.Order,com.Group11.soulfulplates.models.Order
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,getOrderDetails,6,1,2,106,0,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,mapOrderToOrderDetailsData,38,6,1,119,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.repository.PaymentRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,mapMenuItemToDTO,25,3,1,170,0,,
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,getOrdersForUser,6,1,4,199,0,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,convertToOrderData,43,8,1,215,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.repository.PaymentRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,convertToItemData,31,3,1,270,0,,
+.,com.Group11.soulfulplates.services.impl,OrderServiceImpl,getOrdersForStore,6,1,4,304,0,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,PaymentServiceImpl,createPaymentAndTransaction,54,7,1,49,0,com.Group11.soulfulplates.payload.request.CreatePaymentRequest,com.Group11.soulfulplates.payload.request.CreatePaymentRequest; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.services.impl,PaymentServiceImpl,updatePaymentStatus,9,2,3,108,0,com.Group11.soulfulplates.models.Payment,com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Transaction
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImpl,filterPayments,10,1,4,123,0,com.Group11.soulfulplates.repository.PaymentRepository,com.Group11.soulfulplates.repository.PaymentRepository
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImpl,filterSellerPayments,9,1,4,153,0,com.Group11.soulfulplates.repository.PaymentRepository,com.Group11.soulfulplates.repository.PaymentRepository
-.,com.Group11.soulfulplates.services.impl,RatingServiceImpl,addRatingAndLinkToOrder,35,6,1,29,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.payload.request.CreateRatingRequest; com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.repository.RatingRepository
-.,com.Group11.soulfulplates.services.impl,RatingServiceImpl,getAverageRating,11,3,1,68,0,com.Group11.soulfulplates.models.Rating,com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.repository.RatingRepository
+.,com.Group11.soulfulplates.services.impl,RatingServiceImpl,addRatingAndLinkToOrder,35,6,1,29,0,com.Group11.soulfulplates.payload.request.CreateRatingRequest,com.Group11.soulfulplates.payload.request.CreateRatingRequest; com.Group11.soulfulplates.repository.RatingRepository; com.Group11.soulfulplates.models.Rating; com.Group11.soulfulplates.models.Order
+.,com.Group11.soulfulplates.services.impl,RatingServiceImpl,getAverageRating,11,3,1,68,0,com.Group11.soulfulplates.repository.RatingRepository,com.Group11.soulfulplates.repository.RatingRepository; com.Group11.soulfulplates.models.Rating
 .,com.Group11.soulfulplates.services.impl,StoreServiceImpl,StoreServiceImpl,3,1,1,18,0,,
 .,com.Group11.soulfulplates.services.impl,StoreServiceImpl,updateStoreByUserId,9,1,2,24,0,com.Group11.soulfulplates.models.Store,com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.repository.StoreRepository
 .,com.Group11.soulfulplates.services.impl,StoreServiceImpl,createStore,3,1,1,39,0,,
@@ -559,11 +506,11 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.services.impl,StoreServiceImpl,getAllStores,3,1,0,49,0,,
 .,com.Group11.soulfulplates.services.impl,StoreServiceImpl,deleteStore,3,1,1,55,0,,
 .,com.Group11.soulfulplates.services.impl,StoreServiceImpl,existsById,3,1,1,60,0,,
-.,com.Group11.soulfulplates.services.impl,SubcategoryService,createSubcategory,3,1,1,17,0,,
-.,com.Group11.soulfulplates.services.impl,SubcategoryService,findById,4,1,1,22,0,,
-.,com.Group11.soulfulplates.services.impl,SubcategoryService,updateSubcategory,6,1,2,29,0,com.Group11.soulfulplates.services.impl.SubcategoryService,com.Group11.soulfulplates.services.impl.SubcategoryService
-.,com.Group11.soulfulplates.services.impl,SubcategoryService,deleteSubcategory,4,1,1,36,0,com.Group11.soulfulplates.services.impl.SubcategoryService,com.Group11.soulfulplates.services.impl.SubcategoryService
-.,com.Group11.soulfulplates.services.impl,SubcategoryService,getAllSubCategories,3,1,0,41,0,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImpl,createSubcategory,3,1,1,17,0,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImpl,findById,4,1,1,22,0,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImpl,updateSubcategory,6,1,2,29,0,com.Group11.soulfulplates.services.impl.SubcategoryServiceImpl,com.Group11.soulfulplates.services.impl.SubcategoryServiceImpl
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImpl,deleteSubcategory,4,1,1,36,0,com.Group11.soulfulplates.services.impl.SubcategoryServiceImpl,com.Group11.soulfulplates.services.impl.SubcategoryServiceImpl
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImpl,getAllSubCategories,3,1,0,41,0,,
 .,com.Group11.soulfulplates.services.impl,TransactionServiceImpl,createTransaction,13,1,1,23,0,com.Group11.soulfulplates.models.Transaction,com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.services.impl,TransactionServiceImpl,updateTransactionStatus,7,1,2,40,0,com.Group11.soulfulplates.models.Transaction,com.Group11.soulfulplates.models.Transaction
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImpl,getAllWishlists,3,1,0,23,0,,
@@ -576,17 +523,40 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.services.impl,AddressServiceImplTest,testGetAllAddresses,9,1,0,66,1,com.Group11.soulfulplates.services.impl.AddressServiceImpl,com.Group11.soulfulplates.services.impl.AddressServiceImpl
 .,com.Group11.soulfulplates.services.impl,AddressServiceImplTest,testUpdateAddress,7,1,0,79,1,com.Group11.soulfulplates.services.impl.AddressServiceImpl,com.Group11.soulfulplates.services.impl.AddressServiceImpl
 .,com.Group11.soulfulplates.services.impl,AddressServiceImplTest,testDeleteAddress,5,1,0,90,1,com.Group11.soulfulplates.services.impl.AddressServiceImpl,com.Group11.soulfulplates.services.impl.AddressServiceImpl
-.,com.Group11.soulfulplates.services.impl,AddressServiceImplTest,testGetAllStoresLatLon,7,1,0,99,1,com.Group11.soulfulplates.services.impl.AddressServiceImpl,com.Group11.soulfulplates.repository.AddressRepository; com.Group11.soulfulplates.services.impl.AddressServiceImpl
-.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,setUp,3,1,0,53,0,,
-.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testCreateOrder_SuccessfullyCreated,32,1,0,58,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.payload.response.CreateOrderResponse; com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.payload.request.CreateOrderRequest; com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.models.Order
-.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testUpdateOrderStatus_OrderNotFound_ReturnsNull,10,1,0,103,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.services.impl.OrderServiceImpl
-.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testUpdateOrderStatus_OrderFound_SuccessfullyUpdated,16,1,0,121,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.models.Order
-.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrderDetails_OrderNotFound_ThrowsException,7,1,0,146,1,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,AddressServiceImplTest,testGetAllStoresLatLon,7,1,0,99,1,com.Group11.soulfulplates.services.impl.AddressServiceImpl,com.Group11.soulfulplates.services.impl.AddressServiceImpl; com.Group11.soulfulplates.repository.AddressRepository
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,setUp,3,1,0,27,0,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,testCreateCategory,9,1,0,32,1,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,testFindById_CategoryFound,11,1,0,46,1,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,testFindById_CategoryNotFound,5,1,0,62,1,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,testUpdateCategory,15,1,0,71,1,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,testDeleteCategory,9,1,0,92,1,,
+.,com.Group11.soulfulplates.services.impl,CategoryServiceImplTest,testGetAllByStoreId,10,1,0,106,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,setUp,3,1,0,38,0,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,createMenuItem,7,1,0,43,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,findMenuById_existingId,9,1,0,53,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,findMenuById_nonExistingId,5,1,0,65,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,updateMenuItem,14,1,0,73,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,deleteMenuItem,8,1,0,92,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,getAllMenuItemsWithDetails,42,1,0,104,1,,
+.,com.Group11.soulfulplates.services.impl,MenuItemServiceImplTest,getMenuItemByStore,42,1,0,158,1,com.Group11.soulfulplates.repository.MenuItemRepository,com.Group11.soulfulplates.repository.MenuItemRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,setUp,4,1,0,57,0,,
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testCreateOrder_SuccessfullyCreated,32,1,0,72,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.payload.response.CreateOrderResponse; com.Group11.soulfulplates.payload.request.CreateOrderRequest; com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.models.Store
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testUpdateOrderStatus_OrderNotFound_ReturnsNull,10,1,0,117,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.services.impl.OrderServiceImpl
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testUpdateOrderStatus_OrderFound_SuccessfullyUpdated,16,1,0,135,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.models.Order
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrderDetails_OrderNotFound_ThrowsException,7,1,0,160,1,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testConvertToOrderData,26,1,0,172,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.services.impl.OrderServiceImpl
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testConvertToItemData,50,1,0,206,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.services.impl.OrderServiceImpl
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrdersForStore_Success,17,1,0,265,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.payload.response.OrdersResponse; com.Group11.soulfulplates.repository.OrderRepository; com.Group11.soulfulplates.services.impl.OrderServiceImpl
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrdersForUser_Success,17,1,0,293,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.payload.response.OrdersResponse; com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrdersForUser_OrdersFound_Success,21,1,0,321,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.payload.response.OrdersResponse; com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.repository.OrderRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrdersForStore_OrdersFound_Success,21,1,0,354,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.payload.response.OrdersResponse; com.Group11.soulfulplates.repository.OrderRepository; com.Group11.soulfulplates.services.impl.OrderServiceImpl
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testCreateOrder_MissingUser_ReturnsNull,16,1,0,387,1,com.Group11.soulfulplates.services.impl.OrderServiceImpl,com.Group11.soulfulplates.payload.request.CreateOrderRequest; com.Group11.soulfulplates.services.impl.OrderServiceImpl; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.services.impl,OrderServiceImplTest,testGetOrderDetails_NonExistentOrder_ThrowsException,7,1,0,415,1,com.Group11.soulfulplates.repository.OrderRepository,com.Group11.soulfulplates.repository.OrderRepository
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,setUp,3,1,0,47,0,,
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,testCreatePaymentAndTransaction_InvalidUser,15,1,0,52,1,com.Group11.soulfulplates.payload.request.CreatePaymentRequest,com.Group11.soulfulplates.payload.request.CreatePaymentRequest
-.,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,createPaymentAndTransaction_Success,28,1,0,72,1,com.Group11.soulfulplates.services.impl.PaymentServiceImpl,com.Group11.soulfulplates.payload.request.CreatePaymentRequest; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.services.impl.PaymentServiceImpl
-.,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,filterPayments_Success,27,1,0,115,1,com.Group11.soulfulplates.services.impl.PaymentServiceImpl,com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.services.impl.PaymentServiceImpl; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.repository.PaymentRepository; com.Group11.soulfulplates.models.Order
-.,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,filterSellerPayments_Success,27,1,0,164,1,com.Group11.soulfulplates.services.impl.PaymentServiceImpl,com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.PaymentRepository; com.Group11.soulfulplates.services.impl.PaymentServiceImpl; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.models.Order
+.,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,createPaymentAndTransaction_Success,28,1,0,72,1,com.Group11.soulfulplates.services.impl.PaymentServiceImpl,com.Group11.soulfulplates.payload.request.CreatePaymentRequest; com.Group11.soulfulplates.services.impl.PaymentServiceImpl; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.CartItemRepository; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.repository.UserRepository
+.,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,filterPayments_Success,27,1,0,115,1,com.Group11.soulfulplates.services.impl.PaymentServiceImpl,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.services.impl.PaymentServiceImpl; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.PaymentRepository
+.,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,filterSellerPayments_Success,27,1,0,164,1,com.Group11.soulfulplates.services.impl.PaymentServiceImpl,com.Group11.soulfulplates.models.Order; com.Group11.soulfulplates.services.impl.PaymentServiceImpl; com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.repository.PaymentRepository
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,updatePaymentStatus_Success,12,1,0,213,1,com.Group11.soulfulplates.models.Payment,com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Transaction
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,updatePaymentStatus_TransactionIdMismatch,13,1,0,234,1,com.Group11.soulfulplates.models.Payment,com.Group11.soulfulplates.models.Payment; com.Group11.soulfulplates.models.Transaction
 .,com.Group11.soulfulplates.services.impl,PaymentServiceImplTest,updatePaymentStatus_PaymentNotFound,9,1,0,256,1,,
@@ -597,26 +567,34 @@ Project Name,Package Name,Type Name,Method Name,LOC,CC,PC,Line no,IsTest,Main pr
 .,com.Group11.soulfulplates.services.impl,RatingServiceImplTest,addRatingAndLinkToOrder_OrderIdNull,9,1,0,78,1,com.Group11.soulfulplates.payload.request.CreateRatingRequest,com.Group11.soulfulplates.payload.request.CreateRatingRequest
 .,com.Group11.soulfulplates.services.impl,RatingServiceImplTest,addRatingAndLinkToOrder_StoreIdNull,10,1,0,94,1,com.Group11.soulfulplates.payload.request.CreateRatingRequest,com.Group11.soulfulplates.payload.request.CreateRatingRequest
 .,com.Group11.soulfulplates.services.impl,RatingServiceImplTest,addRatingAndLinkToOrder_OrderNotFound,11,1,0,111,1,com.Group11.soulfulplates.payload.request.CreateRatingRequest,com.Group11.soulfulplates.payload.request.CreateRatingRequest
+.,com.Group11.soulfulplates.services.impl,RatingServiceImplTest,addRatingAndLinkToOrder_NewRating,16,1,0,131,1,com.Group11.soulfulplates.payload.request.CreateRatingRequest,com.Group11.soulfulplates.payload.request.CreateRatingRequest; com.Group11.soulfulplates.models.Order
+.,com.Group11.soulfulplates.services.impl,RatingServiceImplTest,addRatingAndLinkToOrder_StoreNotFound,14,1,0,160,1,com.Group11.soulfulplates.payload.request.CreateRatingRequest,com.Group11.soulfulplates.payload.request.CreateRatingRequest; com.Group11.soulfulplates.models.Order
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,setup,3,1,0,28,0,,
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,testUpdateStoreByUserId_Success,21,1,0,33,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.repository.StoreRepository; com.Group11.soulfulplates.services.impl.StoreServiceImpl
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,testCreateStore_Success,11,1,0,60,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl; com.Group11.soulfulplates.models.Store
-.,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,getStoreById_ExistingId_ReturnsStore,9,1,0,76,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.models.Store; com.Group11.soulfulplates.services.impl.StoreServiceImpl
+.,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,getStoreById_ExistingId_ReturnsStore,9,1,0,76,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl; com.Group11.soulfulplates.models.Store
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,getStoreById_NonExistingId_ReturnsEmptyOptional,6,1,0,92,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,getAllStores_ReturnsListOfStores,8,1,0,105,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,deleteStore_ExistingId_DeletesStore,5,1,0,120,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,existsById_ExistingId_ReturnsTrue,6,1,0,130,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl
 .,com.Group11.soulfulplates.services.impl,StoreServiceImplTest,existsById_NonExistingId_ReturnsFalse,6,1,0,143,1,com.Group11.soulfulplates.services.impl.StoreServiceImpl,com.Group11.soulfulplates.services.impl.StoreServiceImpl
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImplTest,setUp,3,1,0,26,0,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImplTest,testCreateSubcategory,10,1,0,31,1,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImplTest,testFindById,10,1,0,45,1,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImplTest,testUpdateSubcategory,11,1,0,59,1,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImplTest,testDeleteSubcategory,8,1,0,74,1,,
+.,com.Group11.soulfulplates.services.impl,SubcategoryServiceImplTest,testGetAllSubCategories,13,1,0,86,1,,
 .,com.Group11.soulfulplates.services.impl,TransactionServiceImplTest,setup,3,1,0,31,0,,
 .,com.Group11.soulfulplates.services.impl,TransactionServiceImplTest,testCreateTransaction_Success,26,1,0,36,1,com.Group11.soulfulplates.services.impl.TransactionServiceImpl,com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.services.impl.TransactionServiceImpl; com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.services.impl,TransactionServiceImplTest,testUpdateTransactionStatus_Success,11,1,0,73,1,com.Group11.soulfulplates.services.impl.TransactionServiceImpl,com.Group11.soulfulplates.models.Transaction; com.Group11.soulfulplates.services.impl.TransactionServiceImpl
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,setUp,3,1,0,32,0,,
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testGetAllWishlists,7,1,0,37,1,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testGetWishlistById,10,1,0,48,1,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl
-.,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testSaveOrUpdateWishlist,15,1,0,62,1,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.repository.UserRepository; com.Group11.soulfulplates.services.impl.WishlistServiceImpl
+.,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testSaveOrUpdateWishlist,15,1,0,62,1,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl; com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testSaveOrUpdateWishlistUserNotFound,8,1,0,82,1,com.Group11.soulfulplates.repository.UserRepository,com.Group11.soulfulplates.repository.UserRepository
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testDeleteWishlist,6,1,0,93,1,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl
 .,com.Group11.soulfulplates.services.impl,WishlistServiceImplTest,testDeleteWishlistFailure,6,1,0,103,1,com.Group11.soulfulplates.services.impl.WishlistServiceImpl,com.Group11.soulfulplates.services.impl.WishlistServiceImpl
 .,com.Group11.soulfulplates.utils,CartItemUtils,extractItemIds,3,1,1,11,0,,
 .,com.Group11.soulfulplates.utils,CartItemUtils,getTotalForOrderId,3,1,1,17,0,com.Group11.soulfulplates.models.CartItem,com.Group11.soulfulplates.models.CartItem
-.,com.Group11.soulfulplates.utils,CartItemUtilsTest,testExtractItemIds,14,1,0,13,1,com.Group11.soulfulplates.utils.CartItemUtils,com.Group11.soulfulplates.models.CartItem; com.Group11.soulfulplates.utils.CartItemUtils
-.,com.Group11.soulfulplates.utils,CartItemUtilsTest,testGetTotalForOrderId,16,1,0,32,1,com.Group11.soulfulplates.utils.CartItemUtils,com.Group11.soulfulplates.models.CartItem; com.Group11.soulfulplates.utils.CartItemUtils
+.,com.Group11.soulfulplates.utils,CartItemUtilsTest,testExtractItemIds,14,1,0,13,1,com.Group11.soulfulplates.utils.CartItemUtils,com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.models.CartItem
+.,com.Group11.soulfulplates.utils,CartItemUtilsTest,testGetTotalForOrderId,16,1,0,32,1,com.Group11.soulfulplates.utils.CartItemUtils,com.Group11.soulfulplates.utils.CartItemUtils; com.Group11.soulfulplates.models.CartItem
