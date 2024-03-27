@@ -1,10 +1,8 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Category;
-import com.Group11.soulfulplates.payload.request.SubcategoryRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.CategoryService;
-import com.Group11.soulfulplates.services.impl.SubcategoryService;
+import com.Group11.soulfulplates.services.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -24,7 +21,7 @@ import static org.mockito.Mockito.*;
 class CategoryControllerTest {
 
     @Mock
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
 
 
@@ -36,7 +33,6 @@ class CategoryControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    /*
     @Test
     void testCreateCategory() {
         // Mock data
@@ -115,7 +111,5 @@ class CategoryControllerTest {
         assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
-
-*/
 
 }

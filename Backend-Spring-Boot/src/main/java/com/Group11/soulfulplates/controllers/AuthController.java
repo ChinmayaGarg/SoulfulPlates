@@ -112,60 +112,67 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
+      return ResponseEntity.badRequest()
+              .body(new MessageResponse(-1, "Error: Username is required!", null));
+    }
+
     try {
       String loginUsername = loginRequest.getUsername();
       String loginPassword = loginRequest.getPassword();
-      UsernamePasswordAuthenticationToken userpass= new UsernamePasswordAuthenticationToken(loginUsername, loginPassword);
+      UsernamePasswordAuthenticationToken userpass = new UsernamePasswordAuthenticationToken(loginUsername, loginPassword);
       Authentication authentication = authenticationManager.authenticate(userpass);
 
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      String jwt = jwtUtils.generateJwtToken(authentication);
+      if (authentication != null && authentication.isAuthenticated()) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-      List<String> roles = userDetails.getAuthorities().stream()
-          .map(Object::toString)
-          .collect(Collectors.toList());
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
 
-      // Fetch store information if exists
-      Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
+        // Fetch store information if exists
+        Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
 
-      Long id = userDetails.getId();
-      String username = userDetails.getUsername();
-      String email = userDetails.getEmail();
-      String contactNumber = userDetails.getContactNumber();
-      String firstname = userDetails.getFirstname();
-      boolean isNotificationFlag = userDetails.isNotificationFlag();
+        Long id = userDetails.getId();
+        String username = userDetails.getUsername();
+        String email = userDetails.getEmail();
+        String contactNumber = userDetails.getContactNumber();
+        String firstname = userDetails.getFirstname();
+        boolean isNotificationFlag = userDetails.isNotificationFlag();
 
-      // If store details exist, append them to JwtResponse
-      if (storeOptional.isPresent()) {
-        Store store = storeOptional.get();
-        Long storeId = store.getStoreId();
-        String storeName = store.getStoreName();
-        String storeEmail = store.getStoreEmail();
-        String storeContactNumber = store.getContactNumber();
+        JwtResponse jwtResponse;
 
-        JwtResponse jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
-            isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber);
+        // If store details exist, append them to JwtResponse
+        if (storeOptional.isPresent()) {
+          Store store = storeOptional.get();
+          Long storeId = store.getStoreId();
+          String storeName = store.getStoreName();
+          String storeEmail = store.getStoreEmail();
+          String storeContactNumber = store.getContactNumber();
+
+          jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
+                  isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber);
+        } else {
+          // Create JwtResponse without store details
+          jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
+                  isNotificationFlag);
+        }
 
         return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
       } else {
-        // Create JwtResponse without store details
-
-        JwtResponse jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
-            isNotificationFlag);
-
-        // JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(),
-        // userDetails.getUsername(),
-        // userDetails.getEmail(), roles, userDetails.getContactNumber(),
-        // userDetails.getFirstname(),
-        // userDetails.isNotificationFlag());
-        return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new MessageResponse(-1, "Invalid username or password", null));
       }
     } catch (BadCredentialsException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-          .body(new MessageResponse(-1, "Invalid username or password", null));
+              .body(new MessageResponse(-1, "Invalid username or password", null));
     }
   }
+
+
+
 
   @PostMapping("/forget-password")
   public ResponseEntity<MessageResponse> generateForgetPasswordCode(

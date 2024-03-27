@@ -2,23 +2,19 @@ package com.Group11.soulfulplates.controllers;
 
 
 import com.Group11.soulfulplates.models.MenuItem;
-import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
-import com.Group11.soulfulplates.services.impl.MenuItemService;
+import com.Group11.soulfulplates.services.impl.MenuItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class MenuItemController {
 
     @Autowired
-    private MenuItemService menuItemService;
+    private MenuItemServiceImpl menuItemService;
     // Insert MenuItem
     @PostMapping("/menu-items")
     public ResponseEntity createMenuItem(@RequestBody MenuItem menuItem) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class SubcategoryService {
+public class SubcategoryServiceImpl {
     @Autowired
     private SubcategoryRepository subcategoryRepository;
 

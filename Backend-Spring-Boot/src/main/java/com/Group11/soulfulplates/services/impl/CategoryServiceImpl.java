@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CategoryService {
+public class CategoryServiceImpl {
     @Autowired
     private CategoryRepository categoryRepository;
 

@@ -1,6 +1,5 @@
 package com.Group11.soulfulplates.services.impl;
 
-import com.Group11.soulfulplates.models.Order;
 import com.Group11.soulfulplates.models.Rating;
 import com.Group11.soulfulplates.payload.request.CreateRatingRequest;
 import com.Group11.soulfulplates.repository.OrderRepository;
@@ -127,6 +126,4 @@ class RatingServiceImplTest {
         verifyNoInteractions(storeRepository);
         verifyNoInteractions(ratingRepository);
     }
-
-
 }
