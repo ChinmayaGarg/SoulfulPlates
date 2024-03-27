@@ -131,28 +131,28 @@ class OrderControllerTest {
         assertEquals(response, result.getBody());
     }
 
-//    @Test
-//    void testGetOrderDetails_ExceptionCaught() throws Exception {
-//        // Mock data
-//        GetOrderDetailsRequest request = new GetOrderDetailsRequest();
-//        request.setUserId(1L);
-//        request.setOrderId(123L);
-//        Exception exception = new RuntimeException("Some error occurred.");
-//
-//        // Mock service behavior
-//        when(orderService.getOrderDetails(request.getUserId(), request.getOrderId())).thenThrow(exception);
-//
-//        // Call the method
-//        ResponseEntity<OrderDetailsResponse> responseEntity = orderController.getOrderDetails(request);
-//
-//        // Assertions
-//        assertEquals(-1, responseEntity.getBody().getCode());
-//        assertEquals("Error getting order details: Some error occurred.", responseEntity.getBody().getDescription());
-//        assertEquals(null, responseEntity.getBody().getData());
-//
-//        // Verify behavior
-//        verify(orderService, times(1)).getOrderDetails(request.getUserId(), request.getOrderId());
-//    }
+    @Test
+    void testGetOrderDetails_ExceptionCaught() throws Exception {
+        // Mock data
+        GetOrderDetailsRequest request = new GetOrderDetailsRequest();
+        request.setUserId(1L);
+        request.setOrderId(123L);
+        Exception exception = new RuntimeException("Some error occurred.");
+
+        // Mock service behavior
+        when(orderService.getOrderDetails(request.getUserId(), request.getOrderId())).thenThrow(exception);
+
+        // Call the method
+        ResponseEntity<OrderDetailsResponse> responseEntity = orderController.getOrderDetails(request);
+
+        // Assertions
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertEquals("Error getting order details:", responseEntity.getBody().getDescription());
+        assertEquals(null, responseEntity.getBody().getData());
+
+        // Verify behavior
+        verify(orderService, times(1)).getOrderDetails(request.getUserId(), request.getOrderId());
+    }
 
     @Test
     void getOrdersForUser_ExceptionCaught() throws Exception {
@@ -183,35 +183,33 @@ class OrderControllerTest {
                 .getOrdersForUser(request.getUserId(), request.getStatus(), request.getLimit(), request.getOffset());
     }
 
-//    @Test
-//    void getOrdersForStore_ExceptionCaught() throws Exception {
-//        // Mock data
-//        GetStoreOrders request = new GetStoreOrders();
-//        request.setStoreId(1L);
-//        request.setStatus("pending");
-//        request.setLimit(10);
-//        request.setOffset(0);
-//        Exception exception = new RuntimeException("Some error occurred.");
-//
-//        // Mock service behavior
-//        when(orderService.getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset()))
-//                .thenThrow(exception);
-//
-//        // Call the method
-//        ResponseEntity responseEntity = orderController.getOrdersForStore(request);
-//
-//        // Assertions
-//        assertEquals(400, responseEntity.getStatusCodeValue());
-//        // Assuming you meant to create an OrderDetailsResponse instance, not an OrdersResponse instance
-//        assertEquals(-1, ((OrderDetailsResponse) responseEntity.getBody()).getCode());
-//        assertEquals("Error getting order details: Some error occurred.", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
-//        assertEquals(null, ((OrderDetailsResponse) responseEntity.getBody()).getData());
-//
-//        // Verify behavior
-//        verify(orderService, times(1))
-//                .getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset());
-//    }
+    @Test
+    void getOrdersForStore_ExceptionCaught() throws Exception {
+        // Mock data
+        GetStoreOrders request = new GetStoreOrders();
+        request.setStoreId(1L);
+        request.setStatus("pending");
+        request.setLimit(10);
+        request.setOffset(0);
+        Exception exception = new RuntimeException("Some error occurred.");
 
+        // Mock service behavior
+        when(orderService.getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset()))
+                .thenThrow(exception);
 
+        // Call the method
+        ResponseEntity responseEntity = orderController.getOrdersForStore(request);
+
+        // Assertions
+        assertEquals(400, responseEntity.getStatusCodeValue());
+        // Assuming you meant to create an OrderDetailsResponse instance, not an OrdersResponse instance
+        assertEquals(-1, ((OrderDetailsResponse) responseEntity.getBody()).getCode());
+        assertEquals("Error getting order details: Some error occurred.", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
+        assertEquals(null, ((OrderDetailsResponse) responseEntity.getBody()).getData());
+
+        // Verify behavior
+        verify(orderService, times(1))
+                .getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset());
+    }
 }
 

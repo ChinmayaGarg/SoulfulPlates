@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MenuItemService {
+public class MenuItemServiceImpl {
 
     @Autowired
     private MenuItemRepository menuItemRepository;

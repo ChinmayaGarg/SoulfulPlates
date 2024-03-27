@@ -3,10 +3,8 @@ package com.Group11.soulfulplates.controllers;
 import com.Group11.soulfulplates.models.Category;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
-import com.Group11.soulfulplates.payload.response.OrdersResponse;
-import com.Group11.soulfulplates.services.impl.CategoryService;
+import com.Group11.soulfulplates.services.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class CategoryController {
     @Autowired
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @GetMapping("/getAllCategories")
     public ResponseEntity getAllByStoreId() {
