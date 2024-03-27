@@ -78,6 +78,8 @@ class MenuModel extends GenericModel {
   bool? _recommended;
   num? _subcategoryId;
   num? _categoryId;
+  int quantity = 0;
+
   MenuModel copyWith({
     num? itemId,
     String? itemName,
@@ -147,5 +149,13 @@ class MenuModel extends GenericModel {
   @override
   from(json) {
     return MenuModel.fromJson(json);
+  }
+
+  void isInStock(bool value) {
+    _inStock = value;
+  }
+
+  void isRecommended(bool value) {
+    _recommended = value;
   }
 }

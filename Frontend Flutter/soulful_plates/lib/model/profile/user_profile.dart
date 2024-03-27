@@ -34,6 +34,7 @@ class UserProfile extends GenericModel {
     String? sellerName,
     String? sellerEmail,
     String? sellerContactNumber,
+    String? storeDescription,
     String? image,
   }) {
     _token = token;
@@ -49,6 +50,7 @@ class UserProfile extends GenericModel {
     _sellerName = sellerName;
     _sellerEmail = sellerEmail;
     _sellerContactNumber = sellerContactNumber;
+    _storeDescription = storeDescription;
     _image = image;
   }
 
@@ -66,6 +68,7 @@ class UserProfile extends GenericModel {
     _sellerName = json['sellerName'];
     _sellerEmail = json['sellerEmail'];
     _sellerContactNumber = json['sellerContactNumber'];
+    _storeDescription = json['storeDescription'];
     _image = json['image'];
   }
   String? _token;
@@ -81,6 +84,7 @@ class UserProfile extends GenericModel {
   String? _sellerName;
   String? _sellerEmail;
   String? _sellerContactNumber;
+  String? _storeDescription;
   String? _image;
   UserProfile copyWith({
     String? token,
@@ -95,6 +99,7 @@ class UserProfile extends GenericModel {
     num? sellerId,
     String? sellerName,
     String? sellerEmail,
+    String? storeDescription,
     String? image,
     String? sellerContactNumber,
   }) =>
@@ -111,6 +116,7 @@ class UserProfile extends GenericModel {
         sellerId: sellerId ?? _sellerId,
         sellerName: sellerName ?? _sellerName,
         sellerEmail: sellerEmail ?? _sellerEmail,
+        storeDescription: storeDescription ?? _storeDescription,
         sellerContactNumber: sellerContactNumber ?? _sellerContactNumber,
         image: image ?? _image,
       );
@@ -127,6 +133,7 @@ class UserProfile extends GenericModel {
   String? get sellerName => _sellerName;
   String? get sellerEmail => _sellerEmail;
   String? get sellerContactNumber => _sellerContactNumber;
+  String? get storeDescription => _storeDescription;
   String? get image => _image;
 
   Map<String, dynamic> toJson() {
@@ -144,6 +151,7 @@ class UserProfile extends GenericModel {
     map['sellerName'] = _sellerName;
     map['sellerEmail'] = _sellerEmail;
     map['sellerContactNumber'] = _sellerContactNumber;
+    map['storeDescription'] = _storeDescription;
     map['image'] = _image;
     return map;
   }

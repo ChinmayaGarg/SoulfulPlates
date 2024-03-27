@@ -1,3 +1,4 @@
+import 'package:soulful_plates/constants/app_theme.dart';
 import 'package:soulful_plates/network/network_interfaces/generic_model.dart';
 
 /// orderId : 1
@@ -20,8 +21,8 @@ class OrderDetailModel extends GenericModel {
     String? createdDate,
     num? userId,
     num? storeId,
-    dynamic rating,
-    dynamic feedback,
+    num? rating,
+    String? feedback,
     dynamic paymentStatus,
     num? totalAmount,
     String? instructions,
@@ -71,21 +72,25 @@ class OrderDetailModel extends GenericModel {
   String? _createdDate;
   num? _userId;
   num? _storeId;
-  dynamic _rating;
-  dynamic _feedback;
+  num? _rating;
+  String? _feedback;
   dynamic _paymentStatus;
   num? _totalAmount;
   String? _instructions;
   List<Items>? _items;
   List<CartItems>? _cartItems;
+  setRating(int value) {
+    _rating = value;
+  }
+
   OrderDetailModel copyWith({
     num? orderId,
     String? orderStatus,
     String? createdDate,
     num? userId,
     num? storeId,
-    dynamic rating,
-    dynamic feedback,
+    num? rating,
+    String? feedback,
     dynamic paymentStatus,
     num? totalAmount,
     String? instructions,
@@ -111,13 +116,21 @@ class OrderDetailModel extends GenericModel {
   String? get createdDate => _createdDate;
   num? get userId => _userId;
   num? get storeId => _storeId;
-  dynamic get rating => _rating;
-  dynamic get feedback => _feedback;
+  num? get rating => _rating;
+  String? get feedback => _feedback;
   dynamic get paymentStatus => _paymentStatus;
   num? get totalAmount => _totalAmount;
   String? get instructions => _instructions;
   List<Items>? get items => _items;
   List<CartItems>? get cartItems => _cartItems;
+
+  OrderStatus getOrderStatusType() {
+    OrderStatus orderStatusType = OrderStatus.values.firstWhere(
+      (element) => element.toString().split('.').last == orderStatus,
+      orElse: () => OrderStatus.Pending,
+    );
+    return orderStatusType;
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
