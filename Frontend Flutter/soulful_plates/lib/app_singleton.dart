@@ -11,6 +11,8 @@ import 'utils/shared_prefs.dart';
 class AppSingleton {
   static final AppSingleton _singleton = AppSingleton._internal();
 
+  static int storeId = 1;
+
   PackageInfo? packageInfo;
 
   factory AppSingleton() {

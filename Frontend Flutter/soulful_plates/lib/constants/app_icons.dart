@@ -12,6 +12,7 @@ class AppIcons {
   static String placeHolder = "${_drawables}placeHolder.png";
   static String iconClose = "${_drawables}close.png";
   static String appIcon = "${_drawables}app_icon.png";
+  static String appIconWhite = "${_drawables}app_icon_white.png";
   static String vegIcon = "${_drawables}veg_icon.png";
   static String nonVegIcon = "${_drawables}nonveg_icon.png";
   static String eggIcon = "${_drawables}egg_icon.png";
