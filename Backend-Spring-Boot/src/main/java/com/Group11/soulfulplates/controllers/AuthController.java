@@ -151,9 +151,10 @@ public class AuthController {
           String storeName = store.getStoreName();
           String storeEmail = store.getStoreEmail();
           String storeContactNumber = store.getContactNumber();
+          String storeDescription = store.getStoreDescription();
 
           jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
-                  isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber);
+                  isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber,storeDescription);
         } else {
           // Create JwtResponse without store details
           jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,

@@ -20,7 +20,6 @@ class DioSing implements IDioSing {
 
   DioSing._internal();
 
-  //todo set local environment
   @override
   // String url = 'http://192.168.1.9:8080';
   // String url = 'http://192.168.2.143:8080/api/';
@@ -47,6 +46,7 @@ class DioSing implements IDioSing {
         debugPrint('This is called user model $userModel ${userModel?.id}');
         headers = <String, dynamic>{
           'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer ${userModel?.token}',
           'Authorization': 'Bearer ${userModel?.token}',
           // 'Authorization':
           //     'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXllciIsImlhdCI6MTcxMDk5MjIwMiwiZXhwIjoxNzExMDc4NjAyfQ.9YxgeNnJI5S_MSnNvzb01kkn2C30SMuTQ8YSQWqLt_Y',

@@ -4,8 +4,12 @@ import 'package:soulful_plates/Utils/Extensions.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_icons.dart';
+import '../../../constants/app_sized_box.dart';
+import '../../../constants/app_text_styles.dart';
+import '../../../constants/enums/view_state.dart';
 import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
+import '../../widgets/payment_item_widget.dart';
 import 'transactions_controller.dart';
 
 class TransactionsScreen extends GetView<TransactionsController>
@@ -30,95 +34,112 @@ class TransactionsScreen extends GetView<TransactionsController>
         ));
   }
 
-//   Widget getBody(BuildContext context) {
-//     return Column(
-//       children: [
-//         12.rVerticalSizedBox(),
-//         const Text("Transactions Screen"),
-//         12.rVerticalSizedBox(),
-//       ],
-//     );
-//   }
-// }
-
   Widget getBody(BuildContext context) {
-    return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        const Row(
           children: [
+            Expanded(
+              child: Divider(
+                color: Colors.black,
+                thickness: 1,
+              ),
+            ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3),
-              child: Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.lightGreen.shade100.withOpacity(0.9),
-                        //spreadRadius: 2,
-                        //offset: Offset(0, 2), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search Order No',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color: Colors.white, // specify border color here
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                          color:
-                              Colors.black, // specify focused border color here
-                        ),
-                      ),
-                    ),
-                  ),
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Invoice',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Cambria',
                 ),
               ),
             ),
-            20.rVerticalSizedBox(),
-            Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Invoice',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Cambria',
+            Expanded(
+              child: Divider(
+                color: Colors.black,
+                thickness: 1,
+              ),
+            ),
+          ],
+        ),
+        8.rVerticalSizedBox(),
+        Expanded(
+          child: Stack(children: [
+            controller.dataList.isNotEmpty
+                ? RefreshIndicator(
+                    onRefresh: () async {
+                      controller.resetPagination();
+                    },
+                    child: NotificationListener<ScrollNotification>(
+                        onNotification: (scrollNotification) {
+                          if (scrollNotification.metrics.pixels >=
+                                  scrollNotification.metrics.maxScrollExtent &&
+                              !controller.hasReachedMax &&
+                              !controller.isLoading()) {
+                            controller.pageNo = (controller.pageNo + 1);
+                            controller.loadMore();
+                          }
+                          return false;
+                        },
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: controller.dataList.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index < controller.dataList.length) {
+                              return InkWell(
+                                onTap: () async {
+                                  //todo tap on the item
+                                },
+                                child: PaymentItemWidget(
+                                        paymentModel:
+                                            controller.dataList[index])
+                                    .paddingVertical8(),
+                              );
+                            } else if (controller.moreLoading ==
+                                ViewStateEnum.busy) {
+                              return controller.loadMoreLoader(
+                                  color: AppColor.blackColor);
+                            } else {
+                              return AppSizedBox.sizedBox0;
+                            }
+                          },
+                        )),
+                  )
+                : Center(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        controller.resetPagination();
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.refresh_outlined,
+                            size: 24.rSize(),
+                            color: AppColor.primaryColor,
+                          ),
+                          Text(
+                            'No data available!',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
+                        ],
+                      ).paddingAll12(),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                ),
-              ],
-            ),
-            20.rVerticalSizedBox(),
-            CardOne(),
-            20.rVerticalSizedBox(),
-            CardOne(),
-          ],
-        ).paddingAll16(),
+            controller.state == ViewStateEnum.busy
+                ? const Center(child: CircularProgressIndicator())
+                : AppSizedBox.sizedBox0
+          ]).paddingAllDefault(),
+        )
       ],
-    );
+    ).paddingAll16();
   }
 }
 

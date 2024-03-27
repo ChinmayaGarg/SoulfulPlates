@@ -7,7 +7,6 @@ import 'package:soulful_plates/model/payment_model.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
 import '../../../model/data_model.dart';
-import '../../../model/store_model.dart';
 import '../../../network/network_interfaces/end_points.dart';
 import '../../../network/network_interfaces/i_dio_singleton.dart';
 import '../../../network/network_utils/api_call.dart';
@@ -43,19 +42,6 @@ class WishlistController extends BaseController
       endPoint:
           "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
       obj: AddressModel(),
-      apiCallType: ApiCallType.seller,
-    );
-    print("Response $response ");
-    updateLoader(ViewStateEnum.idle);
-    update();
-  }
-
-  void getNearByStores() async {
-    updateLoader(ViewStateEnum.busy);
-    var response = await ApiCall().call<StoreModel>(
-      method: RequestMethod.get,
-      endPoint: "${EndPoints.getNearByStores}/${6}/2001",
-      obj: StoreModel(),
       apiCallType: ApiCallType.seller,
     );
     print("Response $response ");
@@ -118,27 +104,6 @@ class WishlistController extends BaseController
       setLoaderState(ViewStateEnum.idle);
       Utils.showSuccessToast(
           "Issue while delete Address. Please try again later.", false);
-    }
-    updateLoader(ViewStateEnum.idle);
-    update();
-  }
-
-  void updateNotificationStatus({data}) async {
-    updateLoader(ViewStateEnum.busy);
-    var response = await ApiCall().call(
-        method: RequestMethod.put,
-        endPoint:
-            "${EndPoints.updateNotificationStatus}/${AppSingleton.loggedInUserProfile?.id}",
-        apiCallType: ApiCallType.seller,
-        parameters: data);
-    print("Response $response ");
-    if (response != null && response['code'] == 1) {
-      Utils.showSuccessToast("updateNotificationStatus successfully.", true);
-    } else {
-      setLoaderState(ViewStateEnum.idle);
-      Utils.showSuccessToast(
-          "Issue while updateNotificationStatus. Please try again later.",
-          false);
     }
     updateLoader(ViewStateEnum.idle);
     update();
@@ -315,18 +280,6 @@ class WishlistController extends BaseController
         obj: PaymentModel(),
         apiCallType: ApiCallType.seller,
         parameters: data);
-    print("Response $response ");
-    updateLoader(ViewStateEnum.idle);
-    update();
-  }
-
-  void getAverageRating() async {
-    updateLoader(ViewStateEnum.busy);
-    var response = await ApiCall().call(
-      method: RequestMethod.get,
-      endPoint: EndPoints.getAverageRating + "/1",
-      apiCallType: ApiCallType.seller,
-    );
     print("Response $response ");
     updateLoader(ViewStateEnum.idle);
     update();

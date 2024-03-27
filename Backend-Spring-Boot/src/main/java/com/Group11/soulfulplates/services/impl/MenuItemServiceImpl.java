@@ -42,6 +42,13 @@ public class MenuItemServiceImpl {
         MenuItem menuItem = findMenuById(menuItemId);
         menuItem.setItemName(updatedMenuItem.getItemName());
         menuItem.setDescription(updatedMenuItem.getDescription());
+        menuItem.setItemPrice(updatedMenuItem.getItemPrice());
+        menuItem.setType(updatedMenuItem.getType());
+        menuItem.setInStock(updatedMenuItem.isInStock());
+        menuItem.setItemImage(updatedMenuItem.getItemImage());
+        menuItem.setServingType(updatedMenuItem.getServingType());
+        menuItem.setPortion(updatedMenuItem.getPortion());
+        menuItem.setRecommended(updatedMenuItem.isRecommended());
         return menuItemRepository.save(menuItem);
     }
     public void deleteMenuItem(Long menuItemId) {
