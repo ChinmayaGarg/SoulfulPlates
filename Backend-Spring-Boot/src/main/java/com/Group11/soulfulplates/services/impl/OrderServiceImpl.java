@@ -126,11 +126,13 @@ public class OrderServiceImpl implements OrderService {
         // Check if user is null
         if (order.getUser() != null) {
             orderDetails.setUserId(order.getUser().getId());
+            orderDetails.setUsername(order.getUser().getUsername());
         } else {
             throw new Exception("User not found for order");
         }
 
         orderDetails.setStoreId(order.getStore().getStoreId());
+        orderDetails.setStoreName(order.getStore().getStoreName());
         orderDetails.setInstructions(order.getInstructions());
 
         if (order.getRating() != null) {
