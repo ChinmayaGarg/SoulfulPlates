@@ -137,7 +137,7 @@ public class PaymentServiceImpl implements PaymentService {
                     payment.getStore().getStoreId(),
                     payment.getAmount(),
                     payment.getOrder().getOrderId(),
-                    "12**-****-**61",
+                    maskCardNumber(payment.getTransaction().getCardNumber()),
                     transaction.getCardExpiry(),
                     "***",
                     payment.getStatus(),
@@ -148,6 +148,39 @@ public class PaymentServiceImpl implements PaymentService {
                     transaction.getUpdatedAt()
             );
         }).collect(Collectors.toList());
+    }
+
+    public static String maskCardNumber(String cardNumber) {
+        if(cardNumber == null || cardNumber.isEmpty()){
+            return "****-****-****";
+        }
+
+        // Split the card number into parts using "-" as the delimiter
+        String[] parts = cardNumber.split("-");
+        // Initialize a StringBuilder to hold the masked card number
+        StringBuilder maskedNumber = new StringBuilder();
+
+        // Iterate through each part
+        for (int i = 0; i < parts.length; i++) {
+            // For each part, mask the middle characters and keep the first two and last two characters as is
+            String part = parts[i];
+            // Append the first two characters of the part
+            maskedNumber.append(part.substring(0, 2));
+            // Append asterisks for the middle part, except for the last group
+            if (i < parts.length - 1) {
+                maskedNumber.append("**");
+            } else {
+                // For the last group, append the actual characters instead of asterisks
+                maskedNumber.append(part.substring(2));
+            }
+            // Append a "-" to separate the groups, except after the last group
+            if (i < parts.length - 1) {
+                maskedNumber.append("-");
+            }
+        }
+
+        // Convert the StringBuilder to a String and return it
+        return maskedNumber.toString();
     }
 
     @Override
