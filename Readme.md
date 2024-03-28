@@ -94,7 +94,7 @@ Starters are a set of convenient dependency descriptors that you can include in 
   - [Maven Central](https://search.maven.org/artifact/org.projectlombok/lombok)
   - [Project Lombok](https://projectlombok.org/)
 
-## Running the Project Locally
+## Running the Project's Backend Locally
 
 To run the project on your local machine, follow these steps:
 
@@ -102,22 +102,21 @@ To run the project on your local machine, follow these steps:
 
    First, clone the project repository to your local machine using the following command in your terminal:
 
-   ```bash
-   git clone <repository-url>
+```bash
+git clone <repository-url>
 
-   Make sure to replace `<repository-url>` with the actual URL of the project's repository.
-
-   ```
+Make sure to replace `<repository-url>` with the actual URL of the project's repository.
+   Eg: https://git.cs.dal.ca/courses/2024-winter/csci5308/Group11.git
+```
 
 2. **Navigate to the Project Directory**
 
 Change into the project directory by running:
 
 ```bash
-   cd spring-boot-security-jwt
+cd Backend-Spring-Boot
 
-   This command assumes that `spring-boot-security-jwt` is the name of the directory created when you cloned the repository. Adjust the command according to the actual directory name if it's different.
-
+`Backend-Spring-Boot` is the name of the backend in the cloned repository. Adjust the command according to the actual directory name if it's changed.
 ```
 
 3. **Build the Project**
@@ -128,7 +127,6 @@ Build the project and run the tests by executing the following Maven command:
 mvn clean install
 
 This command compiles the project and runs any configured tests. It's important to ensure that the build and tests pass before trying to run the application.
-
 ```
 
 4. **Run the Application**
@@ -136,11 +134,9 @@ This command compiles the project and runs any configured tests. It's important 
 Finally, start the Spring Boot application with:
 
 ```bash
-
 mvn spring-boot:run
 
- This command starts the application on your local machine. By default, the application will be accessible at `http://localhost:8080`.
-
+This command starts the application on your local machine. By default, the application will be accessible at `http://localhost:8080`.
 ```
 
 You can now interact with the application through your web browser or API testing tools like Postman.
@@ -148,7 +144,3 @@ You can now interact with the application through your web browser or API testin
 ## License
 
 This project is licensed under the MIT License.
-
-```
-
-```
