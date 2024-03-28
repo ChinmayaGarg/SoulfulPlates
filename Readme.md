@@ -19,9 +19,10 @@ Verify your Java and Maven installations by running `java -version` and `mvn -ve
 ### Database Setup
 
 1. Install MySQL and create a new database named `soulfulplates`:
-   ```sql
-   CREATE DATABASE soulfulplates;
-   ```
+
+```sql
+CREATE DATABASE soulfulplates;
+```
 
 ## Project Dependencies
 
@@ -106,7 +107,7 @@ To run the project on your local machine, follow these steps:
 git clone <repository-url>
 
 Make sure to replace `<repository-url>` with the actual URL of the project's repository.
-   Eg: https://git.cs.dal.ca/courses/2024-winter/csci5308/Group11.git
+Eg: https://git.cs.dal.ca/courses/2024-winter/csci5308/Group11.git
 ```
 
 2. **Navigate to the Project Directory**
