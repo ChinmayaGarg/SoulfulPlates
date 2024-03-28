@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/Utils/Extensions.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
+import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
 import 'order_history_seller_controller.dart';
 
@@ -18,7 +18,7 @@ class OrderHistorySellerScreen extends GetView<OrderHistorySellerController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("OrderHistorySeller"),
+          title: const Text("Order History"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -34,8 +34,40 @@ class OrderHistorySellerScreen extends GetView<OrderHistorySellerController>
 
   Widget getBody(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         12.rVerticalSizedBox(),
+        Text(
+          "Filter by Order Status:",
+          style: AppTextStyles.textStyleBlack14With400,
+        ).paddingHorizontal16(),
+        4.rVerticalSizedBox(),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: OrderStatus.values.map(
+              (OrderStatus option) {
+                return ChoiceChip(
+                  label: Text(
+                    option.name,
+                    style: TextStyle(
+                        color: controller.orderStatus == option
+                            ? Colors.white
+                            : Colors.green.shade900),
+                  ),
+                  selected: controller.orderStatus == option,
+                  selectedColor: Colors.green.shade900,
+                  backgroundColor: Colors.green.shade50,
+                  onSelected: (bool selected) {
+                    controller.orderStatus = option ?? OrderStatus.Pending;
+                    controller.resetPagination();
+                  },
+                ).paddingHorizontal8();
+              },
+            ).toList(),
+          ),
+        ).paddingHorizontal8(),
         Expanded(
           child: Stack(children: [
             controller.dataList.isNotEmpty
@@ -54,23 +86,26 @@ class OrderHistorySellerScreen extends GetView<OrderHistorySellerController>
                           }
                           return false;
                         },
-                        child: ListView.separated(
+                        child: ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: controller.dataList.length + 1,
-                          separatorBuilder: (context, index) {
-                            return 2.rVerticalGreySizedBox();
-                          },
                           itemBuilder: (context, index) {
                             if (index < controller.dataList.length) {
                               return InkWell(
                                 onTap: () async {
-                                  //todo tap on the item
+                                  Get.toNamed(orderDetailViewRoute,
+                                      arguments: controller.dataList[index]);
                                 },
-                                child: //todo change widget with item widget
-                                    Text("Item number $index")
-                                        .paddingAllDefault(),
+                                child: OrderItemWidget(
+                                    orderDetailModel:
+                                        controller.dataList[index],
+                                    isSeller: true,
+                                    orderStatusChange: (OrderStatus? status) {
+                                      print("This is order status ${status}");
+                                      // controller.changeOrderStatus(status);
+                                    }).paddingVertical8(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {
@@ -108,7 +143,7 @@ class OrderHistorySellerScreen extends GetView<OrderHistorySellerController>
             controller.state == ViewStateEnum.busy
                 ? const Center(child: CircularProgressIndicator())
                 : AppSizedBox.sizedBox0
-          ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
+          ]).paddingAllDefault(),
         ),
       ],
     );

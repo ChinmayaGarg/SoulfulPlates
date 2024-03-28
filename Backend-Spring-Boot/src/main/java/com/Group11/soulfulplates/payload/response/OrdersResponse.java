@@ -48,8 +48,31 @@ public class OrdersResponse {
         private String orderStatus;
         private Date createdDate;
         private Long userId;
+        private String username;
+        private String userPhone;
+        private String userEmail;
         private Long storeId;
+        private String storeName;
+        private String storePhone;
+        private String storeEmail;
         private Integer rating;
+
+        public String getUserEmail() {
+            return userEmail;
+        }
+
+        public void setUserEmail(String userEmail) {
+            this.userEmail = userEmail;
+        }
+
+        public String getStoreEmail() {
+            return storeEmail;
+        }
+
+        public void setStoreEmail(String storeEmail) {
+            this.storeEmail = storeEmail;
+        }
+
         private String feedback;
         private String paymentStatus;
         private Double totalAmount;
@@ -90,12 +113,44 @@ public class OrdersResponse {
             this.userId = userId;
         }
 
+        public String getUserPhone() {
+            return userPhone;
+        }
+
+        public void setUserPhone(String userPhone) {
+            this.userPhone = userPhone;
+        }
+
+        public String getStorePhone() {
+            return storePhone;
+        }
+
+        public void setStorePhone(String storePhone) {
+            this.storePhone = storePhone;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String userName) {
+            this.username = username;
+        }
+
         public Long getStoreId() {
             return storeId;
         }
 
         public void setStoreId(Long storeId) {
             this.storeId = storeId;
+        }
+
+        public String getStoreName() {
+            return storeName;
+        }
+
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
         }
 
         public Integer getRating() {

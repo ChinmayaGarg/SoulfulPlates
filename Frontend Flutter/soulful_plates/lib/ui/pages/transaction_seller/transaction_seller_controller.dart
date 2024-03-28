@@ -1,10 +1,13 @@
+import 'package:soulful_plates/constants/app_theme.dart';
+
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
-import '../../../model/data_model.dart';
+import '../../../model/payment_model.dart';
 import '../../../utils/pagination_utils.dart';
 
 class TransactionSellerController extends BaseController
-    with PaginationUtils<DataModel> {
+    with PaginationUtils<PaymentModel> {
+  PaymentStatus paymentStatus = PaymentStatus.Completed;
   @override
   void onInit() {
     super.onInit();
@@ -19,7 +22,39 @@ class TransactionSellerController extends BaseController
     }
   }
 
-  void getDataFromAPI() async {}
+  void getDataFromAPI() async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call<PaymentModel>(
+        method: RequestMethod.getPost,
+        endPoint: EndPoints.paymentHistoryStore,
+        obj: PaymentModel(),
+        apiCallType: ApiCallType.seller,
+        parameters: {
+          "storeId": AppSingleton.storeId,
+          "limit": recordsPerPage,
+          "offset": pageNo,
+          "status": paymentStatus.name
+        });
+
+    if (response != null) {
+      List<PaymentModel> temp = response;
+      if (temp.isEmpty || temp.length < recordsPerPage) {
+        hasReachedMax = true;
+      }
+      if (pageNo == 0) {
+        dataList.clear();
+      }
+      if (temp.isNotEmpty) {
+        dataList.addAll(temp);
+      }
+      updateLoader(ViewStateEnum.idle);
+    } else {
+      dataList = [];
+      updateLoader(ViewStateEnum.idle);
+    }
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
 
   @override
   bool isLoading() {

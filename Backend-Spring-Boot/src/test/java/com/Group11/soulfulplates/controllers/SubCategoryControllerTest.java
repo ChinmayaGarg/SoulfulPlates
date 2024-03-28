@@ -109,8 +109,11 @@ class SubCategoryControllerTest {
         assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 0d22516fd9658b9b99d561197af2637b86aed846
 
     @Test
     void testGetAllSubcategoryWithDetailsByCategoryId() {
@@ -125,6 +128,7 @@ class SubCategoryControllerTest {
         assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
+<<<<<<< HEAD
     @Test
     void testDeleteSubcategory() {
         // Mock data
@@ -247,4 +251,6 @@ class SubCategoryControllerTest {
         assertEquals(mockSubcategories, ((MessageResponse) responseEntity.getBody()).getData());
     }
 >>>>>>> Stashed changes
+=======
+>>>>>>> 0d22516fd9658b9b99d561197af2637b86aed846
 }

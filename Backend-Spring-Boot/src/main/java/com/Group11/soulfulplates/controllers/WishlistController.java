@@ -1,4 +1,5 @@
 package com.Group11.soulfulplates.controllers;
+
 import com.Group11.soulfulplates.models.Wishlist;
 import com.Group11.soulfulplates.payload.request.WishlistRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
@@ -38,9 +39,8 @@ public class WishlistController {
         return ResponseEntity.ok(new MessageResponse(1, "Wishlist found", value));
     }
 
-//    Needs Improvement
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    @PostMapping("/add")
+    @PostMapping("/create")
     public ResponseEntity<MessageResponse> createWishlist(@RequestBody WishlistRequest wishlistRequest) {
         System.out.println(wishlistRequest);
         Wishlist createdWishlist = wishlistService.saveOrUpdateWishlist(wishlistRequest);
@@ -50,6 +50,18 @@ public class WishlistController {
             return ResponseEntity.ok(new MessageResponse(-1, "Failed to create wishlist", null));
         }
     }
+
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<MessageResponse> getWishlistByUserId(@PathVariable Long userId) {
+        List<Wishlist> wishlists = wishlistService.getWishlistByUserId(userId);
+        if (!wishlists.isEmpty()) {
+            return ResponseEntity.ok(new MessageResponse(1, "Wishlist by this User Id found", wishlists));
+        } else {
+            return ResponseEntity.ok(new MessageResponse(-1, "Wishlist by this User Id not found", null));
+        }
+    }
+
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<MessageResponse> updateWishlist(@PathVariable Long id, @RequestBody WishlistRequest wishlistRequest) {

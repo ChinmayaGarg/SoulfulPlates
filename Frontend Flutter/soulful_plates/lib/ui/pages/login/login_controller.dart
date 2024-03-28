@@ -7,6 +7,7 @@ import 'package:soulful_plates/utils/shared_prefs.dart';
 import '../../../app_singleton.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
+import '../../../model/location/address_model.dart';
 import '../../../network/network_interfaces/i_dio_singleton.dart';
 import '../../../network/network_utils/api_call.dart';
 import '../../../routing/route_names.dart';
@@ -43,25 +44,29 @@ class LoginController extends BaseController {
             key: SharedPrefKey.userProfileData.name,
             value: userModel.toRawJson());
         AppSingleton.loggedInUserProfile = userModel;
-        print(
-            "This is AppSingleton.loggedInUserProfile ${AppSingleton.loggedInUserProfile}");
-        print(
-            "This is AppSingleton.loggedInUserProfile ${userModel.toRawJson()}");
-        print(
-            "This is AppSingleton.loggedInUserProfile ${UserPreference.getValue(key: SharedPrefKey.userProfileData.name)}");
-
         setLoaderState(ViewStateEnum.idle);
         Utils.showSuccessToast("Logged in successfully.", false);
         await UserPreference.setValue(
             key: SharedPrefKey.isLogin.name, value: true);
+        await UserPreference.setValue(
+            key: SharedPrefKey.email.name,
+            value: emailEditingController.text.trim());
+        await UserPreference.setValue(
+            key: SharedPrefKey.passcode.name,
+            value: passwordEditingController.text.trim());
         if (!AppSingleton.isBuyer() && userModel.sellerName.isNullOrEmpty) {
           onWidgetDidBuild(callback: () {
             Get.offAllNamed(storeDetailsViewRoute);
           });
         } else {
-          onWidgetDidBuild(callback: () {
+          List<AddressModel> result = await Utils.getAddress();
+          if (result.isNotNullOrEmpty) {
+            AppSingleton.storeId =
+                AppSingleton.loggedInUserProfile?.sellerId?.toInt() ?? 1;
             Get.offAllNamed(dashboardViewRoute);
-          });
+          } else {
+            Get.offAllNamed(editLocationViewRoute);
+          }
         }
       } else {
         setLoaderState(ViewStateEnum.idle);

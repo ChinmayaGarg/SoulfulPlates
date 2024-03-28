@@ -2,6 +2,7 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Address;
 import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.payload.request.UserUpdateRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.AddressRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+
 import static java.lang.Math.*;
 
 @RestController
@@ -154,11 +156,11 @@ public class UserController {
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
         String fileExtension = StringUtils.getFilenameExtension(originalFilename);
         String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
-        String fileName = StringUtils.cleanPath(fileNameWithoutExtension + "_" + System.currentTimeMillis() + "." + fileExtension);
+        String fileName = StringUtils.cleanPath(userId + ".jpg");
 
         try {
 
-            Path uploadsDir = Paths.get(uploadPath);
+            Path uploadsDir = Paths.get(uploadPath+"users/");
 
             if (!Files.exists(uploadsDir)) {
                 Files.createDirectories(uploadsDir);
@@ -168,7 +170,7 @@ public class UserController {
 
             // Update the user's profile image URL
             String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
+                    .path("/uploads/users/")
                     .path(fileName)
                     .toUriString();
             user.setProfileImageUrl(fileUrl);
@@ -178,6 +180,36 @@ public class UserController {
             return ResponseEntity.ok(new MessageResponse(1, "User image updated successfully!", user.getProfileImageUrl()));
         } catch (IOException e) {
             return ResponseEntity.ok(new MessageResponse(-1, "Failed to store file " + fileName + ". Please try again!", null));
+        }
+    }
+
+    @PutMapping("updateUser/{userId}")
+    public ResponseEntity<MessageResponse> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
+        try {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+            // Update Username if provided
+            if (request.getUsername() != null && !request.getUsername().isEmpty()) {
+                user.setUsername(request.getUsername());
+            }
+
+            // Update Email if provided
+            if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+                user.setEmail(request.getEmail());
+            }
+
+            // Update Phone number if provided
+            if (request.getContactNumber() != null && !request.getContactNumber().isEmpty()) {
+                user.setContactNumber(request.getContactNumber());
+            }
+
+            // Save the updated user entity
+            userRepository.save(user);
+
+            return ResponseEntity.ok(new MessageResponse(1, "User information updated successfully!", null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new MessageResponse(-1, "Failed to update user information. " + e.getMessage(), null));
         }
     }
 

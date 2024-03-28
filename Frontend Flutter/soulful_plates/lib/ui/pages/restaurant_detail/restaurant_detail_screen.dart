@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cart_stepper/cart_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/constants/app_text_styles.dart';
+import 'package:soulful_plates/constants/app_theme.dart';
 import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/model/menu/menu_category_model.dart';
+import 'package:soulful_plates/model/menu/menu_model.dart';
+import 'package:soulful_plates/model/menu/sub_category_model.dart';
 import 'package:soulful_plates/routing/route_names.dart';
-import 'package:soulful_plates/ui/pages/home/home_screen.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_colors.dart';
@@ -39,7 +43,8 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
         floatingActionButton: FloatingActionButton(
             tooltip: "Go to cart",
             onPressed: () {
-              Get.toNamed(viewCartViewRoute);
+              Get.toNamed(viewCartViewRoute,
+                  arguments: controller.selectedItems);
             },
             child: const Icon(
               Icons.shopping_cart,
@@ -62,155 +67,384 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HomeScreen.getRestaurantCard(),
-          Text(
-            "Lunch",
-            style: AppTextStyles.textStyleBlack18With700,
-          ).paddingHorizontal16(),
-          8.rVerticalSizedBox(),
-          Text(
-            "Quick bites",
-            style: AppTextStyles.textStyleBlack16With700,
-          ).paddingHorizontal16(),
-          8.rVerticalSizedBox(),
-          getItemCard(),
-          1.rVerticalGreySizedBox(),
-          getItemCard(),
-          1.rVerticalGreySizedBox(),
-          getItemCard(),
-          1.rVerticalGreySizedBox(),
-          getItemCard(),
-          1.rVerticalGreySizedBox(),
-          getItemCard(),
-          1.rVerticalGreySizedBox(),
-          getItemCard(),
-          1.rVerticalGreySizedBox(),
-          getItemCard(),
+          getRestaurantCard(),
+          16.rVerticalSizedBox(),
+          ListView.builder(
+              itemCount: Utils.menuCategory.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return getCategoryItem(context, Utils.menuCategory[index]);
+              }),
+          // Text(
+          //   "Quick bites",
+          //   style: AppTextStyles.textStyleBlack16With700,
+          // ).paddingHorizontal16(),
+          // 8.rVerticalSizedBox(),
+          // ListView.builder(
+          //     itemCount: controller.menuItems.length,
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     itemBuilder: (BuildContext context, int index) {
+          //       return getItemCard(context, controller.menuItems[index]);
+          //     }),
+          120.rVerticalSizedBox()
         ],
       ),
     ).paddingAllDefault();
   }
 
-  Widget getItemCard() {
+  Widget getCategoryItem(BuildContext context, MenuCategory menuCategory) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          menuCategory.categoryName ?? '',
+          style: AppTextStyles.textStyleBlack18With700,
+        ).paddingHorizontal16(),
+        4.rVerticalSizedBox(),
+        ListView.builder(
+            itemCount: menuCategory.subcategories.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return getSubCategoryItem(
+                      context, menuCategory.subcategories[index])
+                  .paddingSideOnly(left: 8);
+            }),
+        8.rVerticalSizedBox(),
+      ],
+    );
+  }
+
+  Widget getSubCategoryItem(
+      BuildContext context, SubCategoryModel subCategoryModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          subCategoryModel.subCategoryName ?? '',
+          style: AppTextStyles.textStyleBlack14With700,
+        ).paddingHorizontal16(),
+        ListView.builder(
+            itemCount: subCategoryModel.items.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return getItemCard(context, subCategoryModel.items[index]);
+            }),
+        8.rVerticalSizedBox(),
+      ],
+    );
+  }
+
+  Widget getItemCard(BuildContext context, MenuModel menuItemModel) {
     return GestureDetector(
         onTap: () {
-          _showItemDetailBottomSheet();
+          _showItemDetailBottomSheet(context, menuItemModel);
         },
         child: Container(
+          decoration: AppTheme.boxItemDecorationCard,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              8.rHorizontalSizedBox(),
+              12.rHorizontalSizedBox(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(16),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: menuItemModel.itemImage.isNotNullOrEmpty
+                          ? menuItemModel.itemImage.toString()
+                          : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                      fit: BoxFit.fill,
+                      color: AppColor.blackTextColor.withOpacity(0.1),
+                      colorBlendMode: BlendMode.color,
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                  4.rVerticalSizedBox(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        Utils().getFoodTypeIcon(menuItemModel.type ?? 'Veg'),
+                        width: 18.rSize(),
+                        height: 18.rSize(),
+                      ),
+                      2.rHorizontalSizedBox(),
+                      Text(
+                        menuItemModel.type ?? 'Veg',
+                        style: AppTextStyles.textStyleBlackTwo10With400,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              4.rHorizontalSizedBox(),
               Expanded(
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        Utils().getFoodTypeIcon('Veg'),
-                        width: 18.rSize(),
-                        height: 18.rSize(),
-                      ),
-                      4.rHorizontalSizedBox(),
-                      Text(
-                        "Eggs",
-                        style: AppTextStyles.textStyleBlackTwo14With600,
-                      ),
-                      4.rHorizontalSizedBox(),
-                    ],
-                  ),
-                  2.rVerticalSizedBox(),
+                  4.rVerticalSizedBox(),
                   Text(
-                    "Punjabi Chhole with Bhature",
+                    menuItemModel.itemName?.capitalizeFirst ?? '',
                     maxLines: 2,
-                    style: AppTextStyles.textStyleBlack16With700,
+                    style: AppTextStyles.textStyleBlack14With700,
                   ),
-                  2.rVerticalSizedBox(),
                   Text(
-                    "\$ 12.45",
-                    style: AppTextStyles.textStyleBlackTwo14With600,
+                    "\$ ${menuItemModel.itemPrice}",
+                    style: AppTextStyles.textStyleBlack12With400,
+                  ),
+                  Text(
+                    menuItemModel.description ?? '',
+                    style: AppTextStyles.textStyleBlackTwo12With400,
                   ),
                   4.rVerticalSizedBox(),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.25,
-                          color: AppColor.black2TextColor.withOpacity(0.75),
-                        ),
-                        borderRadius: BorderRadius.circular(40)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.info_outline,
-                          size: 18,
-                          color: AppColor.black2TextColor,
-                        ),
-                        4.rHorizontalSizedBox(),
-                        Text(
-                          "Item Info",
-                          style: AppTextStyles.textStyleBlackTwo14With600,
-                        ),
-                        4.rHorizontalSizedBox(),
-                      ],
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: CartStepperInt(
+                      value: menuItemModel.quantity,
+                      style: CartStepperTheme.of(context).copyWith(
+                        activeForegroundColor: AppColor.greenColor,
+                        activeBackgroundColor: AppColor.greenColorCode,
+                      ),
+                      didChangeCount: (int value) {
+                        if (menuItemModel.quantity == value) {
+                        } else if (menuItemModel.quantity > value) {
+                          controller.removeFromCart(
+                              menuItemModel.itemId?.toInt() ?? 0,
+                              menuItemModel.itemName ?? '',
+                              value);
+                        } else {
+                          controller.addToCart(
+                              menuItemModel.itemId?.toInt() ?? 0,
+                              menuItemModel.itemName ?? '',
+                              menuItemModel.itemPrice ?? '',
+                              value);
+                        }
+                        menuItemModel.quantity = value;
+                        controller.update();
+                      },
                     ).paddingAll4(),
                   ),
                   4.rVerticalSizedBox(),
                 ],
               ).paddingAllDefault()),
-              ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(8.0),
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: "https://static.toiimg.com/photo/62601713.cms",
-                  fit: BoxFit.fill,
-                  color: AppColor.blackTextColor.withOpacity(0.1),
-                  colorBlendMode: BlendMode.color,
-                  width: 100,
-                  height: 100,
-                ),
-              ).paddingUpSide412(),
             ],
           ),
         ).paddingUpSide812());
   }
 
-  void _showItemDetailBottomSheet() {
-    Get.bottomSheet(
-      Container(
-        height: Get.height / 2, // Cover half of the screen
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Replace the placeholder content with the image
-            Image.network(
-              "https://static.toiimg.com/photo/62601713.cms",
-              width: double.infinity,
-              height: Get.height / 4,
-              fit: BoxFit.cover,
-            ),
-            // Add any additional content you want in the bottom sheet
-            Text(
-              "Item Detail",
-              style: AppTextStyles.textStyleBlack18With700,
-            ),
-            // Add more content here if needed
-          ],
-        ),
+  Widget getRestaurantCard() {
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          8.rHorizontalSizedBox(),
+          Expanded(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                controller.restaurantModel?.storeName ?? '',
+                style: AppTextStyles.textStyleBlack18With700,
+              ),
+              2.rVerticalSizedBox(),
+              Text(
+                controller.restaurantModel?.storeDescription ?? '',
+                style: AppTextStyles.textStyleBlack12With400,
+              ),
+              6.rVerticalSizedBox(),
+              Text(
+                "Call: ${controller.restaurantModel?.storeContactNumber}",
+                style: AppTextStyles.textStyleBlackTwo10With400,
+              ),
+              Text(
+                "Email: ${controller.restaurantModel?.storeEmail}",
+                style: AppTextStyles.textStyleBlackTwo10With400,
+              ),
+              Text(
+                "Distance: ${controller.restaurantModel?.distance?.toInt()} kms away...",
+                style: AppTextStyles.textStyleBlackTwo10With400,
+              ),
+            ],
+          ).paddingAllDefault()),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(8.0),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://media.istockphoto.com/id/1457979959/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-french-fries.webp?b=1&s=170667a&w=0&k=20&c=A_MdmsSdkTspk9Mum_bDVB2ko0RKoyjB7ZXQUnSOHl0=",
+                  fit: BoxFit.fill,
+                  color: AppColor.blackTextColor.withOpacity(0.1),
+                  colorBlendMode: BlendMode.color,
+                  width: 110,
+                  height: 80,
+                ),
+              ),
+              8.rVerticalSizedBox(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: AppColor.primaryColor.withOpacity(0.75),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "${Utils.getRandomTimeLeftPrep()} Min",
+                      style: AppTextStyles.textStyleWhite14With400,
+                    ).paddingUpSide412(),
+                  ),
+                  8.rHorizontalSizedBox(),
+                  const Icon(
+                    Icons.star_border,
+                    color: AppColor.primaryColorLight,
+                    size: 24,
+                  ),
+                  4.rHorizontalSizedBox(),
+                  Text(
+                    controller.ratingCount.toString(),
+                    style: AppTextStyles.textStylePrimaryLight14With700,
+                  )
+                ],
+              ),
+              4.rVerticalSizedBox(),
+            ],
+          ).paddingUpSide412(),
+        ],
       ),
     );
+  }
+
+  void _showItemDetailBottomSheet(
+      BuildContext context, MenuModel menuItemModel) {
+    Get.bottomSheet(GetBuilder(
+      init: controller,
+      initState: (state) async {},
+      builder: (RestaurantDetailController model) {
+        return Container(
+          height: Get.height / 2, // Cover half of the screen
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16)),
+                child: Image.network(
+                  "https://media.istockphoto.com/id/1457979959/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-french-fries.webp?b=1&s=170667a&w=0&k=20&c=A_MdmsSdkTspk9Mum_bDVB2ko0RKoyjB7ZXQUnSOHl0=",
+                  width: double.infinity,
+                  height: Get.height / 4,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Utils().getFoodTypeIcon(menuItemModel.type ?? 'Veg'),
+                          width: 18.rSize(),
+                          height: 18.rSize(),
+                        ),
+                        2.rHorizontalSizedBox(),
+                        Text(
+                          menuItemModel.type ?? 'Veg',
+                          style: AppTextStyles.textStyleBlackTwo10With400,
+                        ),
+                      ],
+                    ),
+                    2.rVerticalSizedBox(),
+                    Text(
+                      menuItemModel.itemName?.capitalizeFirst ?? '',
+                      maxLines: 2,
+                      style: AppTextStyles.textStyleBlack14With700,
+                    ),
+                    Text(
+                      "\$ ${menuItemModel.itemPrice}",
+                      style: AppTextStyles.textStyleBlack12With400,
+                    ),
+                    Text(
+                      menuItemModel.description ?? '',
+                      style: AppTextStyles.textStyleBlackTwo12With400,
+                    ),
+                    Text(
+                      'Serve: ${menuItemModel.servingType} People',
+                      style: AppTextStyles.textStyleBlackTwo12With400,
+                    ),
+                    8.rVerticalSizedBox(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: CartStepperInt(
+                        value: menuItemModel.quantity,
+                        style: CartStepperTheme.of(context).copyWith(
+                          activeForegroundColor: AppColor.greenColor,
+                          activeBackgroundColor: AppColor.greenColorCode,
+                        ),
+                        didChangeCount: (int value) {
+                          if (menuItemModel.quantity == value) {
+                          } else if (menuItemModel.quantity > value) {
+                            controller.removeFromCart(
+                                menuItemModel.itemId?.toInt() ?? 0,
+                                menuItemModel.itemName ?? '',
+                                value);
+                          } else {
+                            controller.addToCart(
+                                menuItemModel.itemId?.toInt() ?? 0,
+                                menuItemModel.itemName ?? '',
+                                menuItemModel.itemPrice ?? '',
+                                value);
+                          }
+                          menuItemModel.quantity = value;
+                          controller.update();
+                        },
+                      ).paddingAll4(),
+                    ),
+                    4.rVerticalSizedBox(),
+                    Text(
+                      menuItemModel.recommended == true
+                          ? "Recommended by Store"
+                          : '',
+                      style: AppTextStyles.textStyleBlue14With400,
+                    ),
+                    8.rVerticalSizedBox(),
+                  ],
+                ).paddingUpSide816(),
+              ),
+            ],
+          ),
+        );
+      },
+    ));
   }
 }
 

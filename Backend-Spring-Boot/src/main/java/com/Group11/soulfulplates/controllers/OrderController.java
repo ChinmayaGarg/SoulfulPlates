@@ -10,11 +10,16 @@ import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
 import com.Group11.soulfulplates.payload.response.OrdersResponse;
 import com.Group11.soulfulplates.services.OrderService;
+import com.Group11.soulfulplates.services.PaymentService;
+import com.Group11.soulfulplates.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -23,8 +28,11 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody(required = false) CreateOrderRequest request) {
         CreateOrderResponse response = orderService.createOrder(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -64,7 +72,7 @@ public class OrderController {
     }
 
     @GetMapping("/getDetails")
-    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<OrderDetailsResponse> getOrderDetails(@RequestBody GetOrderDetailsRequest request) {
         try {
             OrderDetailsResponse response = orderService.getOrderDetails(request.getUserId(), request.getOrderId());
@@ -83,7 +91,7 @@ public class OrderController {
     }
 
     @GetMapping("/getForUser")
-    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForUser(@RequestBody GetOrdersRequest request) {
         try {
             // Extract parameters from the request for clarity
@@ -108,7 +116,7 @@ public class OrderController {
     }
 
     @GetMapping("/getForStore")
-    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForStore(@RequestBody GetStoreOrders request) {
         try {
             // Extract parameters from the request for clarity
@@ -129,6 +137,29 @@ public class OrderController {
 
             // Return a ResponseEntity indicating a bad request with the detailed response
             return ResponseEntity.badRequest().body(orderDetailsResponse);
+        }
+    }
+
+    @GetMapping("/getMonthlySummary")
+    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_BUYER')")
+    public ResponseEntity<?> getMonthlySummary(@RequestParam int storeId, @RequestParam int month) {
+        try {
+            Long totalOrders = orderService.getOrderCountForStoreAndMonth(storeId, month);
+            BigDecimal totalAmount = paymentService.getPaymentsSumForStoreAndMonth(storeId, month);
+
+            // Handle case when totalAmount is null (i.e., no payments found)
+            if (totalAmount == null) {
+                totalAmount = BigDecimal.ZERO;
+            }
+
+            Map<String, Object> response = Map.of(
+                    "totalOrders", totalOrders != null ? totalOrders : 0,
+                    "totalAmount", totalAmount
+            );
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "An error occurred: " + e.getMessage()));
         }
     }
 

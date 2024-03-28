@@ -125,11 +125,11 @@ public class StoreController {
         String fileExtension = StringUtils.getFilenameExtension(originalFilename);
         String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
         String fileName = StringUtils
-                .cleanPath(fileNameWithoutExtension + "_" + System.currentTimeMillis() + "." + fileExtension);
+                .cleanPath(storeId + ".jpg");
 
         try {
 
-            Path uploadsDir = Paths.get(uploadPath);
+            Path uploadsDir = Paths.get(uploadPath+"stores/");
 
             if (!Files.exists(uploadsDir)) {
                 Files.createDirectories(uploadsDir);
@@ -139,7 +139,7 @@ public class StoreController {
 
             // Update the user's profile image URL
             String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
+                    .path("/uploads/stores/")
                     .path(fileName)
                     .toUriString();
             store.setStoreImageUrl(fileUrl);

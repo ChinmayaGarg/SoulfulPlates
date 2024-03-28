@@ -19,6 +19,7 @@ public class JwtResponse {
   private String sellerName;
   private String sellerEmail;
   private String sellerContactNumber;
+  private String storeDescription;
 
 
   // Constructor without Seller
@@ -34,7 +35,9 @@ public class JwtResponse {
   }
 
 
-  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag, Long sellerId, String sellerName, String sellerEmail, String sellerContactNumber) {
+  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag, Long sellerId, String sellerName, String sellerEmail, String sellerContactNumber,
+                     String storeDescription
+                     ) {
     this.token = accessToken;
     this.id = id;
     this.username = username;
@@ -47,5 +50,6 @@ public class JwtResponse {
     this.sellerName = sellerName;
     this.sellerEmail = sellerEmail;
     this.sellerContactNumber = sellerContactNumber;
+    this.storeDescription = storeDescription;
   }
 }

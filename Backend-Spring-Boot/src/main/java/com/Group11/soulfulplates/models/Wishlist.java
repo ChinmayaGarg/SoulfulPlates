@@ -3,9 +3,6 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
 @Data
 @Entity
 @Table(name = "wishlist")
@@ -13,16 +10,21 @@ public class Wishlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wishlistId;
+    @Column(name = "wishid")
+    private Long wishId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "store_id")
+    private Long storeId;
 
-    @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
-    private List<WishlistItem> wishlistItems = new ArrayList<>();
+    @Column(name = "menuitem_id")
+    private Long menuItemId;
 
+    @Column(name = "item_name")
+    private String itemName;
+
+    @Column(name = "item_price")
+    private Double itemPrice;
 }

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -134,7 +135,9 @@ public class PaymentServiceImpl implements PaymentService {
             Transaction transaction = payment.getTransaction();
             return new PaymentFilterResponse(
                     transaction.getUser().getId(),
+                    transaction.getUser().getUsername(),
                     payment.getStore().getStoreId(),
+                    payment.getStore().getStoreName(),
                     payment.getAmount(),
                     payment.getOrder().getOrderId(),
                     maskCardNumber(payment.getTransaction().getCardNumber()),
@@ -196,7 +199,9 @@ public class PaymentServiceImpl implements PaymentService {
             Transaction transaction = payment.getTransaction();
             return new PaymentFilterResponse(
                     transaction.getUser().getId(),
+                    transaction.getUser().getUsername(),
                     payment.getStore().getStoreId(),
+                    payment.getStore().getStoreName(),
                     payment.getAmount(),
                     payment.getOrder().getOrderId(),
                     "12**-****-**61",
@@ -210,5 +215,10 @@ public class PaymentServiceImpl implements PaymentService {
                     transaction.getUpdatedAt()
             );
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public BigDecimal getPaymentsSumForStoreAndMonth(int storeId, int month) {
+        return paymentRepository.sumByStoreIdAndMonth(storeId, month);
     }
 }

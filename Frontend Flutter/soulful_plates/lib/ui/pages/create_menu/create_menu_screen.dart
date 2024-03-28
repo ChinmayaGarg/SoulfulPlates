@@ -4,12 +4,15 @@ import 'package:get/get.dart';
 import 'package:soulful_plates/Utils/Extensions.dart';
 import 'package:soulful_plates/constants/enums/view_state.dart';
 import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/model/menu/menu_category_model.dart';
+import 'package:soulful_plates/model/menu/sub_category_model.dart';
 import 'package:soulful_plates/ui/widgets/base_button.dart';
 
 import '../../../Utils/Validator.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../routing/route_names.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/base_common_widget.dart';
 import 'create_menu_controller.dart';
@@ -22,11 +25,12 @@ class CreateMenuScreen extends GetView<CreateMenuController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("CreateMenu"),
+          title: const Text("Create Menu Items"),
           actions: [
             InkWell(
-                onTap: () {
-                  Get.toNamed(menuCategoryViewRoute);
+                onTap: () async {
+                  var response = await Get.toNamed(menuCategoryViewRoute);
+                  controller.update();
                 },
                 child: const Icon(
                   Icons.add_circle_outline,
@@ -94,12 +98,12 @@ class CreateMenuScreen extends GetView<CreateMenuController>
             },
             hintText: 'Description',
           ),
-          DropdownSearch<String>(
+          DropdownSearch<MenuCategory>(
             popupProps: const PopupProps.bottomSheet(),
-            items: controller.category,
+            items: Utils.menuCategoryList,
             dropdownBuilder: (context, dataModel) {
               return Text(
-                dataModel ?? '',
+                dataModel?.categoryName ?? '',
                 style: AppTextStyles.textStyleBlack14With400,
               );
             },
@@ -108,18 +112,22 @@ class CreateMenuScreen extends GetView<CreateMenuController>
               hintText: 'Select Category',
               labelText: 'Select Category',
             )),
-            itemAsString: (String u) => u,
-            onChanged: (String? data) {
-              controller.selectCategory = data ?? '';
+            itemAsString: (MenuCategory u) => u.categoryName ?? '',
+            onChanged: (MenuCategory? data) async {
+              controller.selectCategory = data;
+              await Utils.fetchSubCategoryList(
+                  (state) => controller.setLoaderState,
+                  data?.categoryId?.toString() ?? '');
+              controller.selectSubCategory = null;
               controller.update();
             },
           ),
-          DropdownSearch<String>(
+          DropdownSearch<SubCategoryModel>(
             popupProps: const PopupProps.bottomSheet(),
-            items: controller.subCategory,
+            items: Utils.menuSubCategoryList,
             dropdownBuilder: (context, dataModel) {
               return Text(
-                dataModel ?? '',
+                dataModel?.subCategoryName ?? '',
                 style: AppTextStyles.textStyleBlack14With400,
               );
             },
@@ -128,9 +136,9 @@ class CreateMenuScreen extends GetView<CreateMenuController>
               hintText: 'Select Sub Category',
               labelText: 'Select Sub Category',
             )),
-            itemAsString: (String u) => u,
-            onChanged: (String? data) {
-              controller.selectSubCategory = data ?? '';
+            itemAsString: (SubCategoryModel u) => u.subCategoryName ?? '',
+            onChanged: (SubCategoryModel? data) {
+              controller.selectSubCategory = data;
               controller.update();
             },
           ),
@@ -182,7 +190,7 @@ class CreateMenuScreen extends GetView<CreateMenuController>
             },
             hintText: 'Portion',
           ),
-          InkWell(
+          GestureDetector(
             onTap: () {
               controller.inStock = !controller.inStock;
 
@@ -213,9 +221,9 @@ class CreateMenuScreen extends GetView<CreateMenuController>
                           })),
                 )
               ],
-            ),
-          ).paddingVertical8(),
-          InkWell(
+            ).paddingVertical8(),
+          ),
+          GestureDetector(
             onTap: () {
               controller.isRecommended = !controller.isRecommended;
               controller.update();
@@ -237,8 +245,8 @@ class CreateMenuScreen extends GetView<CreateMenuController>
                   size: 24,
                 ),
               ],
-            ),
-          ).paddingVertical16(),
+            ).paddingVertical16(),
+          ),
           8.rVerticalSizedBox(),
           saveButton()
         ],

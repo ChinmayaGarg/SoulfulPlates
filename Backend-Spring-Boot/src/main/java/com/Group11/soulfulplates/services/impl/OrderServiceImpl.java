@@ -126,11 +126,18 @@ public class OrderServiceImpl implements OrderService {
         // Check if user is null
         if (order.getUser() != null) {
             orderDetails.setUserId(order.getUser().getId());
+            orderDetails.setUsername(order.getUser().getUsername());
+            orderDetails.setUserPhone(order.getUser().getContactNumber());
+            orderDetails.setUserEmail(order.getUser().getEmail());
         } else {
             throw new Exception("User not found for order");
         }
 
         orderDetails.setStoreId(order.getStore().getStoreId());
+        orderDetails.setStoreName(order.getStore().getStoreName());
+        orderDetails.setStorePhone(order.getStore().getContactNumber());
+        orderDetails.setStoreEmail(order.getStore().getStoreEmail());
+
         orderDetails.setInstructions(order.getInstructions());
 
         if (order.getRating() != null) {
@@ -200,8 +207,14 @@ public class OrderServiceImpl implements OrderService {
         // Create a PageRequest object for pagination and sorting
         PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        // Fetch the orders using the repository
-        Page<Order> ordersPage = orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+        Page<Order> ordersPage;
+        if(status.isEmpty()){
+            ordersPage = orderRepository.findByUserIdOrderByCreatedAtDesc(userId, status, pageRequest);
+        }
+        else{
+            // Fetch the orders using the repository
+            ordersPage = orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+        }
 
         // Convert the Page<Order> to List<OrderData>
         List<OrdersResponse.OrderData> orderDataList = ordersPage.getContent().stream()
@@ -220,16 +233,30 @@ public class OrderServiceImpl implements OrderService {
 
         if (order.getUser() != null) {
             orderData.setUserId(order.getUser().getId());
+            orderData.setUsername(order.getUser().getUsername());
+            orderData.setUserPhone(order.getUser().getContactNumber());
+            orderData.setUserEmail(order.getUser().getEmail());
         } else {
             orderData.setUserId(null);
+            orderData.setUsername("");
+            orderData.setUserPhone("");
+            orderData.setUserEmail("");
+
         }
 
         // Check if the store is null
         if (order.getStore() != null) {
             orderData.setStoreId(order.getStore().getStoreId());
+            orderData.setStoreName(order.getStore().getStoreName());
+            orderData.setStorePhone(order.getStore().getStoreContactNumber());
+            orderData.setStoreEmail(order.getStore().getStoreEmail());
         } else {
             // Handle the case when the store is null
             orderData.setStoreId(null);
+            orderData.setStoreName("");
+            orderData.setStorePhone("");
+            orderData.setStoreEmail("");
+
         }
 
         orderData.setInstructions(order.getInstructions());
@@ -304,9 +331,14 @@ public class OrderServiceImpl implements OrderService {
     public OrdersResponse getOrdersForStore(Long storeId, String status, Integer limit, Integer offset) throws Exception {
         // Create a PageRequest object for pagination and sorting
         PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        // Fetch the orders using the repository
-        Page<Order> ordersPage = orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+        Page<Order> ordersPage;
+        if(status.isEmpty()){
+            ordersPage = orderRepository.findByStoreStoreIdOrderByCreatedAtDesc(storeId, status, pageRequest);
+        }
+        else{
+            // Fetch the orders using the repository
+            ordersPage = orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+        }
 
         // Convert the Page<Order> to List<OrderData>
         List<OrdersResponse.OrderData> orderDataList = ordersPage.getContent().stream()
@@ -315,5 +347,10 @@ public class OrderServiceImpl implements OrderService {
 
         // Return the response
         return new OrdersResponse(1, "Success", orderDataList);
+    }
+
+    @Override
+    public Long getOrderCountForStoreAndMonth(int storeId, int month) {
+        return orderRepository.countByStoreIdAndMonth(storeId, month);
     }
 }
