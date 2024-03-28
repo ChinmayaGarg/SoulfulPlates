@@ -1,6 +1,7 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.Category;
+import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class CategoryServiceImpl {
 
     public List<Category> getAllByStoreId() {
         return categoryRepository.findAll();
+    }
+
+    public List<Category> getCategoriesByStore(Long storeId) {
+        List<Category> categories = categoryRepository.getCategoriesByStore(storeId);
+        return categories;
     }
 
 }
