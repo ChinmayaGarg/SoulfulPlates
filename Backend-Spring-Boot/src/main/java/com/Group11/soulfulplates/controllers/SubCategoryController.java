@@ -27,6 +27,17 @@ public class SubCategoryController {
         }
     }
 
+    @GetMapping("/getAllSubCategoriesByCategory/{categoryId}")
+    public ResponseEntity getAllSubCategoriesByCategory(@PathVariable Long categoryId) {
+        try {
+            List<Subcategory> subcategories = subcategoryService.getAllSubCategoriesByCategory(categoryId);
+            return ResponseEntity.ok(new MessageResponse(1, "Subcategory fetched.", subcategories));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(-1,
+                    "Error creating subcategories: " + e.getMessage(), null));
+        }
+    }
+
     // Insert Subcategory
     @PostMapping("/subcategories")
     public ResponseEntity createSubcategory(@RequestBody Subcategory subcategory) {

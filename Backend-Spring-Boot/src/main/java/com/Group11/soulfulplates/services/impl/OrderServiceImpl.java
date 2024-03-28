@@ -127,12 +127,17 @@ public class OrderServiceImpl implements OrderService {
         if (order.getUser() != null) {
             orderDetails.setUserId(order.getUser().getId());
             orderDetails.setUsername(order.getUser().getUsername());
+            orderDetails.setUserPhone(order.getUser().getContactNumber());
+            orderDetails.setUserEmail(order.getUser().getEmail());
         } else {
             throw new Exception("User not found for order");
         }
 
         orderDetails.setStoreId(order.getStore().getStoreId());
         orderDetails.setStoreName(order.getStore().getStoreName());
+        orderDetails.setStorePhone(order.getStore().getContactNumber());
+        orderDetails.setStoreEmail(order.getStore().getStoreEmail());
+
         orderDetails.setInstructions(order.getInstructions());
 
         if (order.getRating() != null) {
@@ -229,19 +234,29 @@ public class OrderServiceImpl implements OrderService {
         if (order.getUser() != null) {
             orderData.setUserId(order.getUser().getId());
             orderData.setUsername(order.getUser().getUsername());
+            orderData.setUserPhone(order.getUser().getContactNumber());
+            orderData.setUserEmail(order.getUser().getEmail());
         } else {
             orderData.setUserId(null);
             orderData.setUsername("");
+            orderData.setUserPhone("");
+            orderData.setUserEmail("");
+
         }
 
         // Check if the store is null
         if (order.getStore() != null) {
             orderData.setStoreId(order.getStore().getStoreId());
             orderData.setStoreName(order.getStore().getStoreName());
+            orderData.setStorePhone(order.getStore().getStoreContactNumber());
+            orderData.setStoreEmail(order.getStore().getStoreEmail());
         } else {
             // Handle the case when the store is null
             orderData.setStoreId(null);
             orderData.setStoreName("");
+            orderData.setStorePhone("");
+            orderData.setStoreEmail("");
+
         }
 
         orderData.setInstructions(order.getInstructions());

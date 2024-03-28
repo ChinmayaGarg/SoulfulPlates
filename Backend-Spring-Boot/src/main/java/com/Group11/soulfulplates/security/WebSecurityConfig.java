@@ -60,6 +60,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth
+                                .requestMatchers("/uploads/**").permitAll()
                                 .requestMatchers("/public/uploads/**").permitAll() // Allow access without
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/**").permitAll()
