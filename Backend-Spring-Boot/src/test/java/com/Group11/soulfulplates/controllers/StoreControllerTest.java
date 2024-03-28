@@ -191,5 +191,17 @@ class StoreControllerTest {
         assertEquals("Failed to store empty file.", messageResponse.getDescription());
         assertNull(messageResponse.getData());
     }
+    @Test
+    void testUpdateUserImage_FileUploadFailure() {
+        Store store = new Store();
+        when(storeRepository.findById(anyLong())).thenReturn(Optional.of(store));
+
+        // Pass an invalid MockMultipartFile (e.g., with invalid content type)
+        MockMultipartFile file = new MockMultipartFile("file", "filename.png", "invalid/type", "some content".getBytes());
+        ResponseEntity<MessageResponse> responseEntity = storeController.updateUserImage(1L, file);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Failed to store file 1.jpg. Please try again!", ((MessageResponse) responseEntity.getBody()).getDescription());
+    }
 
 }
