@@ -1,14 +1,17 @@
 import 'dart:async';
 
-import 'package:config/config.dart';
+// import 'package:config/config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import 'config.dart';
 import 'model/profile/user_profile.dart';
 import 'utils/connection_status.dart';
 import 'utils/shared_prefs.dart';
 
 class AppSingleton {
   static final AppSingleton _singleton = AppSingleton._internal();
+
+  static int storeId = 1;
 
   PackageInfo? packageInfo;
 

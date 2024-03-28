@@ -60,30 +60,30 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
               ),
               8.rVerticalSizedBox(),
               AppTextField(
-                focusNode: controller.firstNameFocusNode,
-                controller: controller.firstNameEditingController,
+                focusNode: controller.userNameFocusNode,
+                controller: controller.userNameEditingController,
                 validator: (val) =>
                     Validations.emptyValidator(val, "Please enter first name!"),
                 onSubmitted: (val) {
-                  controller.lastNameFocusNode.requestFocus();
+                  controller.firstNameFocusNode.requestFocus();
                 },
                 hintText: 'Username',
               ),
-              // Text(
-              //   'Last name',
-              //   style: AppTextStyles.textStyleBlackTwo12With400,
-              // ),
-              // 8.rVerticalSizedBox(),
-              // AppTextField(
-              //   focusNode: controller.lastNameFocusNode,
-              //   onSubmitted: (val) {
-              //     controller.emailFocusNode.requestFocus();
-              //   },
-              //   controller: controller.lastNameEditingController,
-              //   validator: (val) =>
-              //       Validations.emptyValidator(val, "Please enter last name!"),
-              //   hintText: 'Last name',
-              // ),
+              Text(
+                'Name',
+                style: AppTextStyles.textStyleBlackTwo12With400,
+              ),
+              8.rVerticalSizedBox(),
+              AppTextField(
+                focusNode: controller.firstNameFocusNode,
+                onSubmitted: (val) {
+                  controller.mobileFocusNode.requestFocus();
+                },
+                controller: controller.firstNameEditingController,
+                validator: (val) =>
+                    Validations.emptyValidator(val, "Please enter your name!"),
+                hintText: 'Name',
+              ),
               Text(
                 'Mobile number',
                 style: AppTextStyles.textStyleBlackTwo12With400,
@@ -122,9 +122,7 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
                 focusNode: controller.passwordFocusNode,
                 validator: Validations.passwordValidator,
                 onSubmitted: (val) {
-                  if (controller.formKey.currentState!.validate()) {
-                    controller.signUpUser();
-                  }
+                  controller.confirmPasswordFocusNode.requestFocus();
                 },
                 obscureText: controller.obscureText,
                 hintText: 'Password',
@@ -240,6 +238,19 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
     );
   }
 
+  /*
+  {
+    "username": "seller2",
+    "email": "seller2@seller.com",
+    "password": "seller",
+    "role": [
+        "seller"
+    ],
+    "firstname": "seller1",
+    "contactNumber": "1234567890",
+    "notificationFlag": true
+}
+   */
   getSignInButton() {
     if (controller.state == ViewStateEnum.busy) {
       return const Center(child: CircularProgressIndicator());
@@ -251,8 +262,11 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
             controller.signUpUser(data: {
               'email': controller.emailEditingController.text.trim(),
               'password': controller.passwordEditingController.text.trim(),
-              "username": controller.firstNameEditingController.text.trim(),
+              "username": controller.userNameEditingController.text.trim(),
+              "firstname": controller.firstNameEditingController.text.trim(),
+              "contactNumber": controller.mobileEditingController.text.trim(),
               "role": AppSingleton.isBuyer() ? ['buyer'] : ['seller'],
+              "notificationFlag": true
             });
           }
         });

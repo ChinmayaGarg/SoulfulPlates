@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
+/public/
+=======
+
+>>>>>>> d69772d10af6995b290c904f860c8a4a171f9ddf

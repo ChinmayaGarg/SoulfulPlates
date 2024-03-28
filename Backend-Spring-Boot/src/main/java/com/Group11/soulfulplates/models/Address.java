@@ -1,8 +1,11 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "addresses")
 public class Address {
 
@@ -11,34 +14,36 @@ public class Address {
     @Column(name = "address_id")
     private Long addressId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
+    @NotBlank
     @Column(name = "street", nullable = false)
     private String street;
 
+    @NotBlank
     @Column(name = "city", nullable = false)
     private String city;
 
+    @NotBlank
     @Column(name = "state", nullable = false)
     private String state;
 
+    @NotBlank
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
+    @NotBlank
     @Column(name = "country", nullable = false)
     private String country;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
 
     @Column(name = "label")
     private String label;
 
-    // Getters and setters
-    public Long getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

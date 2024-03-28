@@ -62,7 +62,7 @@ class ApiCall {
         isData: obj == null && apiPath == null,
         queryParameters: queryParameters,
         requestMethod: method);
-
+    print("This is the response of the data base ${response}");
     if (apiPath != null) {
       response = await getApiPathData(data: response, apiPath: apiPath);
     }

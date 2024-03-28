@@ -12,6 +12,7 @@ const String dashboardViewRoute = 'dashboardViewRoute';
 
 const String restaurantDetailViewRoute = 'restaurantDetailViewRoute';
 const String viewCartViewRoute = 'viewCartViewRoute';
+
 //buyer - to do
 const String cartPaymentViewRoute = 'cartPaymentViewRoute';
 const String profileViewRoute = 'profileViewRoute';
@@ -27,6 +28,7 @@ const String storeDetailsViewRoute = 'storeDetailsViewRoute';
 const String homeSellerViewRoute = 'homeSellerViewRoute';
 const String liveOrdersViewRoute = 'liveOrdersViewRoute';
 const String menuViewRoute = 'menuViewRoute';
+const String menuCategoryViewRoute = 'menuCategoryViewRoute';
 const String createMenuViewRoute = 'createMenuViewRoute';
 const String orderHistorySellerViewRoute = 'orderHistorySellerViewRoute';
 const String transactionHistorySellerViewRoute =

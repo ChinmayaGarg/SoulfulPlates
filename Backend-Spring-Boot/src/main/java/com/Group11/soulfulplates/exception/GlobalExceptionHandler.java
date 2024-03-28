@@ -43,15 +43,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler(HttpMessageConversionException.class)
-    public ResponseEntity<?> handleHttpMessageConversionException(HttpMessageConversionException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("code", -1);
-        response.put("description", "There was an error processing your request. The data format may be incorrect.");
-        // Log the exception details to help with debugging
-        // logger.error("HttpMessageConversionException: ", ex);
-        return ResponseEntity.badRequest().body(response);
-    }
+//    @ExceptionHandler(HttpMessageConversionException.class)
+//    public ResponseEntity<?> handleHttpMessageConversionException(HttpMessageConversionException ex) {
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("code", -1);
+//        response.put("description", "There was an error processing your request. The data format may be incorrect.");
+//        // Log the exception details to help with debugging
+//        // logger.error("HttpMessageConversionException: ", ex);
+//        return ResponseEntity.badRequest().body(response);
+//    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {

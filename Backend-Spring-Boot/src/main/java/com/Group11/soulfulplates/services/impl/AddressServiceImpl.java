@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void deleteAddress(Long id) {
         addressRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllStoresLatLon() {
+        return addressRepository.findAllStoresLatLon();
     }
 }

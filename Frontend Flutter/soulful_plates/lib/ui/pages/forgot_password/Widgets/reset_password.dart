@@ -256,7 +256,11 @@ class ResetPassword extends GetView<ForgotPasswordController>
               if (controller.verificationCodeController.text.length < 4) {
                 Utils.showSuccessToast(LanguageConst.fullOTPPrompt, true);
               } else {
-                controller.validateAndResetPassword();
+                controller.validateAndResetPassword(data: {
+                  "email": controller.emailController.text.trim(),
+                  "captcha": controller.verificationCodeController.text,
+                  "newPassword": controller.passwordController.text
+                });
               }
               // Utils.showSuccessToast('Under development!', true);
             },

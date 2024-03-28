@@ -13,6 +13,8 @@ import 'package:soulful_plates/ui/pages/forgot_password/forgot_password_screen.d
 import 'package:soulful_plates/ui/pages/introduction_screen.dart';
 import 'package:soulful_plates/ui/pages/login/login_binding.dart';
 import 'package:soulful_plates/ui/pages/login/login_screen.dart';
+import 'package:soulful_plates/ui/pages/menu_category/menu_category_binding.dart';
+import 'package:soulful_plates/ui/pages/menu_category/menu_category_screen.dart';
 import 'package:soulful_plates/ui/pages/order_detail/order_detail_binding.dart';
 import 'package:soulful_plates/ui/pages/order_detail/order_detail_screen.dart';
 import 'package:soulful_plates/ui/pages/order_history_buyer/order_history_buyer_binding.dart';
@@ -231,6 +233,14 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         settings: settings,
         bindings: [MenuListBinding()],
         page: () => MenuListScreen(),
+      );
+
+    case menuCategoryViewRoute:
+      return getPageRoutes(
+        routeName: menuCategoryViewRoute,
+        settings: settings,
+        bindings: [MenuCategoryBinding()],
+        page: () => MenuCategoryScreen(),
       );
 
     case createMenuViewRoute:

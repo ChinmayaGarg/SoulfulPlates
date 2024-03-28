@@ -54,6 +54,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColor.primaryColor,
   );
+  static final textStylePrimaryLight14With700 = TextStyle(
+    fontSize: SizeConfig.font14,
+    fontWeight: FontWeight.w700,
+    color: AppColor.primaryColorLight,
+  );
   static final textStyleBlackThree14With400 = TextStyle(
     fontSize: SizeConfig.font14,
     fontWeight: FontWeight.w400,
@@ -170,6 +175,11 @@ class AppTextStyles {
 
   static final textStylePrimary36With700 = TextStyle(
     fontSize: SizeConfig.font36,
+    fontWeight: FontWeight.bold,
+    color: AppColor.primaryColor,
+  );
+  static final textStylePrimary22With700 = TextStyle(
+    fontSize: SizeConfig.font22,
     fontWeight: FontWeight.bold,
     color: AppColor.primaryColor,
   );

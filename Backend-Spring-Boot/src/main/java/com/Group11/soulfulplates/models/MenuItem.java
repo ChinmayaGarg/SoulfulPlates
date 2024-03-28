@@ -1,50 +1,56 @@
 package com.Group11.soulfulplates.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "menu_items")
+@Data
 public class MenuItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_item_id")
-    private Long menuItemId;
+    private Long itemId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
-
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "item_name")
+    private String itemName;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "item_price")
+    private String itemPrice;
 
-    @Column(name = "price", nullable = false)
-    private int price;
+    @Column(name = "type")
+    private String type;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private EMenuItem type;
+    @Column(name = "in_stock")
+    private boolean inStock;
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    @Column(name = "is_recommended")
+    private boolean isRecommended;
 
-    @Column(name = "category")
-    private String category;
+    @Column(name = "item_image")
+    private String itemImage;
 
-    // Getters and setters
-    public Long getMenuItemId() {
-        return menuItemId;
-    }
+    @Column(name = "serving_type")
+    private int servingType;
 
-    public Long setMenuItemId(Long menuItemId) {
-        this.menuItemId = menuItemId;
-        return menuItemId;
-    }
+    @Column(name = "portion")
+    private String portion;
+
+    @Column(name = "store_id")
+    private Long storeId;
+
+    @Column(name = "subcategory_id")
+    private Long subcategoryId;
+
+    @Column(name = "category_id")
+    private Long categoryId;
+
 
 }

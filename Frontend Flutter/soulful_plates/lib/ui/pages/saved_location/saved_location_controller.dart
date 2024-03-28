@@ -21,34 +21,34 @@ class SavedLocationController extends BaseController
   }
 
   void getDataFromAPI() async {
-    dataList = LocationModel.getAllLocations();
-    /*updateLoader(ViewStateEnum.busy);
-    var result = ; //male api call here
-
-    if (result.hasException) {
-      dataList = [];
-      updateLoader(ViewStateEnum.idle);
-      update();
-      return;
-    }
-
-    if (result.data != null && result.data!.containsKey('data')) {
-      List<DataModel> temp = DataModel.fromJsonArray(result.data!['data']);
-      if (temp.isEmpty || temp.length < recordsPerPage) {
-        hasReachedMax = true;
-      }
-      if (pageNo == 0) {
-        dataList.clear();
-      }
-      if (temp.isNotEmpty) {
-        dataList.addAll(temp);
-      }
-      updateLoader(ViewStateEnum.idle);
-    } else {
-      dataList = [];
-      updateLoader(ViewStateEnum.idle);
-    }*/
-    update();
+    // dataList = LocationModel.getAllLocations();
+    // updateLoader(ViewStateEnum.busy);
+    // var result = ; //male api call here
+    //
+    // if (result.hasException) {
+    //   dataList = [];
+    //   updateLoader(ViewStateEnum.idle);
+    //   update();
+    //   return;
+    // }
+    //
+    // if (result.data != null && result.data!.containsKey('data')) {
+    //   List<LocationModel> temp = LocationModel.fromJsonArray(result.data!['data']);
+    //   if (temp.isEmpty || temp.length < recordsPerPage) {
+    //     hasReachedMax = true;
+    //   }
+    //   if (pageNo == 0) {
+    //     dataList.clear();
+    //   }
+    //   if (temp.isNotEmpty) {
+    //     dataList.addAll(temp);
+    //   }
+    //   updateLoader(ViewStateEnum.idle);
+    // } else {
+    //   dataList = [];
+    //   updateLoader(ViewStateEnum.idle);
+    // }
+    // update();
   }
 
   @override

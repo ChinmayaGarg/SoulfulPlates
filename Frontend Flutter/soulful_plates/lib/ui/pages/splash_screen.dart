@@ -46,15 +46,26 @@ class _SplashScreenState extends State<SplashScreen> {
             true;
     bool isUserLoggedIn =
         await UserPreference.getValue(key: SharedPrefKey.isLogin.name) ?? false;
-
+    print("This is isLoggedIn ${isUserLoggedIn}");
+    print(
+        "This is AppSingleton.loggedInUserProfile ${AppSingleton.loggedInUserProfile}");
+    print(
+        "This is AppSingleton.loggedInUserProfile ${UserPreference.getValue(key: SharedPrefKey.userProfileData.name)}");
     if (isUserFirstTime) {
       await UserPreference.setValue(
           key: SharedPrefKey.isFirstTime.name, value: false);
       Get.offAllNamed(introductionViewRoute);
     } else {
       if (isUserLoggedIn) {
+        //get data from database
         if (AppSingleton.loggedInUserProfile != null) {
-          Get.offAllNamed(dashboardViewRoute);
+          if (!AppSingleton.isBuyer() &&
+              AppSingleton.loggedInUserProfile?.sellerName.isNullOrEmpty ==
+                  true) {
+            Get.offAllNamed(storeDetailsViewRoute);
+          } else {
+            Get.offAllNamed(dashboardViewRoute);
+          }
         } else {
           Get.offAllNamed(loginViewRoute);
         }

@@ -33,200 +33,203 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
   }
 
   Widget getBody(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            surfaceTintColor: AppColor.whiteColor,
-            elevation: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "User preferences",
-                  style: AppTextStyles.textStylePrimary14With600,
-                ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                Container(
-                  color: AppColor.primaryColor,
-                  height: (SizeConfig.safeBlockVertical ?? 0) *
-                      (0.5 * 100 / SizeConfig.uiHeightPx),
-                ),
-                ...(AppSingleton.isBuyer()
-                    ? buyersMenuItems()
-                    : sellersMenuItems()),
-                InkWell(
-                  onTap: () {
-                    controller.isNotificationEnabled =
-                        !controller.isNotificationEnabled;
-                    controller.update();
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'In app Notification',
-                          style: AppTextStyles.textStyleBlack16With400,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                        child: Transform.scale(
-                            scale: .75,
-                            child: Switch(
-                                inactiveTrackColor: AppColor.black4TextColor,
-                                activeColor: AppColor.primaryColor,
-                                thumbColor:
-                                    const MaterialStatePropertyAll<Color>(
-                                        Colors.black),
-                                value: controller.isNotificationEnabled,
-                                onChanged: (val) {
-                                  controller.isNotificationEnabled = val;
-                                  controller.update();
-                                })),
-                      )
-                    ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              surfaceTintColor: AppColor.whiteColor,
+              elevation: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "User preferences",
+                    style: AppTextStyles.textStylePrimary14With600,
                   ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ),
-                1.rVerticalGreySizedBox(),
-                InkWell(
-                  onTap: () {
-                    Get.offAllNamed(loginViewRoute);
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Logout',
-                          style: AppTextStyles.textStyleBlack16With400,
+                  Container(
+                    color: AppColor.primaryColor,
+                    height: (SizeConfig.safeBlockVertical ?? 0) *
+                        (0.5 * 100 / SizeConfig.uiHeightPx),
+                  ),
+                  ...(AppSingleton.isBuyer()
+                      ? buyersMenuItems()
+                      : sellersMenuItems()),
+                  InkWell(
+                    onTap: () {
+                      controller.isNotificationEnabled =
+                          !controller.isNotificationEnabled;
+                      controller.updateNotificationStatus();
+                      controller.update();
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'In app Notification',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
                         ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColor.primaryColor,
-                      )
-                    ],
+                        SizedBox(
+                          height: 24,
+                          child: Transform.scale(
+                              scale: .75,
+                              child: Switch(
+                                  inactiveTrackColor: AppColor.black4TextColor,
+                                  activeColor: AppColor.primaryColor,
+                                  thumbColor:
+                                      const MaterialStatePropertyAll<Color>(
+                                          Colors.black),
+                                  value: controller.isNotificationEnabled,
+                                  onChanged: (val) {
+                                    controller.isNotificationEnabled = val;
+                                    controller.update();
+                                  })),
+                        )
+                      ],
+                    ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+                  ),
+                  1.rVerticalGreySizedBox(),
+                  InkWell(
+                    onTap: () {
+                      Get.offAllNamed(loginViewRoute);
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Logout',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.keyboard_arrow_right,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+                  ),
+                ],
+              )),
+          16.rVerticalSizedBox(),
+          Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              surfaceTintColor: AppColor.whiteColor,
+              elevation: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Information",
+                    style: AppTextStyles.textStylePrimary14With600,
                   ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ),
-              ],
-            )),
-        16.rVerticalSizedBox(),
-        Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            surfaceTintColor: AppColor.whiteColor,
-            elevation: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Information",
-                  style: AppTextStyles.textStylePrimary14With600,
-                ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                Container(
-                  color: AppColor.primaryColor,
-                  height: (SizeConfig.safeBlockVertical ?? 0) *
-                      (0.5 * 100 / SizeConfig.uiHeightPx),
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(webViewRoute,
-                        arguments: WebViewModel(
+                  Container(
+                    color: AppColor.primaryColor,
+                    height: (SizeConfig.safeBlockVertical ?? 0) *
+                        (0.5 * 100 / SizeConfig.uiHeightPx),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(webViewRoute,
+                          arguments: WebViewModel(
+                              'https://termly.io/resources/templates/app-privacy-policy/',
+                              "About"));
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'About',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.keyboard_arrow_right,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+                  ),
+                  1.rVerticalGreySizedBox(),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(webViewRoute,
+                          arguments: WebViewModel(
                             'https://termly.io/resources/templates/app-privacy-policy/',
-                            "About"));
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'About',
-                          style: AppTextStyles.textStyleBlack16With400,
+                            'Terms and Conditions',
+                          ));
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Terms and Conditions',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
                         ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColor.primaryColor,
-                      )
-                    ],
-                  ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ),
-                1.rVerticalGreySizedBox(),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(webViewRoute,
-                        arguments: WebViewModel(
-                          'https://termly.io/resources/templates/app-privacy-policy/',
-                          'Terms and Conditions',
-                        ));
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Terms and Conditions',
-                          style: AppTextStyles.textStyleBlack16With400,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColor.primaryColor,
-                      )
-                    ],
-                  ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ),
-                1.rVerticalGreySizedBox(),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(webViewRoute,
-                        arguments: WebViewModel(
-                          'https://termly.io/resources/templates/app-privacy-policy/',
-                          'Cookie policy',
-                        ));
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Cookie policy',
-                          style: AppTextStyles.textStyleBlack16With400,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColor.primaryColor,
-                      )
-                    ],
-                  ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ),
-                1.rVerticalGreySizedBox(),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(webViewRoute,
-                        arguments: WebViewModel(
+                        const Icon(
+                          Icons.keyboard_arrow_right,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+                  ),
+                  1.rVerticalGreySizedBox(),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(webViewRoute,
+                          arguments: WebViewModel(
                             'https://termly.io/resources/templates/app-privacy-policy/',
-                            'Privacy Policy'));
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Privacy Policy',
-                          style: AppTextStyles.textStyleBlack16With400,
+                            'Cookie policy',
+                          ));
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Cookie policy',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
                         ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColor.primaryColor,
-                      )
-                    ],
-                  ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ),
-              ],
-            )),
-      ],
-    ).paddingAll16();
+                        const Icon(
+                          Icons.keyboard_arrow_right,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+                  ),
+                  1.rVerticalGreySizedBox(),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(webViewRoute,
+                          arguments: WebViewModel(
+                              'https://termly.io/resources/templates/app-privacy-policy/',
+                              'Privacy Policy'));
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Privacy Policy',
+                            style: AppTextStyles.textStyleBlack16With400,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.keyboard_arrow_right,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+                  ),
+                ],
+              )),
+        ],
+      ).paddingAll16(),
+    );
   }
 
   List<Widget> buyersMenuItems() {
@@ -285,6 +288,66 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
             Expanded(
               child: Text(
                 'Store Details',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
+      InkWell(
+        onTap: () {
+          Get.toNamed(orderHistorySellerViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Order History',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
+      InkWell(
+        onTap: () {
+          Get.toNamed(transactionHistorySellerViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Order Transactions',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
+      InkWell(
+        onTap: () {
+          Get.toNamed(payoutHistoryViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'My Payouts',
                 style: AppTextStyles.textStyleBlack16With400,
               ),
             ),

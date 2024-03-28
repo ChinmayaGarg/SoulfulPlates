@@ -54,18 +54,18 @@ class LoginScreen extends GetView<LoginController> with BaseCommonWidget {
               ),
               16.rVerticalSizedBox(),
               Text(
-                'Email Address',
+                'Username',
                 style: AppTextStyles.textStyleBlackTwo12With400,
               ),
               8.rVerticalSizedBox(),
               AppTextField(
                 controller: controller.emailEditingController,
                 focusNode: controller.emailFocusNode,
-                validator: Validations.emailValidator,
+                validator: Validations.isNotEmpty,
                 onSubmitted: (val) {
                   controller.passwordFocusNode.requestFocus();
                 },
-                hintText: 'Email address',
+                hintText: 'Username',
               ),
               Text(
                 'Password',
@@ -78,7 +78,7 @@ class LoginScreen extends GetView<LoginController> with BaseCommonWidget {
                 validator: Validations.passwordValidator,
                 onSubmitted: (val) {
                   if (controller.formKey.currentState!.validate()) {
-                    controller.signIn();
+                    controller.login();
                   }
                 },
                 obscureText: controller.obscureText,
@@ -149,8 +149,10 @@ class LoginScreen extends GetView<LoginController> with BaseCommonWidget {
     return BaseButton(
         text: 'Sign In',
         onSubmit: () async {
+          // Get.offAllNamed(dashboardViewRoute);
+          // return;
           if (controller.formKey.currentState!.validate()) {
-            controller.signIn();
+            controller.login();
           }
         });
     // });

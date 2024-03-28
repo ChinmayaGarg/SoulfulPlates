@@ -131,7 +131,7 @@ class ProfileScreen extends GetView<ProfileController> with BaseCommonWidget {
                 hintText: 'Mobile number',
               )
             : Text(
-                controller.userProfile?.phoneNumber ?? '+1 7828828273',
+                controller.userProfile?.contactNumber ?? '+1 7828828273',
                 style: AppTextStyles.textStyleBlack14With400,
               ).paddingOnly(bottom: 8),
         16.rVerticalSizedBox(),

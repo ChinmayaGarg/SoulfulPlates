@@ -1,59 +1,31 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import com.Group11.soulfulplates.models.Order;
+import lombok.Data;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
-@Table(name = "cart_item")
 public class CartItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
-
-    @ManyToOne
-    @JoinColumn(name = "menu_item_id", nullable = false)
-    private MenuItem menuItem;
-
-    @Column(name = "quantity", nullable = false)
+    private Long itemId;
+    private String name;
+    private Double price;
     private Integer quantity;
 
-    @Column(name = "added_date", nullable = false)
-    private LocalDateTime addedDate;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    @Column(name = "notes")
-    private String notes;
-
-    @Column(name = "order_id")
-    private Long orderId;
-
-    // Default constructor
-    public CartItem() {
-        this.cart = new Cart();
-        this.menuItem = new MenuItem();
-    }
-
-    public CartItem(Cart cart) {
-        this.cart = cart;
-        this.menuItem = new MenuItem();
-    }
-
-    public CartItem(MenuItem menuItem) {
-        this.cart = new Cart();
-        this.menuItem = menuItem;
-    }
-
-    public CartItem(Cart cart, MenuItem menuItem) {
-        this.cart = cart;
-        this.menuItem = menuItem;
-    }
+    // Constructors, getters, setters
 
 
-    // Getters and setters
     public Long getCartItemId() {
         return cartItemId;
     }
@@ -62,30 +34,28 @@ public class CartItem {
         this.cartItemId = cartItemId;
     }
 
-    public Long getCartId() {
-        if(this.cart != null) {
-            return cart.getCartId();
-        }
-        return null;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setCartId(Long cartId) {
-        if(this.cart != null) {
-            this.cart.setCartId(cartId);
-        }
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
-    public Long getMenuItemId() {
-        if(this.menuItem != null) {
-            return menuItem.getMenuItemId();
-        }
-        return null;
+    public String getName() {
+        return name;
     }
 
-    public void setMenuItemId(Long menuItemId) {
-        if(this.menuItem != null) {
-            this.menuItem.setMenuItemId(menuItemId);
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Integer getQuantity() {
@@ -96,41 +66,22 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public LocalDateTime getAddedDate() {
-        return addedDate;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setAddedDate(LocalDateTime addedDate) {
-        this.addedDate = addedDate;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override
     public String toString() {
         return "CartItem{" +
                 "cartItemId=" + cartItemId +
-                ", cartId=" + cart.getCartId() +
-                ", menuItemId=" + menuItem.getMenuItemId() +
+                ", menuItemId=" + itemId +
+                ", itemName='" + name + '\'' +
                 ", quantity=" + quantity +
-                ", addedDate=" + addedDate +
-                ", notes='" + notes + '\'' +
-                ", orderId=" + orderId +
+                ", price=" + price +
                 '}';
     }
-
 }

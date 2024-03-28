@@ -49,6 +49,10 @@ class NetworkCallDio implements INetCall {
           res = await dio?.delete(path,
               data: body, queryParameters: queryParameters);
           break;
+        case RequestMethod.getPost:
+          res = await dio?.get(path,
+              data: body, queryParameters: queryParameters);
+          break;
         default:
           res = await dio?.get(path, queryParameters: queryParameters);
           break;

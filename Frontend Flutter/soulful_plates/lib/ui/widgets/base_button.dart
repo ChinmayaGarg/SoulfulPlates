@@ -112,19 +112,19 @@ class BaseButtonState extends State<BaseButton> {
   List<Widget> rowWidgetList() {
     List<Widget> widgetList = [];
     if (widget.leadingIcon != null) {
-      widgetList.add(4.rHorizontalSizedBox());
-
+      widgetList.add(24.rHorizontalSizedBox());
       widgetList.add(Icon(
         widget.leadingIcon,
         size: 28.rWidth(),
         color: Theme.of(context).primaryColor,
       ));
-      widgetList.add(4.rHorizontalSizedBox());
-    }
-    if (widget.leadingWidget != null) {
-      widgetList.add(4.rHorizontalSizedBox());
+      widgetList.add(8.rHorizontalSizedBox());
+    } else if (widget.leadingWidget != null) {
+      widgetList.add(24.rHorizontalSizedBox());
       widgetList.add(widget.leadingWidget!);
-      widgetList.add(4.rHorizontalSizedBox());
+      widgetList.add(8.rHorizontalSizedBox());
+    } else {
+      widgetList.add(24.rHorizontalSizedBox());
     }
 
     if (widget.isWrapWidth) {
@@ -142,7 +142,8 @@ class BaseButtonState extends State<BaseButton> {
                 letterSpacing: 0.25,
                 fontWeight: FontWeight.w700),
         overflow: TextOverflow.ellipsis,
-      ).paddingHorizontal24());
+      ));
+      widgetList.add(24.rHorizontalSizedBox());
     } else {
       widgetList.add(Expanded(
         child: Text(

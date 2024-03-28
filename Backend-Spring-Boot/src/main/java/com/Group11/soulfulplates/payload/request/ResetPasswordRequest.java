@@ -10,4 +10,6 @@ public class ResetPasswordRequest {
 
     @NotBlank
     private String newPassword;
+
+    private String OTP_Code;
 }

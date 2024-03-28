@@ -47,10 +47,8 @@ class EnterEmailOrUsername extends GetView<ForgotPasswordController>
             text: LanguageConst.submit,
             onSubmit: () {
               if (controller.formKey.currentState?.validate() ?? false) {
-                // controller.validateAndSendRequest();
-                controller.forgotPasswordStatus =
-                    ForgotPasswordStatus.resetPassword;
-                controller.update();
+                controller.validateAndSendRequest(
+                    data: {"email": controller.emailController.text.trim()});
               }
             },
           ),

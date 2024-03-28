@@ -15,7 +15,7 @@ class ProfileController extends BaseController {
     super.onInit();
     userProfile = AppSingleton.loggedInUserProfile;
     emailEditingController.text = userProfile?.email ?? '';
-    mobileEditingController.text = userProfile?.phoneNumber ?? '';
+    mobileEditingController.text = userProfile?.contactNumber ?? '';
     firstNameEditingController.text = userProfile?.username ?? '';
   }
 
@@ -31,7 +31,7 @@ class ProfileController extends BaseController {
     UserProfile userModel = UserProfile(
         username: firstNameEditingController.text,
         email: emailEditingController.text,
-        phoneNumber: mobileEditingController.text);
+        contactNumber: mobileEditingController.text);
 
     await UserPreference.setValue(
         key: SharedPrefKey.userProfileData.name, value: userModel.toJson());

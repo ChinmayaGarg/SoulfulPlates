@@ -4,6 +4,9 @@ import 'package:soulful_plates/Utils/Extensions.dart';
 
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
+import '../../../network/network_interfaces/end_points.dart';
+import '../../../network/network_interfaces/i_dio_singleton.dart';
+import '../../../network/network_utils/api_call.dart';
 import '../../../routing/route_names.dart';
 import '../../../utils/utils.dart';
 
@@ -42,31 +45,47 @@ class ForgotPasswordController extends BaseController {
     update();
   }
 
-  void validateAndResetPassword() async {
+  void validateAndResetPassword({data}) async {
     if (!verificationCodeController.text.isNotNullOrEmpty) {
       Utils.showSuccessToast(
           "Please enter the 4 digit code sent to your email.", false);
       return;
     }
     setLoaderState(ViewStateEnum.busy);
-    await Future.delayed(const Duration(seconds: 3));
-    Utils.showSuccessToast("Password changed successfully !", false);
-    setLoaderState(ViewStateEnum.idle);
-    Get.offAllNamed(loginViewRoute);
-    // Logger.info("Check the username is there >>>> ${emailController.text}");
-    // var forgotPasswordCallback = await CognitoService.forgotPassword(
-    //   verificationCode: verificationCodeController.text.trim(),
-    //   newPassword: passwordController.text.trim(),
-    //   userName: emailController.text.trim(),
-    // );
-    // if (forgotPasswordCallback.runtimeType == bool) {
-    //   setLoaderState(ViewStateEnum.idle);
-    //   Get.offAllNamed(loginViewRoute);
-    //   Utils.showSuccessToast("Password changed successfully !", false);
-    // } else {
-    //   setLoaderState(ViewStateEnum.idle);
-    //   Utils.showSuccessToast(forgotPasswordCallback.toString(), true);
-    // }
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint: EndPoints.resetPassword,
+        apiCallType: ApiCallType.simple,
+        parameters: data);
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("Password reset successfully.", true);
+      onWidgetDidBuild(callback: () {
+        Get.offAllNamed(loginViewRoute);
+      });
+    } else {
+      setLoaderState(ViewStateEnum.idle);
+      Utils.showSuccessToast(
+          "Issue while fetching information. Please try again later.", false);
+    }
+  }
+
+  void validateAndSendRequest({data}) async {
+    setLoaderState(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint: EndPoints.forgotPassword,
+        apiCallType: ApiCallType.simple,
+        parameters: data);
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("Verification code sent successfully.", true);
+      forgotPasswordStatus = ForgotPasswordStatus.resetPassword;
+      setLoaderState(ViewStateEnum.idle);
+      update();
+    } else {
+      setLoaderState(ViewStateEnum.idle);
+      Utils.showSuccessToast(
+          "Issue while fetching information. Please try again later.", false);
+    }
   }
 }
 

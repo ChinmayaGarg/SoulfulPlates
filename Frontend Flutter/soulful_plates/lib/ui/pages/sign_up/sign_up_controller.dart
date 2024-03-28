@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:soulful_plates/model/profile/user_profile.dart';
+import 'package:soulful_plates/network/network_interfaces/end_points.dart';
 import 'package:soulful_plates/utils/utils.dart';
 
 import '../../../constants/enums/view_state.dart';
@@ -17,7 +17,7 @@ class SignUpController extends BaseController {
   TextEditingController confirmPasswordEditingController =
       TextEditingController();
   TextEditingController firstNameEditingController = TextEditingController();
-  TextEditingController lastNameEditingController = TextEditingController();
+  TextEditingController userNameEditingController = TextEditingController();
   TextEditingController addressEditingController = TextEditingController();
 
   FocusNode emailFocusNode = FocusNode();
@@ -25,7 +25,7 @@ class SignUpController extends BaseController {
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
   FocusNode firstNameFocusNode = FocusNode();
-  FocusNode lastNameFocusNode = FocusNode();
+  FocusNode userNameFocusNode = FocusNode();
   FocusNode addressFocusNode = FocusNode();
 
   bool obscureTwoText = true;
@@ -36,15 +36,12 @@ class SignUpController extends BaseController {
   Future<void> signUpUser({data}) async {
     try {
       setLoaderState(ViewStateEnum.busy);
-
-      var response = await ApiCall().call<UserProfile>(
+      var response = await ApiCall().call(
           method: RequestMethod.post,
-          endPoint: "/auth/signup",
+          endPoint: EndPoints.signup,
           apiCallType: ApiCallType.simple,
           parameters: data);
-      debugPrint('This is response $response ${response.runtimeType}');
-      debugPrint('This is response $response ${response['code']}');
-      if (response != null) {
+      if (response != null && response['code'] == 1) {
         Utils.showSuccessToast("Account created successfully.", true);
         onWidgetDidBuild(callback: () {
           Get.offAllNamed(loginViewRoute);

@@ -71,7 +71,13 @@ class StoreDetailsScreen extends GetView<StoreDetailsController>
             backgroundColor: AppColor.profileBackground,
             radius: 48.rSize(),
             child: Text(
-              controller.storeDetails?.shortName() ?? 'SN',
+              controller.firstNameEditingController.text.length > 1
+                  ? controller.firstNameEditingController.text
+                          .toString()
+                          .substring(0, 1)
+                          .capitalizeFirst ??
+                      ''
+                  : '-',
               style: AppTextStyles.textStyleWhite22With700,
             ),
           )),
@@ -97,7 +103,7 @@ class StoreDetailsScreen extends GetView<StoreDetailsController>
                   hintText: 'Store name',
                 )
               : Text(
-                  controller.storeDetails?.firstName ?? 'Cloud Kitchen',
+                  controller.firstNameEditingController.text ?? 'Cloud Kitchen',
                   style: AppTextStyles.textStyleBlack16With700,
                 ).paddingOnly(bottom: 8),
           16.rVerticalSizedBox(),
@@ -117,7 +123,7 @@ class StoreDetailsScreen extends GetView<StoreDetailsController>
                   hintText: 'Email address',
                 )
               : Text(
-                  controller.storeDetails?.email ??
+                  controller.emailEditingController.text ??
                       'cloudKitchen@cloudKitchen.ca',
                   style: AppTextStyles.textStyleBlack14With400,
                 ).paddingOnly(bottom: 8),
@@ -131,99 +137,120 @@ class StoreDetailsScreen extends GetView<StoreDetailsController>
               ? AppTextField(
                   focusNode: controller.mobileFocusNode,
                   onSubmitted: (val) {
-                    controller.streetFocusNode.requestFocus();
+                    controller.descriptionFocusNode.requestFocus();
                   },
                   controller: controller.mobileEditingController,
                   validator: Validations.mobileValidator,
                   hintText: 'Mobile number',
                 )
               : Text(
-                  controller.storeDetails?.mobile ?? '+1 1234567890',
+                  controller.mobileEditingController.text ?? '+1 1234567890',
                   style: AppTextStyles.textStyleBlack14With400,
                 ).paddingOnly(bottom: 8),
           16.rVerticalSizedBox(),
           Text(
-            'Street Address',
+            'Store Description',
             style: AppTextStyles.textStyleBlackTwo12With400,
           ),
           8.rVerticalSizedBox(),
           controller.isEditable
               ? AppTextField(
-                  focusNode: controller.stateFocusNode,
+                  focusNode: controller.descriptionFocusNode,
                   onSubmitted: (val) {
-                    controller.stateFocusNode.requestFocus();
+                    controller.streetFocusNode.requestFocus();
                   },
-                  controller: controller.streetEditingController,
-                  validator: Validations.mobileValidator,
-                  hintText: 'Street Address',
+                  controller: controller.descriptionEditingController,
+                  validator: Validations.isNotEmpty,
+                  hintText: 'Store Description',
                 )
               : Text(
-                  controller.storeDetails?.street ?? '1414 Barrington str',
+                  controller.descriptionEditingController.text ??
+                      '+1 1234567890',
                   style: AppTextStyles.textStyleBlack14With400,
                 ).paddingOnly(bottom: 8),
           16.rVerticalSizedBox(),
-          Text(
-            'Province',
-            style: AppTextStyles.textStyleBlackTwo12With400,
-          ),
-          8.rVerticalSizedBox(),
-          controller.isEditable
-              ? AppTextField(
-                  focusNode: controller.stateFocusNode,
-                  onSubmitted: (val) {
-                    controller.cityFocusNode.requestFocus();
-                  },
-                  controller: controller.stateEditingController,
-                  validator: Validations.mobileValidator,
-                  hintText: 'Province',
-                )
-              : Text(
-                  controller.storeDetails?.state ?? 'Nova Scotia',
-                  style: AppTextStyles.textStyleBlack14With400,
-                ).paddingOnly(bottom: 8),
-          16.rVerticalSizedBox(),
-          Text(
-            'City',
-            style: AppTextStyles.textStyleBlackTwo12With400,
-          ),
-          8.rVerticalSizedBox(),
-          controller.isEditable
-              ? AppTextField(
-                  focusNode: controller.cityFocusNode,
-                  onSubmitted: (val) {
-                    controller.postalCodeFocusNode.requestFocus();
-                  },
-                  controller: controller.cityEditingController,
-                  validator: Validations.mobileValidator,
-                  hintText: 'City',
-                )
-              : Text(
-                  controller.storeDetails?.city ?? 'Halifax',
-                  style: AppTextStyles.textStyleBlack14With400,
-                ).paddingOnly(bottom: 8),
-          16.rVerticalSizedBox(),
-          Text(
-            'Postal Code',
-            style: AppTextStyles.textStyleBlackTwo12With400,
-          ),
-          8.rVerticalSizedBox(),
-          controller.isEditable
-              ? AppTextField(
-                  focusNode: controller.postalCodeFocusNode,
-                  onSubmitted: (val) {},
-                  controller: controller.postalCodeEditingController,
-                  validator: Validations.mobileValidator,
-                  hintText: 'Postal Code',
-                )
-              : Text(
-                  controller.storeDetails?.postalCode ?? 'B3K2Z2',
-                  style: AppTextStyles.textStyleBlack14With400,
-                ).paddingOnly(bottom: 8),
+          // Text(
+          //   'Street Address',
+          //   style: AppTextStyles.textStyleBlackTwo12With400,
+          // ),
+          // 8.rVerticalSizedBox(),
+          // controller.isEditable
+          //     ? AppTextField(
+          //         focusNode: controller.stateFocusNode,
+          //         onSubmitted: (val) {
+          //           controller.stateFocusNode.requestFocus();
+          //         },
+          //         controller: controller.streetEditingController,
+          //         validator: Validations.mobileValidator,
+          //         hintText: 'Street Address',
+          //       )
+          //     : Text(
+          //         controller.storeDetails?.street ?? '1414 Barrington str',
+          //         style: AppTextStyles.textStyleBlack14With400,
+          //       ).paddingOnly(bottom: 8),
+          // 16.rVerticalSizedBox(),
+          // Text(
+          //   'Province',
+          //   style: AppTextStyles.textStyleBlackTwo12With400,
+          // ),
+          // 8.rVerticalSizedBox(),
+          // controller.isEditable
+          //     ? AppTextField(
+          //         focusNode: controller.stateFocusNode,
+          //         onSubmitted: (val) {
+          //           controller.cityFocusNode.requestFocus();
+          //         },
+          //         controller: controller.stateEditingController,
+          //         validator: Validations.mobileValidator,
+          //         hintText: 'Province',
+          //       )
+          //     : Text(
+          //         controller.storeDetails?.state ?? 'Nova Scotia',
+          //         style: AppTextStyles.textStyleBlack14With400,
+          //       ).paddingOnly(bottom: 8),
+          // 16.rVerticalSizedBox(),
+          // Text(
+          //   'City',
+          //   style: AppTextStyles.textStyleBlackTwo12With400,
+          // ),
+          // 8.rVerticalSizedBox(),
+          // controller.isEditable
+          //     ? AppTextField(
+          //         focusNode: controller.cityFocusNode,
+          //         onSubmitted: (val) {
+          //           controller.postalCodeFocusNode.requestFocus();
+          //         },
+          //         controller: controller.cityEditingController,
+          //         validator: Validations.mobileValidator,
+          //         hintText: 'City',
+          //       )
+          //     : Text(
+          //         controller.storeDetails?.city ?? 'Halifax',
+          //         style: AppTextStyles.textStyleBlack14With400,
+          //       ).paddingOnly(bottom: 8),
+          // 16.rVerticalSizedBox(),
+          // Text(
+          //   'Postal Code',
+          //   style: AppTextStyles.textStyleBlackTwo12With400,
+          // ),
+          // 8.rVerticalSizedBox(),
+          // controller.isEditable
+          //     ? AppTextField(
+          //         focusNode: controller.postalCodeFocusNode,
+          //         onSubmitted: (val) {},
+          //         controller: controller.postalCodeEditingController,
+          //         validator: Validations.mobileValidator,
+          //         hintText: 'Postal Code',
+          //       )
+          //     : Text(
+          //         controller.storeDetails?.postalCode ?? 'B3K2Z2',
+          //         style: AppTextStyles.textStyleBlack14With400,
+          //       ).paddingOnly(bottom: 8),
           16.rVerticalSizedBox(),
           BaseButton(
               text: "Save",
-              onSubmit: () {
-                controller.updateData();
+              onSubmit: () async {
+                await controller.updateData();
                 controller.isEditable = !controller.isEditable;
                 controller.update();
               }).visibleWhen(isVisible: controller.isEditable),

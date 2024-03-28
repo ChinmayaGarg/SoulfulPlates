@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:map_address_picker/map_address_picker.dart';
+// import 'package:map_address_picker/models/location_result.dart';
 import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/ui/widgets/app_text_field.dart';
 import 'package:soulful_plates/ui/widgets/base_button.dart';
+import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_text_styles.dart';
-import '../../../utils/extensions.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/base_common_widget.dart';
 import 'edit_location_controller.dart';
@@ -18,71 +20,68 @@ class EditLocationScreen extends GetView<EditLocationController>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Add Location"),
+      appBar: AppBar(
+        title: const Text("Add Location"),
+      ),
+      backgroundColor: AppColor.whiteColor,
+      body: SafeArea(
+        child: GetBuilder(
+          init: controller,
+          initState: (state) async {},
+          builder: (EditLocationController model) {
+            return getBody(context);
+          },
         ),
-        backgroundColor: AppColor.whiteColor,
-        body: SafeArea(
-          child: GetBuilder(
-            init: controller,
-            initState: (state) async {},
-            builder: (EditLocationController model) {
-              return getBody(context);
-            },
-          ),
-        ));
+      ),
+    );
   }
 
   Widget getBody(BuildContext context) {
-    return Column(
-      children: [
-        Column(
+    return Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            16.rVerticalSizedBox(),
+            16.rHorizontalSizedBox(),
             Text(
               'Location Name',
               style: AppTextStyles.textStyleBlackTwo12With400,
             ),
-            8.rVerticalSizedBox(),
+            8.rHorizontalSizedBox(),
             AppTextField(
               controller: controller.nameController,
-              hintText: 'Location Name',
-              // decoration: const InputDecoration(labelText: 'Location Name'),
+              hintText: 'Enter Location Name',
             ),
-            16.rVerticalSizedBox(),
-            Text(
-              'Latitude',
-              style: AppTextStyles.textStyleBlackTwo12With400,
-            ),
-            8.rVerticalSizedBox(),
-            AppTextField(
-              controller: controller.latitudeController,
-              hintText: 'Latitude',
-              keyboardType: TextInputType.number,
-            ),
-            16.rVerticalSizedBox(),
-            Text(
-              'Longitude',
-              style: AppTextStyles.textStyleBlackTwo12With400,
-            ),
-            8.rVerticalSizedBox(),
-            AppTextField(
-              controller: controller.longitudeController,
-              hintText: 'Longitude',
-              keyboardType: TextInputType.number,
-            ),
-            16.rVerticalSizedBox(),
-            Text(
-              'Address',
-              style: AppTextStyles.textStyleBlackTwo12With400,
-            ),
-            8.rVerticalSizedBox(),
-            AppTextField(
-              controller: controller.addressController,
-              hintText: 'Address',
-            ),
-            16.rVerticalSizedBox(),
+            16.rHorizontalSizedBox(),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // Open the map location picker
+                      // LocationResult? result = await showLocationPicker(
+                      //   context,
+                      //   title: '', // Pass an empty string for the API key
+                      //   //apikey:'',
+                      //   initialCenter: LatLng(0.0, 0.0), // Initial map center
+                      //   automaticallyAnimateToCurrentLocation:
+                      //       true, // Auto center to user location
+                      // );
+                      //
+                      // if (result != null) {
+                      //   // Update latitude and longitude text fields
+                      //   controller.latitudeController.text =
+                      //       result.latLng?.latitude.toString() ?? '';
+                      //   controller.longitudeController.text =
+                      //       result.latLng?.longitude.toString() ?? '';
+                      // }
+                    },
+                    child: Text('Select Location'),
+                  ),
+                ),
+              ],
+            ).paddingAll4(),
+            16.rHorizontalSizedBox(),
             BaseButton(
               onSubmit: () {
                 if (controller.nameController.text.isNotEmpty &&
@@ -97,8 +96,6 @@ class EditLocationScreen extends GetView<EditLocationController>
               text: "Add location",
             )
           ],
-        )
-      ],
-    ).paddingAll16();
+        ));
   }
 }
