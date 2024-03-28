@@ -1,7 +1,6 @@
 // import 'package:config/config.dart' as c;
+import 'package:config/config.dart' as c;
 import 'package:flutter/material.dart';
-
-import '../../config.dart' as c;
 
 class AppColor {
   ///basic theme colors

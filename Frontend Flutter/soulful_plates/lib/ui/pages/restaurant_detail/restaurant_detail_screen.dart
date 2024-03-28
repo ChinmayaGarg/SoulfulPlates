@@ -209,33 +209,47 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
                     style: AppTextStyles.textStyleBlackTwo12With400,
                   ),
                   4.rVerticalSizedBox(),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: CartStepperInt(
-                      value: menuItemModel.quantity,
-                      style: CartStepperTheme.of(context).copyWith(
-                        activeForegroundColor: AppColor.greenColor,
-                        activeBackgroundColor: AppColor.greenColorCode,
-                      ),
-                      didChangeCount: (int value) {
-                        if (menuItemModel.quantity == value) {
-                        } else if (menuItemModel.quantity > value) {
-                          controller.removeFromCart(
-                              menuItemModel.itemId?.toInt() ?? 0,
-                              menuItemModel.itemName ?? '',
-                              value);
-                        } else {
-                          controller.addToCart(
-                              menuItemModel.itemId?.toInt() ?? 0,
-                              menuItemModel.itemName ?? '',
-                              menuItemModel.itemPrice ?? '',
-                              value);
-                        }
-                        menuItemModel.quantity = value;
-                        controller.update();
-                      },
-                    ).paddingAll4(),
-                  ),
+                  Row(
+                      // alignment: Alignment.centerRight,
+                      children: [
+                        Expanded(
+                            child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              controller.addToWishList(menuItemModel);
+                            },
+                            child: Icon(
+                              Icons.favorite_outline_rounded,
+                              size: 24.rSize(),
+                            ),
+                          ),
+                        )),
+                        CartStepperInt(
+                          value: menuItemModel.quantity,
+                          style: CartStepperTheme.of(context).copyWith(
+                            activeForegroundColor: AppColor.greenColor,
+                            activeBackgroundColor: AppColor.greenColorCode,
+                          ),
+                          didChangeCount: (int value) {
+                            if (menuItemModel.quantity == value) {
+                            } else if (menuItemModel.quantity > value) {
+                              controller.removeFromCart(
+                                  menuItemModel.itemId?.toInt() ?? 0,
+                                  menuItemModel.itemName ?? '',
+                                  value);
+                            } else {
+                              controller.addToCart(
+                                  menuItemModel.itemId?.toInt() ?? 0,
+                                  menuItemModel.itemName ?? '',
+                                  menuItemModel.itemPrice ?? '',
+                                  value);
+                            }
+                            menuItemModel.quantity = value;
+                            controller.update();
+                          },
+                        )
+                      ]).paddingAll4(),
                   4.rVerticalSizedBox(),
                 ],
               ).paddingAllDefault()),

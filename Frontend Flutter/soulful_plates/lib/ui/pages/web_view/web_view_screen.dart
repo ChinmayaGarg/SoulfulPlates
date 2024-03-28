@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../utils/extensions.dart';
@@ -17,24 +16,15 @@ class _WebViewScreenState extends State<WebViewScreen> {
   double progress = 0;
   WebViewModel? webViewModel;
 
-  InAppWebViewController? webViewController;
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
-      ),
-      android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-      ),
-      ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: true,
-      ));
-
   @override
   void initState() {
     webViewModel = Get.arguments as WebViewModel;
+    _controller = WebViewController();
+    _controller.loadFlutterAsset(webViewModel?.url ?? '');
     super.initState();
   }
+
+  late final WebViewController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -49,62 +39,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Widget _getBody({required BuildContext context}) {
     return Stack(
-      children: [
-        InAppWebView(
-          initialUrlRequest:
-              URLRequest(url: Uri.parse(webViewModel?.url ?? '')),
-          initialOptions: options,
-          onWebViewCreated: (controller) {
-            webViewController = controller;
-          },
-          onLoadStart: (controller, url) {},
-          androidOnPermissionRequest: (controller, origin, resources) async {
-            return PermissionRequestResponse(
-                resources: resources,
-                action: PermissionRequestResponseAction.GRANT);
-          },
-          shouldOverrideUrlLoading: (controller, navigationAction) async {
-            var uri = navigationAction.request.url!;
-            if ([
-                  "http",
-                  "https",
-                  "file",
-                  "chrome",
-                  "data",
-                  "javascript",
-                  "about",
-                  "mailto",
-                  "sms"
-                ].contains(uri.scheme) &&
-                !uri.toString().contains(webViewModel?.url ?? '')) {
-              if (await canLaunchUrl(uri)) {
-                bool isLaunched =
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
-                return NavigationActionPolicy.CANCEL;
-              }
-            }
-            return NavigationActionPolicy.ALLOW;
-          },
-          onLoadStop: (controller, url) async {},
-          onLoadError: (controller, url, code, message) {},
-          onProgressChanged: (controller, progress) {
-            if (progress == 100) {}
-            setState(() {
-              this.progress = progress / 100;
-            });
-          },
-          onConsoleMessage: (controller, consoleMessage) {},
-        ),
-        progress < 1.0
-            ? Center(
-                child: CircularProgressIndicator(
-                  value: progress,
-                  color: AppColor.primaryColor,
-                  backgroundColor: AppColor.primaryColor.withOpacity(0.25),
-                ),
-              )
-            : Container(),
-      ],
+      children: [WebViewWidget(controller: _controller)],
     ).paddingAll4();
   }
 }

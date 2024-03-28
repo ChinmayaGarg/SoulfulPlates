@@ -98,6 +98,8 @@ class OrderHistoryBuyerScreen extends GetView<OrderHistoryBuyerController>
                             if (index < controller.dataList.length) {
                               return InkWell(
                                 onTap: () async {
+                                  controller.dataList[index].setIsSeller(false);
+
                                   Get.toNamed(orderDetailViewRoute,
                                       arguments: controller.dataList[index]);
                                 },

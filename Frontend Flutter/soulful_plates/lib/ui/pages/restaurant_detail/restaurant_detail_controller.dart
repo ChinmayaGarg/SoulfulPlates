@@ -84,13 +84,31 @@ class RestaurantDetailController extends BaseController {
     var response = await ApiCall().call(
       method: RequestMethod.get,
       endPoint: "${EndPoints.getAverageRating}/${restaurantModel?.storeId}",
-      apiCallType: ApiCallType.seller,
+      apiCallType: ApiCallType.user,
     );
     print("Response $response ");
     ratingCount = response['data'] ?? 4.5;
     if (ratingCount == 0.0) {
       ratingCount = 5;
     }
+    update();
+  }
+
+  void addToWishList(MenuModel menuModel) async {
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint: EndPoints.addWishList,
+        apiCallType: ApiCallType.user,
+        parameters: {
+          "userId": AppSingleton.loggedInUserProfile?.id,
+          "storeId": AppSingleton.storeId,
+          "menuItemId": menuModel.itemId,
+          "itemName": menuModel.itemName,
+          "itemPrice": menuModel.itemPrice,
+          "storeName": restaurantModel?.storeName,
+          "storeEmail": restaurantModel?.storeEmail,
+        });
+    Utils.showSuccessToast("Item Added to WishList", false);
     update();
   }
 }

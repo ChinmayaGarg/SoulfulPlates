@@ -62,6 +62,7 @@ class LiveOrdersScreen extends GetView<LiveOrdersController>
                       if (index < controller.dataList.length) {
                         return InkWell(
                           onTap: () async {
+                            controller.dataList[index].setIsSeller(true);
                             Get.toNamed(orderDetailViewRoute,
                                 arguments: controller.dataList[index]);
                           },
@@ -69,9 +70,8 @@ class LiveOrdersScreen extends GetView<LiveOrdersController>
                               orderDetailModel: controller.dataList[index],
                               isSeller: true,
                               orderStatusChange: (OrderStatus? status) {
-                                controller.dataList[index].setOrderStatus(
-                                    status ?? OrderStatus.Completed);
-                                controller.update();
+                                controller.changeOrderStatus(
+                                    controller.dataList[index], status);
                                 print("This is order status ${status}");
                                 // controller.changeOrderStatus(status);
                               }).paddingVertical8(),

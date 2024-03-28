@@ -138,7 +138,7 @@ class ProfileScreen extends GetView<ProfileController> with BaseCommonWidget {
         BaseButton(
             text: "Save",
             onSubmit: () {
-              controller.onSave();
+              controller.updateData();
             }).visibleWhen(isVisible: controller.isEditable),
         16.rVerticalSizedBox(),
       ],
