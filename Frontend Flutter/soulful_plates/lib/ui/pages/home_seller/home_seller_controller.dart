@@ -1,4 +1,5 @@
 import 'package:soulful_plates/app_singleton.dart';
+import 'package:soulful_plates/model/order_detail_model.dart';
 
 import '../../../constants/app_theme.dart';
 import '../../../constants/enums/view_state.dart';

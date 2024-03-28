@@ -1,11 +1,16 @@
 package com.Group11.soulfulplates.services.impl;
 
+import com.Group11.soulfulplates.models.Category;
+import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.models.Subcategory;
+import com.Group11.soulfulplates.payload.response.MenuItemResponse;
 import com.Group11.soulfulplates.repository.SubcategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,6 +45,11 @@ public class SubcategoryServiceImpl {
 
     public List<Subcategory> getAllSubCategories() {
         return subcategoryRepository.findAll();
+    }
+
+    public List<Subcategory> getAllSubCategoriesByCategory(Long categoryId) {
+        List<Subcategory> subcategories = subcategoryRepository.getAllSubCategoriesByCategory(categoryId);
+        return subcategories;
     }
 
 }

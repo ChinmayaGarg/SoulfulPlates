@@ -276,7 +276,7 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
                 style: AppTextStyles.textStyleBlackTwo10With400,
               ),
               Text(
-                "Distance: ${controller.restaurantModel?.distance} kms away...",
+                "Distance: ${controller.restaurantModel?.distance?.toInt()} kms away...",
                 style: AppTextStyles.textStyleBlackTwo10With400,
               ),
             ],

@@ -7,9 +7,10 @@ import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_icons.dart';
 import '../../../constants/app_sized_box.dart';
+import '../../../constants/app_theme.dart';
 import '../../../constants/enums/view_state.dart';
+import '../../../routing/route_names.dart';
 import '../../widgets/base_common_widget.dart';
-import '../../widgets/order_item_widget.dart';
 import '../order_detail/order_detail_screen.dart';
 import 'home_seller_controller.dart';
 
@@ -100,12 +101,17 @@ class HomeSellerScreen extends GetView<HomeSellerController>
                             if (index < controller.dataList.length) {
                               return InkWell(
                                 onTap: () async {
-                                  //todo tap on the item
+                                  Get.toNamed(orderDetailViewRoute,
+                                      arguments: controller.dataList[index]);
                                 },
                                 child: OrderItemWidget(
-                                        orderDetailModel:
-                                            controller.dataList[index])
-                                    .paddingVertical8(),
+                                    orderDetailModel:
+                                        controller.dataList[index],
+                                    isSeller: true,
+                                    orderStatusChange: (OrderStatus? status) {
+                                      print("This is order status ${status}");
+                                      // controller.changeOrderStatus(status);
+                                    }).paddingVertical8(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {

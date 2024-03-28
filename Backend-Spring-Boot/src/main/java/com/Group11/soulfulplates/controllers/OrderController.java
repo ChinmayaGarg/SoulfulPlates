@@ -72,7 +72,7 @@ public class OrderController {
     }
 
     @GetMapping("/getDetails")
-    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<OrderDetailsResponse> getOrderDetails(@RequestBody GetOrderDetailsRequest request) {
         try {
             OrderDetailsResponse response = orderService.getOrderDetails(request.getUserId(), request.getOrderId());
@@ -91,7 +91,7 @@ public class OrderController {
     }
 
     @GetMapping("/getForUser")
-    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForUser(@RequestBody GetOrdersRequest request) {
         try {
             // Extract parameters from the request for clarity
@@ -116,7 +116,7 @@ public class OrderController {
     }
 
     @GetMapping("/getForStore")
-    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForStore(@RequestBody GetStoreOrders request) {
         try {
             // Extract parameters from the request for clarity

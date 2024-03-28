@@ -63,5 +63,16 @@ public class CategoryController {
         }
     }
 
+    // Categories by Store.
+    @GetMapping("/getCategoriesByStore/{storeId}")
+    public ResponseEntity getCategoriesByStore(@PathVariable Long storeId) {
+        try {
+            List<Category> categories = categoryService.getCategoriesByStore(storeId);
+            return ResponseEntity.ok(new MessageResponse(1, "Category fetched.", categories));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
+                    "Error creating category: " + e.getMessage(), null));
+        }
+    }
 
 }

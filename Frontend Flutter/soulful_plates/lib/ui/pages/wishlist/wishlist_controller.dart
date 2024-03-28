@@ -35,20 +35,6 @@ class WishlistController extends BaseController
     update();
   }
 
-  void getAddress() async {
-    updateLoader(ViewStateEnum.busy);
-    var response = await ApiCall().call<AddressModel>(
-      method: RequestMethod.get,
-      endPoint:
-          "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
-      obj: AddressModel(),
-      apiCallType: ApiCallType.seller,
-    );
-    print("Response $response ");
-    updateLoader(ViewStateEnum.idle);
-    update();
-  }
-
   void addAddress({data}) async {
     updateLoader(ViewStateEnum.busy);
     var response = await ApiCall().call(

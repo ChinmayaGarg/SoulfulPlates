@@ -76,9 +76,7 @@ class MenuListScreen extends GetView<MenuListController> with BaseCommonWidget {
                               "This is menu item ${controller.dataList[index]}");
 
                           return InkWell(
-                            onTap: () async {
-                              //todo tap on the item
-                            },
+                            onTap: () async {},
                             child: getCategoryWidget(controller.dataList[index])
                                 .paddingAll4(),
                           );
@@ -124,110 +122,6 @@ class MenuListScreen extends GetView<MenuListController> with BaseCommonWidget {
       ],
     ).paddingAllDefault();
   }
-
-  // Widget getMenuItem(MenuModel menuItem) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         menuItem.itemName ?? '',
-  //         style: AppTextStyles.textStyleBlack14With700,
-  //       ),
-  //       Text(
-  //         menuItem.description ?? "",
-  //         style: AppTextStyles.textStyleBlackTwo14With400,
-  //         maxLines: 2,
-  //       ),
-  //       Text(
-  //         "\$ ${menuItem.itemPrice}",
-  //         style: AppTextStyles.textStyleBlack14With400,
-  //       ),
-  //       Text(
-  //         "Servings: ${menuItem.servingType} People",
-  //         style: AppTextStyles.textStyleBlack14With400,
-  //       ),
-  //       Text(
-  //         "Portion: ${menuItem.portion}",
-  //         style: AppTextStyles.textStyleBlack14With400,
-  //       ),
-  //       Text(
-  //         "Type: ${menuItem.type}",
-  //         style: AppTextStyles.textStyleBlack14With400,
-  //       ),
-  //       Text(
-  //         "Category: ${menuItem.categoryName}",
-  //         style: AppTextStyles.textStyleBlack14With400,
-  //       ),
-  //       Text(
-  //         "Sub Category: ${menuItem.subcategoryName}",
-  //         style: AppTextStyles.textStyleBlack14With400,
-  //       ),
-  //       Row(
-  //         children: [
-  //           Expanded(
-  //               child: InkWell(
-  //             onTap: () {
-  //               menuItem.isRecommended(!(menuItem.recommended ?? false));
-  //               controller.updateMenuItemStatus(menuItem);
-  //               controller.update();
-  //             },
-  //             child: Row(
-  //               children: [
-  //                 Icon(
-  //                   menuItem.recommended ?? false
-  //                       ? Icons.thumb_up_sharp
-  //                       : Icons.thumb_up_off_alt,
-  //                   color: AppColor.primaryColor,
-  //                   size: 24,
-  //                 ),
-  //                 4.rHorizontalSizedBox(),
-  //                 Text(
-  //                   "Recommended",
-  //                   style: AppTextStyles.textStyleBlackThree14With400,
-  //                 )
-  //               ],
-  //             ),
-  //           )),
-  //           Expanded(
-  //               child: InkWell(
-  //             onTap: () {
-  //               menuItem.isInStock(!(menuItem.inStock ?? true));
-  //
-  //               controller.update();
-  //             },
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.end,
-  //               children: [
-  //                 Expanded(
-  //                   child: Text(
-  //                     'In stock',
-  //                     style: AppTextStyles.textStyleBlackThree14With400,
-  //                     textAlign: TextAlign.end,
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 24,
-  //                   child: Transform.scale(
-  //                       scale: .75,
-  //                       child: Switch(
-  //                           inactiveTrackColor: AppColor.black4TextColor,
-  //                           activeColor: AppColor.primaryColor,
-  //                           thumbColor: const MaterialStatePropertyAll<Color>(
-  //                               Colors.black),
-  //                           value: menuItem.inStock ?? true,
-  //                           onChanged: (val) {
-  //                             menuItem.isInStock(val);
-  //                             controller.update();
-  //                           })),
-  //                 )
-  //               ],
-  //             ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-  //           ))
-  //         ],
-  //       )
-  //     ],
-  //   );
-  // }
 
   Widget getCategoryWidget(MenuCategory category) {
     return Container(

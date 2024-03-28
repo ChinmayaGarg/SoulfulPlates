@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/constants/app_colors.dart';
-import 'package:soulful_plates/constants/app_paddings.dart';
 import 'package:soulful_plates/constants/app_sized_box.dart';
 import 'package:soulful_plates/constants/app_text_styles.dart';
 import 'package:soulful_plates/constants/enums/view_state.dart';
 import 'package:soulful_plates/constants/size_config.dart';
-import 'package:soulful_plates/model/location/location_model.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/ui/pages/saved_location/saved_location_controller.dart';
 import 'package:soulful_plates/ui/widgets/base_common_widget.dart';
@@ -74,20 +72,26 @@ class SavedLocationScreen extends GetView<SavedLocationController>
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: Utils.locationList.length,
+                          itemCount: controller.dataList.length,
                           separatorBuilder: (context, index) {
                             return 2.rVerticalGreySizedBox();
                           },
                           itemBuilder: (context, index) {
-                            if (index < Utils.locationList.length) {
+                            if (index < controller.dataList.length) {
                               return ListTile(
                                 title: Text(
-                                    Utils.locationList[index].locationName),
-                                subtitle: Text(Utils.locationList[index]
-                                    .address), // Display address
-                                onTap: () {
-                                  _editLocation(context, index);
-                                  controller.update();
+                                    controller.dataList[index].label ?? ''),
+                                subtitle: Text(
+                                    controller.dataList[index].street ??
+                                        ''), // Display address
+                                onTap: () async {
+                                  var response = await Get.toNamed(
+                                      editLocationViewRoute,
+                                      arguments: controller.dataList[index]);
+                                  controller.resetPagination();
+                                  if (response) {
+                                    print(response);
+                                  }
                                 },
                               );
                             } else if (controller.moreLoading ==
@@ -131,85 +135,6 @@ class SavedLocationScreen extends GetView<SavedLocationController>
           ).paddingSymmetricSide(vertical: 8, horizontal: 16),
         ),
       ],
-    );
-  }
-
-  Future<void> _editLocation(BuildContext context, int index) async {
-    LocationModel currentLocation = Utils.locationList[index];
-
-    // Controllers for text fields
-    TextEditingController nameController =
-        TextEditingController(text: currentLocation.locationName);
-    TextEditingController latitudeController =
-        TextEditingController(text: currentLocation.latitude.toString());
-    TextEditingController longitudeController =
-        TextEditingController(text: currentLocation.longitude.toString());
-    TextEditingController addressController =
-        TextEditingController(text: currentLocation.address);
-
-    // Show dialog
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: AppPaddings.defaultPadding16,
-          backgroundColor: AppColor.whiteColor,
-          title: const Text('Edit Location'),
-          content: SizedBox(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Location Name'),
-                ),
-                TextField(
-                  controller: latitudeController,
-                  decoration: const InputDecoration(labelText: 'Latitude'),
-                  keyboardType: TextInputType.number,
-                ),
-                TextField(
-                  controller: longitudeController,
-                  decoration: InputDecoration(labelText: 'Longitude'),
-                  keyboardType: TextInputType.number,
-                ),
-                TextField(
-                  controller: addressController,
-                  decoration: InputDecoration(labelText: 'Address'),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Update the location with the new values
-                Utils.locationList[index].locationName = nameController.text;
-                Utils.locationList[index].latitude =
-                    double.tryParse(latitudeController.text) ??
-                        currentLocation.latitude;
-                Utils.locationList[index].longitude =
-                    double.tryParse(longitudeController.text) ??
-                        currentLocation.longitude;
-                Utils.locationList[index].address = addressController.text;
-
-                controller.update();
-                Navigator.pop(context); // Close the dialog
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

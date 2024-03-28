@@ -100,4 +100,24 @@ class SubcategoryServiceImplTest {
         assertEquals(subcategory.getSubCategoryId(), foundSubcategories.get(0).getSubCategoryId());
         assertEquals(subcategory.getSubCategoryName(), foundSubcategories.get(0).getSubCategoryName());
     }
+
+
+    @Test
+    void testGetAllSubCategoriesByCategoryId() {
+        Subcategory subcategory = new Subcategory();
+        subcategory.setSubCategoryId(1L);
+        subcategory.setSubCategoryName("Test Subcategory");
+        subcategory.setCategoryId(1L);
+
+        List<Subcategory> subcategoryList = Collections.singletonList(subcategory);
+
+        when(subcategoryRepository.getAllSubCategoriesByCategory(anyLong())).thenReturn(subcategoryList);
+
+        List<Subcategory> foundSubcategories = subcategoryService.getAllSubCategoriesByCategory(1L);
+        assertNotNull(foundSubcategories);
+        assertFalse(foundSubcategories.isEmpty());
+        assertEquals(1, foundSubcategories.size());
+        assertEquals(subcategory.getSubCategoryId(), foundSubcategories.get(0).getSubCategoryId());
+        assertEquals(subcategory.getSubCategoryName(), foundSubcategories.get(0).getSubCategoryName());
+    }
 }

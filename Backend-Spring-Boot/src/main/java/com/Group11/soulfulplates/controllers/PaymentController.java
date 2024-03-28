@@ -25,7 +25,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/createPaymentAndTransaction")
-    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createPaymentAndTransaction(@RequestBody(required = false) CreatePaymentRequest request) {
         try {
             boolean validate = true;
@@ -44,7 +44,7 @@ public class PaymentController {
     }
 
     @PostMapping("/updateStatus")
-    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updatePaymentStatus(@RequestBody UpdatePaymentStatusRequest request) {
         try {
             paymentService.updatePaymentStatus(request.getPaymentId(), request.getTransactionId(), request.getStatus());

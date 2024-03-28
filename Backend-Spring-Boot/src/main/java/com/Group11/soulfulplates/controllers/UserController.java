@@ -154,11 +154,11 @@ public class UserController {
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
         String fileExtension = StringUtils.getFilenameExtension(originalFilename);
         String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
-        String fileName = StringUtils.cleanPath(fileNameWithoutExtension + "_" + System.currentTimeMillis() + "." + fileExtension);
+        String fileName = StringUtils.cleanPath(userId + ".jpg");
 
         try {
 
-            Path uploadsDir = Paths.get(uploadPath);
+            Path uploadsDir = Paths.get(uploadPath+"users/");
 
             if (!Files.exists(uploadsDir)) {
                 Files.createDirectories(uploadsDir);
@@ -168,7 +168,7 @@ public class UserController {
 
             // Update the user's profile image URL
             String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
+                    .path("/uploads/users/")
                     .path(fileName)
                     .toUriString();
             user.setProfileImageUrl(fileUrl);

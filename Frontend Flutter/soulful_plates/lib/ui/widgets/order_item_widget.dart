@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soulful_plates/Utils/Extensions.dart';
+import 'package:soulful_plates/constants/app_sized_box.dart';
 import 'package:soulful_plates/constants/size_config.dart';
 
 import '../../constants/app_colors.dart';
@@ -11,8 +12,16 @@ import '../pages/order_detail/order_detail_screen.dart';
 
 class OrderItemWidget extends StatelessWidget {
   OrderDetailModel orderDetailModel;
+  bool isSeller = false;
 
-  OrderItemWidget({Key? key, required this.orderDetailModel}) : super(key: key);
+  Function(OrderStatus? status) orderStatusChange;
+
+  OrderItemWidget(
+      {Key? key,
+      required this.orderDetailModel,
+      required this.isSeller,
+      required this.orderStatusChange})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +106,48 @@ class OrderItemWidget extends StatelessWidget {
                 ),
               ],
             ),
+            18.rVerticalSizedBox(),
+            isSeller
+                ? Container(
+                    child: Row(
+                      children: [
+                        Text(
+                          "Choose Order Status",
+                          style: AppTextStyles.textStyleBlack14With400,
+                        ),
+                        const Spacer(),
+                        PopupMenuButton<OrderStatus>(
+                          initialValue: orderDetailModel.getOrderStatusType(),
+                          onSelected: (OrderStatus newValue) {
+                            orderStatusChange(newValue);
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return List.generate(OrderStatus.values.length,
+                                (index) {
+                              return PopupMenuItem<OrderStatus>(
+                                value: OrderStatus.values[index],
+                                child: Row(
+                                  children: [
+                                    Text(OrderStatus.values[index].name)
+                                  ],
+                                ),
+                              );
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColor.black5TextColor),
+                            child: Text(
+                              orderDetailModel.getOrderStatusType().name,
+                              textAlign: TextAlign.end,
+                            ).paddingUpSide816(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : AppSizedBox.sizedBox0,
             18.rVerticalSizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/Utils/Extensions.dart';
+import 'package:soulful_plates/constants/app_theme.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_icons.dart';
@@ -38,34 +39,39 @@ class TransactionsScreen extends GetView<TransactionsController>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
-          children: [
-            Expanded(
-              child: Divider(
-                color: Colors.black,
-                thickness: 1,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Invoice',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Cambria',
-                ),
-              ),
-            ),
-            Expanded(
-              child: Divider(
-                color: Colors.black,
-                thickness: 1,
-              ),
-            ),
-          ],
-        ),
-        8.rVerticalSizedBox(),
+        12.rVerticalSizedBox(),
+        Text(
+          "Filter by Payment Status:",
+          style: AppTextStyles.textStyleBlack14With400,
+        ).paddingHorizontal16(),
+        4.rVerticalSizedBox(),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: PaymentStatus.values.map(
+              (PaymentStatus option) {
+                return ChoiceChip(
+                  label: Text(
+                    option.name,
+                    style: TextStyle(
+                        color: controller.paymentStatus == option
+                            ? Colors.white
+                            : Colors.green.shade900),
+                  ),
+                  selected: controller.paymentStatus == option,
+                  selectedColor: Colors.green.shade900,
+                  backgroundColor: Colors.green.shade50,
+                  onSelected: (bool selected) {
+                    controller.paymentStatus =
+                        option ?? PaymentStatus.Completed;
+                    controller.resetPagination();
+                  },
+                ).paddingHorizontal8();
+              },
+            ).toList(),
+          ),
+        ).paddingHorizontal8(),
         Expanded(
           child: Stack(children: [
             controller.dataList.isNotEmpty
@@ -96,9 +102,9 @@ class TransactionsScreen extends GetView<TransactionsController>
                                   //todo tap on the item
                                 },
                                 child: PaymentItemWidget(
-                                        paymentModel:
-                                            controller.dataList[index])
-                                    .paddingVertical8(),
+                                  paymentModel: controller.dataList[index],
+                                  showUser: true,
+                                ).paddingVertical8(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {
@@ -136,10 +142,10 @@ class TransactionsScreen extends GetView<TransactionsController>
             controller.state == ViewStateEnum.busy
                 ? const Center(child: CircularProgressIndicator())
                 : AppSizedBox.sizedBox0
-          ]).paddingAllDefault(),
-        )
+          ]).paddingUpSide816(),
+        ),
       ],
-    ).paddingAll16();
+    );
   }
 }
 

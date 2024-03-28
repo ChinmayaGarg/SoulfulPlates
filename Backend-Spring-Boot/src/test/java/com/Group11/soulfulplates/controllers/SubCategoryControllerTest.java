@@ -109,4 +109,18 @@ class SubCategoryControllerTest {
         assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
+
+    @Test
+    void testGetAllSubcategoryWithDetailsByCategoryId() {
+        // Mock service method
+        when(subcategoryService.getAllSubCategoriesByCategory(anyLong())).thenReturn( new ArrayList<>());
+        // Call controller method
+        ResponseEntity<?> responseEntity = subCategoryController.getAllSubCategoriesByCategory(1L);
+        // Assertions
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Subcategory fetched.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
+    }
+
 }

@@ -24,16 +24,6 @@ class OrderHistoryBuyerScreen extends GetView<OrderHistoryBuyerController>
           title: const Text("Order History Buyer"),
         ),
         backgroundColor: AppColor.whiteColor,
-        floatingActionButton: FloatingActionButton(
-            tooltip: "Go to order detail",
-            child: const Icon(
-              Icons.more_horiz,
-              size: 24,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () {
-              Get.toNamed(orderDetailViewRoute);
-            }),
         body: SafeArea(
           child: GetBuilder(
             init: controller,
@@ -108,12 +98,17 @@ class OrderHistoryBuyerScreen extends GetView<OrderHistoryBuyerController>
                             if (index < controller.dataList.length) {
                               return InkWell(
                                 onTap: () async {
-                                  //todo tap on the item
+                                  Get.toNamed(orderDetailViewRoute,
+                                      arguments: controller.dataList[index]);
                                 },
                                 child: OrderItemWidget(
-                                        orderDetailModel:
-                                            controller.dataList[index])
-                                    .paddingVertical8(),
+                                    orderDetailModel:
+                                        controller.dataList[index],
+                                    isSeller: false,
+                                    orderStatusChange: (OrderStatus? status) {
+                                      print("This is order status ${status}");
+                                      // controller.changeOrderStatus(status);
+                                    }).paddingVertical8(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {
