@@ -1,6 +1,6 @@
 //package com.Group11.soulfulplates.IntegrationTests;
 //
-//import com.Group11.soulfulplates.services.RatingService;
+//import com.Group11.soulfulplates.services.impl.WishlistServiceImpl;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,34 +13,26 @@
 //
 //import static org.mockito.Mockito.when;
 //
-///**
-// * Integration tests for the RatingController class.
-// */
-//
 //@SpringBootTest
 //@AutoConfigureMockMvc
-//public class RatingControllerIntegrationTest {
+//public class WishlistControllerIntegrationTest {
 //
 //    @Autowired
 //    private MockMvc mockMvc;
 //
 //    @MockBean
-//    private RatingService ratingService;
+//    private WishlistServiceImpl wishlistService;
 //
-//    /**
-//     * Test case for unauthorized access when retrieving average rating.
-//     * @throws Exception if any error occurs during the test
-//     */
 //    @Test
-//    public void getAverageRating_Unauthorized() throws Exception {
+//    public void getWishlistById_Unauthorized() throws Exception {
 //        // Given
-//        Long storeId = 1L;
+//        Long wishlistId = 1L;
 //
-//        // Mock the behavior of RatingService
-//        when(ratingService.getAverageRating(storeId)).thenThrow(new RuntimeException("Error retrieving average rating"));
+//        // Mock the behavior of WishlistService
+//        when(wishlistService.getWishlistById(wishlistId)).thenThrow(new RuntimeException("Error retrieving wishlist"));
 //
 //        // When/Then
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/ratings/average/{storeId}", storeId)
+//        mockMvc.perform(MockMvcRequestBuilders.get("/api/wishlist/{id}", wishlistId)
 //                        .header(HttpHeaders.AUTHORIZATION, "Bearer invalidTokenHere"))
 //                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.code").doesNotExist())
