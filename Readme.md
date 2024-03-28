@@ -1,8 +1,8 @@
 # Soulful Plates
 
-This project demonstrates building a secure web application with Spring Boot, utilizing JSON Web Tokens (JWT) for authentication. It showcases Spring Boot's streamlined approach to integrating security, data persistence, web services, and validation.
+This project demonstrates building a secure mobile application with Spring Boot, utilizing JSON Web Tokens (JWT) for authentication. It showcases Spring Boot's streamlined approach to integrating security, data persistence, app services, and validation.
 
-This project demonstrates how to build a secure web application with Spring Boot using JSON Web Tokens (JWT) for authentication. It showcases the integration of security, data persistence (JPA), validation, and web services in a Spring Boot application, focusing on securing RESTful APIs with JWT.
+This project demonstrates how to build a secure mobile application with Spring Boot using JSON Web Tokens (JWT) for authentication. It showcases the integration of security, data persistence (JPA), validation, and app services in a Spring Boot application, focusing on securing RESTful APIs with JWT.
 
 ## Prerequisites
 
