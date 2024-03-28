@@ -1,23 +1,29 @@
-import 'package:soulful_plates/network/network_interfaces/generic_model.dart';
+import 'package:soulful_plates/constants/app_theme.dart';
+
+import '../network/network_interfaces/generic_model.dart';
 
 /// userId : 1
+/// username : "seller"
 /// storeId : 1
-/// amount : 25.25
-/// orderId : 1
-/// cardNumber : "12**-****-**61"
-/// cardExpiry : "01/25"
+/// storeName : "Nikul’s Veggies"
+/// amount : 61.00
+/// orderId : 26
+/// cardNumber : "34**-45**-53**-3434"
+/// cardExpiry : "12/45"
 /// cvv : "***"
 /// paymentStatus : "Pending"
-/// paymentId : 2
-/// transactionId : 2
+/// paymentId : 6
+/// transactionId : 9
 /// status : "Processing"
-/// createdDate : "2024-03-21T04:31:55.916+00:00"
-/// updatedDate : "2024-03-21T04:31:55.916+00:00"
+/// createdDate : "2024-03-28T01:32:42.500+00:00"
+/// updatedDate : "2024-03-28T01:32:42.500+00:00"
 
 class PaymentModel extends GenericModel {
   PaymentModel({
     num? userId,
+    String? username,
     num? storeId,
+    String? storeName,
     num? amount,
     num? orderId,
     String? cardNumber,
@@ -31,7 +37,9 @@ class PaymentModel extends GenericModel {
     String? updatedDate,
   }) {
     _userId = userId;
+    _username = username;
     _storeId = storeId;
+    _storeName = storeName;
     _amount = amount;
     _orderId = orderId;
     _cardNumber = cardNumber;
@@ -47,7 +55,9 @@ class PaymentModel extends GenericModel {
 
   PaymentModel.fromJson(dynamic json) {
     _userId = json['userId'];
+    _username = json['username'];
     _storeId = json['storeId'];
+    _storeName = json['storeName'];
     _amount = json['amount'];
     _orderId = json['orderId'];
     _cardNumber = json['cardNumber'];
@@ -61,7 +71,9 @@ class PaymentModel extends GenericModel {
     _updatedDate = json['updatedDate'];
   }
   num? _userId;
+  String? _username;
   num? _storeId;
+  String? _storeName;
   num? _amount;
   num? _orderId;
   String? _cardNumber;
@@ -75,7 +87,9 @@ class PaymentModel extends GenericModel {
   String? _updatedDate;
   PaymentModel copyWith({
     num? userId,
+    String? username,
     num? storeId,
+    String? storeName,
     num? amount,
     num? orderId,
     String? cardNumber,
@@ -90,7 +104,9 @@ class PaymentModel extends GenericModel {
   }) =>
       PaymentModel(
         userId: userId ?? _userId,
+        username: username ?? _username,
         storeId: storeId ?? _storeId,
+        storeName: storeName ?? _storeName,
         amount: amount ?? _amount,
         orderId: orderId ?? _orderId,
         cardNumber: cardNumber ?? _cardNumber,
@@ -104,7 +120,9 @@ class PaymentModel extends GenericModel {
         updatedDate: updatedDate ?? _updatedDate,
       );
   num? get userId => _userId;
+  String? get username => _username;
   num? get storeId => _storeId;
+  String? get storeName => _storeName;
   num? get amount => _amount;
   num? get orderId => _orderId;
   String? get cardNumber => _cardNumber;
@@ -120,7 +138,9 @@ class PaymentModel extends GenericModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['userId'] = _userId;
+    map['username'] = _username;
     map['storeId'] = _storeId;
+    map['storeName'] = _storeName;
     map['amount'] = _amount;
     map['orderId'] = _orderId;
     map['cardNumber'] = _cardNumber;
@@ -138,5 +158,13 @@ class PaymentModel extends GenericModel {
   @override
   from(json) {
     return PaymentModel.fromJson(json);
+  }
+
+  PaymentStatus getPaymentStatusType() {
+    PaymentStatus orderStatusType = PaymentStatus.values.firstWhere(
+      (element) => element.toString().split('.').last == paymentStatus,
+      orElse: () => PaymentStatus.Pending,
+    );
+    return orderStatusType;
   }
 }

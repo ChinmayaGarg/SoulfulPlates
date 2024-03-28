@@ -10,6 +10,8 @@ import '../../../utils/pagination_utils.dart';
 
 class TransactionsController extends BaseController
     with PaginationUtils<PaymentModel> {
+  PaymentStatus paymentStatus = PaymentStatus.Completed;
+
   @override
   void onInit() {
     super.onInit();
@@ -35,7 +37,7 @@ class TransactionsController extends BaseController
           "userId": AppSingleton.loggedInUserProfile?.id,
           "limit": recordsPerPage,
           "offset": pageNo,
-          "status": PaymentStatus.Pending.name
+          "status": paymentStatus.name
         });
 
     if (response != null) {

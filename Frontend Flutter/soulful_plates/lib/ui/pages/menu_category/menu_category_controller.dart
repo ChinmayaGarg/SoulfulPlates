@@ -31,7 +31,8 @@ class MenuCategoryController extends BaseController {
   }
 
   fetchSubCategory() async {
-    await Utils.fetchSubCategoryList(setLoaderState);
+    await Utils.fetchSubCategoryList(
+        setLoaderState, selectedCategory?.categoryId?.toString() ?? "");
     update();
   }
 
@@ -73,7 +74,8 @@ class MenuCategoryController extends BaseController {
     print("Response $response ");
     if (response != null && response['code'] == 1) {
       Utils.showSuccessToast("Sub Category created successfully.", true);
-      await Utils.fetchSubCategoryList(setLoaderState);
+      await Utils.fetchSubCategoryList(
+          setLoaderState, selectedCategory?.categoryId?.toString() ?? '');
     } else {
       setLoaderState(ViewStateEnum.idle);
       Utils.showSuccessToast(
@@ -98,7 +100,8 @@ class MenuCategoryController extends BaseController {
     print("Response $response ");
     if (response != null && response['code'] == 1) {
       Utils.showSuccessToast("Sub Category created successfully.", true);
-      await Utils.fetchSubCategoryList(setLoaderState);
+      await Utils.fetchSubCategoryList(
+          setLoaderState, selectedCategory?.categoryId?.toString() ?? '');
     } else {
       setLoaderState(ViewStateEnum.idle);
       Utils.showSuccessToast(

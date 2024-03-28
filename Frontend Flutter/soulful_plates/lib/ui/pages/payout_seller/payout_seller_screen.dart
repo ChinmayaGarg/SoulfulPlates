@@ -58,7 +58,7 @@ class PayoutSellerScreen extends GetView<PayoutSellerController>
                   children: [
                     Text(
                       "Amount: \$120.15",
-                      style: AppTextStyles.textStyleBlack16With700,
+                      style: AppTextStyles.textStyleBlack16With600,
                     ),
                     Text(
                       "21/02/2024",

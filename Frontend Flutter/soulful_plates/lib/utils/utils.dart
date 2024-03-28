@@ -8,20 +8,24 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:soulful_plates/constants/app_icons.dart';
+import 'package:soulful_plates/utils/shared_prefs.dart';
 
 import '../app_singleton.dart';
 import '../constants/app_colors.dart';
 import '../constants/enums/view_state.dart';
 import '../constants/language/language_constants.dart';
 import '../constants/size_config.dart';
+import '../model/location/address_model.dart';
 import '../model/location/location_model.dart';
 import '../model/menu/menu_category_model.dart';
 import '../model/menu/menu_model.dart';
 import '../model/menu/sub_category_model.dart';
+import '../model/profile/user_profile.dart';
 import '../model/store_details/store_detail_model.dart';
 import '../network/network_interfaces/end_points.dart';
 import '../network/network_interfaces/i_dio_singleton.dart';
 import '../network/network_utils/api_call.dart';
+import '../routing/route_names.dart';
 import '../ui/widgets/base_loading_widget.dart';
 import 'extensions.dart';
 
@@ -172,6 +176,93 @@ class Utils {
     return AppIcons.eggIcon;
   }
 
+  static getAddress() async {
+    try {
+      var response = await ApiCall().call<AddressModel>(
+        method: RequestMethod.get,
+        endPoint:
+            "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
+        obj: AddressModel(),
+        apiCallType: ApiCallType.seller,
+      );
+      print("Response $response ");
+      return response;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<bool> login() async {
+    try {
+      String email = UserPreference.getValue(key: SharedPrefKey.email.name);
+      String pass = UserPreference.getValue(key: SharedPrefKey.passcode.name);
+      final UserProfile? userModel = await ApiCall().call<UserProfile>(
+          method: RequestMethod.post,
+          endPoint: EndPoints.login,
+          obj: UserProfile(),
+          apiCallType: ApiCallType.simple,
+          parameters: {"username": email, "password": pass});
+      if (userModel != null) {
+        await UserPreference.setValue(
+            key: SharedPrefKey.userProfileData.name,
+            value: userModel.toRawJson());
+        AppSingleton.loggedInUserProfile = userModel;
+        Utils.showSuccessToast("Logged in successfully.", false);
+        await UserPreference.setValue(
+            key: SharedPrefKey.isLogin.name, value: true);
+        await UserPreference.setValue(
+            key: SharedPrefKey.email.name, value: email);
+        await UserPreference.setValue(
+            key: SharedPrefKey.passcode.name, value: pass);
+        if (!AppSingleton.isBuyer() && userModel.sellerName.isNullOrEmpty) {
+          Get.offAllNamed(storeDetailsViewRoute);
+        } else {
+          List<AddressModel> result = await Utils.getAddress();
+          if (result.isNotNullOrEmpty) {
+            AppSingleton.storeId =
+                AppSingleton.loggedInUserProfile?.sellerId?.toInt() ?? 1;
+            Get.offAllNamed(dashboardViewRoute);
+          } else {
+            Get.offAllNamed(
+              editLocationViewRoute,
+            );
+          }
+        }
+      } else {
+        Utils.showSuccessToast(
+            "Issue while logging in. Please try again later.", true);
+        Get.offAllNamed(loginViewRoute);
+      }
+      return false;
+    } catch (e) {
+      debugPrint('This is error $e');
+      // Utils.showSuccessToast(e.toString(), true);
+      Get.offAllNamed(loginViewRoute);
+      return false;
+    }
+  }
+
+  static fetchLatestProfileData() async {
+    try {
+      String email = UserPreference.getValue(key: SharedPrefKey.email.name);
+      String pass = UserPreference.getValue(key: SharedPrefKey.passcode.name);
+      final UserProfile? userModel = await ApiCall().call<UserProfile>(
+          method: RequestMethod.post,
+          endPoint: EndPoints.login,
+          obj: UserProfile(),
+          apiCallType: ApiCallType.simple,
+          parameters: {"username": email, "password": pass});
+      if (userModel != null) {
+        await UserPreference.setValue(
+            key: SharedPrefKey.userProfileData.name,
+            value: userModel.toRawJson());
+        AppSingleton.loggedInUserProfile = userModel;
+      }
+    } catch (e) {
+      debugPrint('This is error $e');
+    }
+  }
+
   static List<MenuCategory> menuCategory = [];
 
   static List<MenuModel> menuItems = [];
@@ -263,7 +354,7 @@ class Utils {
     setLoaderState(ViewStateEnum.busy);
     var response = await ApiCall().call<MenuCategory>(
       method: RequestMethod.get,
-      endPoint: EndPoints.getAllCategories,
+      endPoint: EndPoints.getCategoriesByStore + "/${AppSingleton.storeId}",
       obj: MenuCategory(),
       apiCallType: ApiCallType.seller,
     );
@@ -274,11 +365,11 @@ class Utils {
   static List<SubCategoryModel> menuSubCategoryList = [];
 
   static fetchSubCategoryList(
-      Function(ViewStateEnum state) setLoaderState) async {
+      Function(ViewStateEnum state) setLoaderState, String categoryId) async {
     setLoaderState(ViewStateEnum.busy);
     var response = await ApiCall().call<SubCategoryModel>(
       method: RequestMethod.get,
-      endPoint: EndPoints.getSubCategories,
+      endPoint: "${EndPoints.getSubCategories}/${categoryId}",
       obj: SubCategoryModel(),
       apiCallType: ApiCallType.seller,
     );

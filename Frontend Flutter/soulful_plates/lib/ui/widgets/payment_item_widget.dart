@@ -6,13 +6,15 @@ import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/model/payment_model.dart';
 
 import '../../constants/app_colors.dart';
-import '../../constants/app_icons.dart';
 import '../../constants/app_theme.dart';
 import '../../utils/utils.dart';
 
 class PaymentItemWidget extends StatelessWidget {
   PaymentModel paymentModel;
-  PaymentItemWidget({Key? key, required this.paymentModel}) : super(key: key);
+  bool showUser;
+  PaymentItemWidget(
+      {Key? key, required this.paymentModel, required this.showUser})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +22,7 @@ class PaymentItemWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       elevation: 4, // Added elevation
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black, width: 0.5), // Add border
-        ),
+        decoration: AppTheme.boxDecorationCard,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -41,22 +40,15 @@ class PaymentItemWidget extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          8.rHorizontalSizedBox(), // Add horizontal spacing
-                          // Profile pic
-                          CircleAvatar(
-                            radius: 16,
-                            backgroundColor: Colors.lightGreen
-                                .shade200, // Change background color as needed
-                            child: Image.asset(
-                                AppIcons.appIcon), // Add your image asset here
-                          ),
-                          8.rHorizontalSizedBox(), // Add horizontal spacing
-                          // Text for store name
                           Container(
-                            decoration: AppTheme.getStatusBackgroundColor(
-                                OrderStatus.Completed),
+                            decoration: BoxDecoration(
+                              color: AppColor.successGreen.withOpacity(.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             child: Text(
-                              "UserID: ${paymentModel.userId} ${paymentModel.storeId}",
+                              showUser
+                                  ? "${paymentModel.storeName?.capitalizeFirst}"
+                                  : "${paymentModel.username?.capitalizeFirst}",
                               style: AppTheme.getStatusColor(
                                   OrderStatus.Completed),
                             ).paddingUpSide816(),
@@ -68,19 +60,22 @@ class PaymentItemWidget extends StatelessWidget {
                   8.rHorizontalSizedBox(), // Add horizontal spacing between columns
                   const Spacer(),
                   Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.linksColor.withOpacity(.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    decoration: AppTheme.getPaymentStatusBackgroundColor(
+                        paymentModel.getPaymentStatusType()),
                     child: Text(
                       paymentModel.paymentStatus ?? '',
-                      style: TextStyle(
-                          color: AppColor.linksColor, fontSize: 12.rSize()),
+                      style: AppTheme.getTransactionStatusColor(
+                          paymentModel.getPaymentStatusType()),
                     ).paddingUpSide812(),
                   ),
                 ],
               ),
-              20.rVerticalSizedBox(), // Add vertical spacing
+              8.rVerticalSizedBox(), // Add vertical spacing
+              Text(
+                "Card: ${paymentModel.cardNumber}",
+                style: AppTextStyles.textStyleBlack12With400,
+              ),
+              8.rVerticalSizedBox(), // Add vertical spacing
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),

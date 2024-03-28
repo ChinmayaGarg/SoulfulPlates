@@ -83,6 +83,10 @@ class OrderDetailModel extends GenericModel {
     _rating = value;
   }
 
+  setOrderStatus(OrderStatus orderStatus) {
+    _orderStatus = orderStatus.name;
+  }
+
   OrderDetailModel copyWith({
     num? orderId,
     String? orderStatus,

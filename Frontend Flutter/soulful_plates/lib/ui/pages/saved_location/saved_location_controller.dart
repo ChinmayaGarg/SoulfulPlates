@@ -1,11 +1,15 @@
 import 'package:soulful_plates/controller/base_controller.dart';
-import 'package:soulful_plates/model/location/location_model.dart';
+import 'package:soulful_plates/model/location/address_model.dart';
 
+import '../../../app_singleton.dart';
 import '../../../constants/enums/view_state.dart';
+import '../../../network/network_interfaces/end_points.dart';
+import '../../../network/network_interfaces/i_dio_singleton.dart';
+import '../../../network/network_utils/api_call.dart';
 import '../../../utils/pagination_utils.dart';
 
 class SavedLocationController extends BaseController
-    with PaginationUtils<LocationModel> {
+    with PaginationUtils<AddressModel> {
   @override
   void onInit() {
     super.onInit();
@@ -21,19 +25,17 @@ class SavedLocationController extends BaseController
   }
 
   void getDataFromAPI() async {
-    dataList = LocationModel.getAllLocations();
-    /*updateLoader(ViewStateEnum.busy);
-    var result = ; //male api call here
-
-    if (result.hasException) {
-      dataList = [];
-      updateLoader(ViewStateEnum.idle);
-      update();
-      return;
-    }
-
-    if (result.data != null && result.data!.containsKey('data')) {
-      List<DataModel> temp = DataModel.fromJsonArray(result.data!['data']);
+    updateLoader(ViewStateEnum.busy);
+    var result = await ApiCall().call<AddressModel>(
+      method: RequestMethod.get,
+      endPoint:
+          "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
+      obj: AddressModel(),
+      apiCallType: ApiCallType.seller,
+    );
+    //male api call her
+    if (result != null) {
+      List<AddressModel> temp = result;
       if (temp.isEmpty || temp.length < recordsPerPage) {
         hasReachedMax = true;
       }
@@ -47,7 +49,7 @@ class SavedLocationController extends BaseController
     } else {
       dataList = [];
       updateLoader(ViewStateEnum.idle);
-    }*/
+    }
     update();
   }
 

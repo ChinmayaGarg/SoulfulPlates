@@ -4,6 +4,7 @@ import 'package:soulful_plates/model/profile/user_profile.dart';
 
 import '../../../controller/base_controller.dart';
 import '../../../utils/shared_prefs.dart';
+import '../../../utils/utils.dart';
 
 class ProfileController extends BaseController {
   UserProfile? userProfile;
@@ -39,6 +40,7 @@ class ProfileController extends BaseController {
     //     key: SharedPrefKey.token.name, value: userModel.token);
     AppSingleton.loggedInUserProfile = userModel;
 
+    Utils.fetchLatestProfileData();
     userProfile = userModel;
     isEditable = !isEditable;
 

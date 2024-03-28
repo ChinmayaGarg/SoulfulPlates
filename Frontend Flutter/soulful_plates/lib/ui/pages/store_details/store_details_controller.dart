@@ -6,6 +6,7 @@ import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
+import '../../../model/location/address_model.dart';
 import '../../../model/store_details/store_detail_model.dart';
 import '../../../network/network_interfaces/end_points.dart';
 import '../../../network/network_interfaces/i_dio_singleton.dart';
@@ -46,7 +47,7 @@ class StoreDetailsController extends BaseController {
     var response = await ApiCall().call(
         method: RequestMethod.post,
         endPoint:
-            "${EndPoints.sellerUpdateDetails}/${AppSingleton.loggedInUserProfile?.sellerId}",
+            "${EndPoints.sellerUpdateDetails}/${AppSingleton.loggedInUserProfile?.id}",
         apiCallType: ApiCallType.seller,
         parameters: {
           "storeName": firstNameEditingController.text.trim(),
@@ -59,8 +60,34 @@ class StoreDetailsController extends BaseController {
     } else {
       Utils.showSuccessToast("Error while updating store details.", true);
     }
+
+    List<AddressModel> result = await getAddress();
+    if (result.isNotNullOrEmpty) {
+      AppSingleton.storeId =
+          AppSingleton.loggedInUserProfile?.sellerId?.toInt() ?? 1;
+      Get.offAllNamed(dashboardViewRoute);
+    } else {
+      Get.offAllNamed(
+        editLocationViewRoute,
+      );
+    }
     setLoaderState(ViewStateEnum.idle);
-    Get.offAllNamed(dashboardViewRoute);
+  }
+
+  getAddress() async {
+    try {
+      var response = await ApiCall().call<AddressModel>(
+        method: RequestMethod.get,
+        endPoint:
+            "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
+        obj: AddressModel(),
+        apiCallType: ApiCallType.seller,
+      );
+      print("Response $response ");
+      return response;
+    } catch (e) {
+      return null;
+    }
   }
 
   void initData() {

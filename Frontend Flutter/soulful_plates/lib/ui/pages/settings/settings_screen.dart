@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:soulful_plates/app_singleton.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
+import 'package:soulful_plates/utils/shared_prefs.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_text_styles.dart';
@@ -94,6 +95,8 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                   1.rVerticalGreySizedBox(),
                   InkWell(
                     onTap: () {
+                      UserPreference.clear();
+                      AppSingleton.loggedInUserProfile = null;
                       Get.offAllNamed(loginViewRoute);
                     },
                     child: Row(
@@ -243,6 +246,26 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
             Expanded(
               child: Text(
                 'Saved Locations',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
+      InkWell(
+        onTap: () {
+          Get.toNamed(transactionHistoryViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Transactions',
                 style: AppTextStyles.textStyleBlack16With400,
               ),
             ),

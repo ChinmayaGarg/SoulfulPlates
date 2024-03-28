@@ -30,6 +30,8 @@ import 'package:soulful_plates/ui/pages/saved_location/saved_location_screen.dar
 import 'package:soulful_plates/ui/pages/sign_up/sign_up_binding.dart';
 import 'package:soulful_plates/ui/pages/sign_up/sign_up_screen.dart';
 import 'package:soulful_plates/ui/pages/splash_screen.dart';
+import 'package:soulful_plates/ui/pages/transactions/transactions_binding.dart';
+import 'package:soulful_plates/ui/pages/transactions/transactions_screen.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_binding.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_screen.dart';
 import 'package:soulful_plates/ui/pages/wishlist/wishlist_binding.dart';
@@ -265,6 +267,14 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         settings: settings,
         bindings: [TransactionSellerBinding()],
         page: () => TransactionSellerScreen(),
+      );
+
+    case transactionHistoryViewRoute:
+      return getPageRoutes(
+        routeName: transactionHistoryViewRoute,
+        settings: settings,
+        bindings: [TransactionsBinding()],
+        page: () => TransactionsScreen(),
       );
 
     case payoutHistoryViewRoute:

@@ -23,7 +23,7 @@ const String orderDetailViewRoute = 'orderDetailViewRoute';
 const String ratingReviewViewRoute = 'ratingReviewViewRoute';
 const String locationListViewRoute = 'locationListViewRoute';
 const String editLocationViewRoute = 'editLocationViewRoute';
-
+const String transactionHistoryViewRoute = 'transactionHistoryViewRoute';
 const String storeDetailsViewRoute = 'storeDetailsViewRoute';
 const String homeSellerViewRoute = 'homeSellerViewRoute';
 const String liveOrdersViewRoute = 'liveOrdersViewRoute';

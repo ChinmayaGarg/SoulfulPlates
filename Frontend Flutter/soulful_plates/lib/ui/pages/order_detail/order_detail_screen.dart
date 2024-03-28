@@ -71,7 +71,8 @@ class OrderDetailScreen extends GetView<OrderDetailController>
                       child: Text(
                         controller.orderDetailModel
                                 ?.getOrderStatusType()
-                                .name ??
+                                .name
+                                .capitalizeFirst ??
                             '',
                         style: AppTheme.getStatusColor(
                             controller.orderDetailModel!.getOrderStatusType()),
