@@ -341,5 +341,87 @@ public class AuthControllerTest {
         assertNull(responseEntity.getBody().getData());
     }
 
+    @Test
+    void testAuthenticateUser_SuccessfulAuthentication() {
+        // Mock authentication result
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+
+        // Mock UserDetailsImpl
+        UserDetailsImpl userDetails = mock(UserDetailsImpl.class);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        // Stub the authenticationManager.authenticate() method to return the authentication object
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
+
+        // Stub jwtUtils.generateJwtToken() method
+        when(jwtUtils.generateJwtToken(any())).thenReturn("mocked_jwt_token");
+
+        // Prepare a valid login request
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("testUser");
+        loginRequest.setPassword("password123");
+
+        // Call the method under test
+        ResponseEntity<MessageResponse> responseEntity = authController.authenticateUser(loginRequest);
+
+        // Verify response
+        assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue());
+        assertEquals(1, responseEntity.getBody().getCode());
+    }
+
+
+    @Test
+    void testForgetPassword_ValidEmail() {
+        // Prepare a forget password request with a valid email
+        ForgetPasswordRequest request = new ForgetPasswordRequest();
+        request.setEmail("test@test.com");
+
+        // Stub userRepository.existsByEmail() method to return true
+        when(userRepository.existsByEmail(any())).thenReturn(true);
+
+        // Call the method under test
+        ResponseEntity<MessageResponse> responseEntity = authController.generateForgetPasswordCode(request);
+
+        // Verify response
+        assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue());
+        assertEquals(1, responseEntity.getBody().getCode());
+    }
+
+    @Test
+    void testResetPassword_ValidEmailAndPassword() {
+        // Prepare a reset password request with a valid email and new password
+        ResetPasswordRequest request = new ResetPasswordRequest();
+        request.setEmail("test@test.com");
+        request.setNewPassword("newPassword123");
+
+        // Stub userRepository.existsByEmail() method to return true
+        when(userRepository.existsByEmail(any())).thenReturn(true);
+
+        // Stub userRepository.findByEmail() method to return an optional containing a user
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(new User()));
+
+        // Call the method under test
+        ResponseEntity<MessageResponse> responseEntity = authController.resetPassword(request);
+
+        // Verify response
+        assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue());
+        assertEquals(1, responseEntity.getBody().getCode());
+    }
+
+    @Test
+    public void testGenerateForgetPasswordCode_UnexpectedException() {
+        ForgetPasswordRequest request = new ForgetPasswordRequest();
+        request.setEmail("test@test.com");
+
+        // Mock unexpected exception
+        when(userRepository.existsByEmail(any())).thenThrow(new RuntimeException("Unexpected error"));
+
+        ResponseEntity<MessageResponse> responseEntity = authController.generateForgetPasswordCode(request);
+
+        // Verify bad request with generic error message
+        assertEquals(ResponseEntity.badRequest().body(new MessageResponse(-1, "Error occurred while generating forget password code.", null)), responseEntity);
+    }
+
 
 }

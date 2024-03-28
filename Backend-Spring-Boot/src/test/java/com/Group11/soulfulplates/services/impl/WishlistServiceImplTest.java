@@ -1,6 +1,7 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.Wishlist;
+import com.Group11.soulfulplates.payload.request.WishlistRequest;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.repository.WishlistRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

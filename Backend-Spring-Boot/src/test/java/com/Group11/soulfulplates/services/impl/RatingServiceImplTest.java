@@ -182,4 +182,62 @@ class RatingServiceImplTest {
         verifyNoInteractions(ratingRepository);
     }
 
+    @Test
+    void addRatingAndLinkToOrder_NullOrder() {
+        // Mock request with null order ID
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(null);
+        ratingData.setStoreId(1L); // Providing store ID
+        ratingData.setRating((int) 4.5);
+        ratingData.setFeedback("Good service");
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Order is Null in request", exception.getMessage());
+
+        // Verify mocks
+        verifyNoInteractions(orderRepository);
+        verifyNoInteractions(storeRepository);
+        verifyNoInteractions(ratingRepository);
+    }
+
+    @Test
+    public void testAddRatingAndLinkToOrder_RatingSaveException() throws Exception {
+        // Mock request with valid data
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(1L);
+        ratingData.setStoreId(1L);
+        ratingData.setRating((int) 4.0);
+        ratingData.setFeedback("Good service");
+
+        // Mock order and store to return valid data
+        Order order = new Order();
+        order.setOrderId(ratingData.getOrderId());
+        when(orderRepository.findById(ratingData.getOrderId())).thenReturn(Optional.of(order));
+        when(storeRepository.findById(ratingData.getStoreId())).thenReturn(Optional.of(new com.Group11.soulfulplates.models.Store()));
+
+        // Mock exception during rating save
+        doThrow(new RuntimeException("Mock exception")).when(ratingRepository).save(any(Rating.class));
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        // Assert the specific exception message (if applicable)
+
+        // Verify interactions
+        verify(orderRepository, times(1)).findById(ratingData.getOrderId());
+        verify(storeRepository, times(1)).findById(ratingData.getStoreId());
+        verify(ratingRepository, times(1)).save(any(Rating.class));
+    }
+    @Test
+    public void testAddRatingAndLinkToOrder_MissingRatingData() throws Exception {
+        // Mock request with missing rating
+        CreateRatingRequest ratingData = new CreateRatingRequest();
+        ratingData.setOrderId(1L);
+        ratingData.setStoreId(1L);
+
+        // Call the method and assert exception
+        Exception exception = assertThrows(Exception.class, () -> ratingService.addRatingAndLinkToOrder(ratingData));
+        assertEquals("Order not found", exception.getMessage()); // Adjust based on actual exception message
+    }
+
 }
