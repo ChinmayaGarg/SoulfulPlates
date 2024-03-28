@@ -17,7 +17,7 @@ public class WishlistServiceImpl {
     @Autowired
     private WishlistRepository wishlistRepository;
 
-    @Autowired // Add this annotation to inject the UserRepository
+    @Autowired
     private UserRepository userRepository;
 
     public List<Wishlist> getAllWishlists() {
@@ -49,9 +49,9 @@ public class WishlistServiceImpl {
     public boolean deleteWishlist(Long id) {
         try {
             wishlistRepository.deleteById(id);
-            return true; // Deletion successful
+            return true;
         } catch (Exception e) {
-            return false; // Deletion unsuccessful
+            return false;
         }
     }
 }

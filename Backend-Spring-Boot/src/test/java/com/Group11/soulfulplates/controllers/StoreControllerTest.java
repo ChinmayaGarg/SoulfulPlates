@@ -167,14 +167,13 @@ class StoreControllerTest {
         assertEquals("Seller's Store not found", responseBody.get("description"));
     }
 
-
     @Test
     public void testUpdateUserImage_EmptyFile() {
         // Mock storeRepository
         Store store = new Store(); // Create a mock store object
         when(storeRepository.findById(anyLong())).thenReturn(Optional.of(store));
 
-        // Mock a valid MultipartFile object
+        // Mock a valid MultipartFile object with empty content
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", new byte[0]);
 
         // Invoke controller method
@@ -192,4 +191,5 @@ class StoreControllerTest {
         assertEquals("Failed to store empty file.", messageResponse.getDescription());
         assertNull(messageResponse.getData());
     }
+
 }
