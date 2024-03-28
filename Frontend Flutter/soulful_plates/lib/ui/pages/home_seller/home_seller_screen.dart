@@ -11,7 +11,6 @@ import '../../../constants/app_theme.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../routing/route_names.dart';
 import '../../widgets/base_common_widget.dart';
-import '../../widgets/order_item_widget.dart';
 import '../order_detail/order_detail_screen.dart';
 import 'home_seller_controller.dart';
 

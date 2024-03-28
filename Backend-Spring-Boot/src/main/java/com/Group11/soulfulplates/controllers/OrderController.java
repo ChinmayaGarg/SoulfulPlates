@@ -10,11 +10,16 @@ import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
 import com.Group11.soulfulplates.payload.response.OrdersResponse;
 import com.Group11.soulfulplates.services.OrderService;
+import com.Group11.soulfulplates.services.PaymentService;
+import com.Group11.soulfulplates.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -22,6 +27,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
@@ -129,6 +137,29 @@ public class OrderController {
 
             // Return a ResponseEntity indicating a bad request with the detailed response
             return ResponseEntity.badRequest().body(orderDetailsResponse);
+        }
+    }
+
+    @GetMapping("/getMonthlySummary")
+    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_BUYER')")
+    public ResponseEntity<?> getMonthlySummary(@RequestParam int storeId, @RequestParam int month) {
+        try {
+            Long totalOrders = orderService.getOrderCountForStoreAndMonth(storeId, month);
+            BigDecimal totalAmount = paymentService.getPaymentsSumForStoreAndMonth(storeId, month);
+
+            // Handle case when totalAmount is null (i.e., no payments found)
+            if (totalAmount == null) {
+                totalAmount = BigDecimal.ZERO;
+            }
+
+            Map<String, Object> response = Map.of(
+                    "totalOrders", totalOrders != null ? totalOrders : 0,
+                    "totalAmount", totalAmount
+            );
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "An error occurred: " + e.getMessage()));
         }
     }
 

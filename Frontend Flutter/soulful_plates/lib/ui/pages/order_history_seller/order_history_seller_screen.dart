@@ -5,12 +5,9 @@ import 'package:soulful_plates/Utils/Extensions.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
 import '../../../constants/app_text_styles.dart';
-import '../../../constants/app_theme.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../constants/size_config.dart';
-import '../../../routing/route_names.dart';
 import '../../widgets/base_common_widget.dart';
-import '../../widgets/order_item_widget.dart';
 import 'order_history_seller_controller.dart';
 
 class OrderHistorySellerScreen extends GetView<OrderHistorySellerController>

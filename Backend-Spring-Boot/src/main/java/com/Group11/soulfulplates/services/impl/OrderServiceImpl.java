@@ -348,4 +348,9 @@ public class OrderServiceImpl implements OrderService {
         // Return the response
         return new OrdersResponse(1, "Success", orderDataList);
     }
+
+    @Override
+    public Long getOrderCountForStoreAndMonth(int storeId, int month) {
+        return orderRepository.countByStoreIdAndMonth(storeId, month);
+    }
 }
