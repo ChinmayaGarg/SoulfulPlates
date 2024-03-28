@@ -31,10 +31,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controller class to handle authentication-related endpoints.
+ */
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
-
 public class AuthController {
 
   @Autowired
@@ -55,39 +58,45 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  /**
+   * Endpoint to register a new user.
+   *
+   * @param signUpRequest The signup request payload.
+   * @return ResponseEntity containing a message response.
+   */
   @PostMapping("/signup")
   public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest()
-          .body(new MessageResponse(-1, "Error: Username is already taken!", null));
+              .body(new MessageResponse(-1, "Error: Username is already taken!", null));
     }
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity.badRequest()
-          .body(new MessageResponse(-1, "Error: Email is already in use!", null));
+              .body(new MessageResponse(-1, "Error: Email is already in use!", null));
     }
 
     // Create a new user entity
     User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-        encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
+            encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
 
     // Set user's roles
     Set<Role> roles = new HashSet<>();
     if (signUpRequest.getRole() == null) {
       Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(buyerRole);
     } else {
       signUpRequest.getRole().forEach(role -> {
         switch (role) {
           case "admin":
             Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(adminRole);
             break;
           case "seller":
             Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(sellerRole);
 
             // Create a new store entity and associate it with the user
@@ -97,7 +106,7 @@ public class AuthController {
             break;
           default:
             Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(buyerRole);
         }
       });
@@ -110,6 +119,12 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse(1, "User registered successfully!", null));
   }
 
+  /**
+   * Authenticates a user based on the provided login credentials.
+   *
+   * @param loginRequest The login request payload containing username and password.
+   * @return ResponseEntity containing a message response.
+   */
   @PostMapping("/signin")
   public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
@@ -154,7 +169,7 @@ public class AuthController {
           String storeDescription = store.getStoreDescription();
 
           jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
-                  isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber,storeDescription);
+                  isNotificationFlag, storeId, storeName, storeEmail, storeContactNumber, storeDescription);
         } else {
           // Create JwtResponse without store details
           jwtResponse = new JwtResponse(jwt, id, username, email, roles, contactNumber, firstname,
@@ -172,12 +187,15 @@ public class AuthController {
     }
   }
 
-
-
-
+  /**
+   * Generates a forget password code for the provided email address.
+   *
+   * @param forgetPasswordRequest The forget password request payload containing the user's email.
+   * @return ResponseEntity containing a message response with the generated forget password code.
+   */
   @PostMapping("/forget-password")
   public ResponseEntity<MessageResponse> generateForgetPasswordCode(
-      @RequestBody ForgetPasswordRequest forgetPasswordRequest) {
+          @RequestBody ForgetPasswordRequest forgetPasswordRequest) {
     try {
       String responseDescription;
       int responseCode;
@@ -200,13 +218,19 @@ public class AuthController {
     } catch (RuntimeException e) {
       MessageResponse badRes = new MessageResponse(-1, "Error occurred while generating forget password code.", null);
       return ResponseEntity.badRequest()
-          .body(badRes);
+              .body(badRes);
     }
   }
 
+
+  /**
+   * Resets the password for the provided email address.
+   *
+   * @param resetPasswordRequest The reset password request payload containing the user's email and new password.
+   * @return ResponseEntity containing a message response indicating the result of the password reset operation.
+   */
   @PostMapping("/reset-password")
-  // @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or
-  // hasRole('ROLE_ADMIN')")
+// @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
     if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
       try {
@@ -219,17 +243,17 @@ public class AuthController {
           return ResponseEntity.ok(new MessageResponse(1, "Password reset successfully!", null));
         } else {
           return ResponseEntity.badRequest()
-              .body(new MessageResponse(-1, "Error: User with provided email not found.", null));
+                  .body(new MessageResponse(-1, "Error: User with provided email not found.", null));
         }
       } catch (Exception e) {
         return ResponseEntity.badRequest()
-            .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
+                .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
       }
 
     } else {
       return ResponseEntity
-          .badRequest()
-          .body(new MessageResponse(-1, "Error: Email does not exist!", null));
+              .badRequest()
+              .body(new MessageResponse(-1, "Error: Email does not exist!", null));
     }
   }
 }

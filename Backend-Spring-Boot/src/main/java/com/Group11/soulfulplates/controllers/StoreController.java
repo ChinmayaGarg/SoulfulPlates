@@ -21,6 +21,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Controller class for managing stores.
+ */
 @RestController
 @RequestMapping("/api/stores")
 public class StoreController {
@@ -34,6 +37,12 @@ public class StoreController {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Creates a new store.
+     *
+     * @param seller The store to create.
+     * @return ResponseEntity containing the result of the operation.
+     */
     @PostMapping
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createStore(@RequestBody Store seller) {
@@ -41,10 +50,15 @@ public class StoreController {
         if (!storeService.existsById(seller.getStoreId())) {
             return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
         }
-        ;
         return ResponseEntity.ok(new MessageResponse(1, "Store Created Successfully!", newStore));
     }
 
+    /**
+     * Retrieves a store by its ID.
+     *
+     * @param id The ID of the store.
+     * @return ResponseEntity containing the store or a message if not found.
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getStoreById(@PathVariable Long id) {
@@ -57,10 +71,13 @@ public class StoreController {
                 .orElseGet(() -> ResponseEntity.ok(new MessageResponse(1, "No Store Found", null)));
 
         return responseEntity;
-
     }
 
-
+    /**
+     * Retrieves all stores.
+     *
+     * @return ResponseEntity containing the list of stores.
+     */
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Store>> getAllStores() {
@@ -81,18 +98,30 @@ public class StoreController {
     // return ResponseEntity.ok(new MessageResponse(1, "Store Details Updated
     // Successfully!", updatedStore));
     // }
-
+    /**
+     * Deletes a store by its ID.
+     * Only sellers and administrators can perform this action.
+     *
+     * @param id The ID of the store to be deleted.
+     * @return ResponseEntity containing the result of the operation.
+     */
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStore(@PathVariable Long id) {
         if (!storeService.existsById(id)) {
             return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
         }
-        ;
         storeService.deleteStore(id);
         return ResponseEntity.ok(new MessageResponse(-1, "Store Deleted Successfully!", null));
     }
 
+    /**
+     * Updates store details for a given user ID.
+     *
+     * @param userId       The ID of the user whose store details are to be updated.
+     * @param storeDetails The updated store details.
+     * @return ResponseEntity containing the result of the operation.
+     */
     @PostMapping("/updateStore/{userId}")
     public ResponseEntity<?> updateStore(@PathVariable Long userId, @RequestBody(required = false) Store storeDetails) {
         try {
@@ -107,12 +136,19 @@ public class StoreController {
         }
     }
 
+
     @Value("${upload.path}")
     private String uploadPath;
-
+    /**
+     * Endpoint for updating the image of a store.
+     *
+     * @param storeId The ID of the store whose image is being updated.
+     * @param file The image file to be uploaded.
+     * @return ResponseEntity containing the status of the operation and a message response.
+     */
     @PostMapping("/image/{storeId}")
     public ResponseEntity<MessageResponse> updateUserImage(@PathVariable Long storeId,
-            @RequestParam("file") MultipartFile file) {
+                                                           @RequestParam("file") MultipartFile file) {
         RuntimeException storeNotFound = new RuntimeException("Store not found with id: " + storeId);
         Store store = storeRepository.findById(storeId).orElseThrow(() -> storeNotFound);
 
@@ -124,12 +160,11 @@ public class StoreController {
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
         String fileExtension = StringUtils.getFilenameExtension(originalFilename);
         String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
-        String fileName = StringUtils
-                .cleanPath(storeId + ".jpg");
+        String fileName = StringUtils.cleanPath(storeId + ".jpg");
 
         try {
 
-            Path uploadsDir = Paths.get(uploadPath+"stores/");
+            Path uploadsDir = Paths.get(uploadPath + "stores/");
 
             if (!Files.exists(uploadsDir)) {
                 Files.createDirectories(uploadsDir);
@@ -154,6 +189,4 @@ public class StoreController {
         }
 
     }
-
-
 }

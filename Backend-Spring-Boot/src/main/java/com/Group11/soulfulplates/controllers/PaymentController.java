@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller class for managing payments.
+ */
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
@@ -24,6 +27,12 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    /**
+     * Creates a payment and transaction.
+     *
+     * @param request The request object containing payment details.
+     * @return ResponseEntity containing the response.
+     */
     @PostMapping("/createPaymentAndTransaction")
     @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createPaymentAndTransaction(@RequestBody(required = false) CreatePaymentRequest request) {
@@ -43,6 +52,12 @@ public class PaymentController {
         }
     }
 
+    /**
+     * Updates the status of a payment.
+     *
+     * @param request The request object containing payment and transaction IDs and status.
+     * @return ResponseEntity containing the response.
+     */
     @PostMapping("/updateStatus")
     @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updatePaymentStatus(@RequestBody UpdatePaymentStatusRequest request) {
@@ -55,6 +70,12 @@ public class PaymentController {
         }
     }
 
+    /**
+     * Retrieves payment history for a buyer.
+     *
+     * @param request The request object containing buyer ID, status, limit, and offset.
+     * @return ResponseEntity containing the payment history response.
+     */
     @GetMapping("/buyerPaymentHistory")
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> filterPayments(@RequestBody PaymentFilterRequestBuyer request) {
@@ -76,6 +97,12 @@ public class PaymentController {
         }
     }
 
+    /**
+     * Retrieves payment history for a seller.
+     *
+     * @param request The request object containing store ID, status, limit, and offset.
+     * @return ResponseEntity containing the payment history response.
+     */
     @GetMapping("/sellerPaymentHistory")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<?> filterSellerPayments(@RequestBody PaymentFilterRequestSeller request) {

@@ -198,7 +198,7 @@ class CategoryControllerTest {
         // Assertions
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(-1, ((OrderDetailsResponse) responseEntity.getBody()).getCode());
-        assertEquals("Error creating category: Test exception", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
+        assertEquals("Error fetching categories: Test exception", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
         assertNull(((OrderDetailsResponse) responseEntity.getBody()).getData());
     }
 

@@ -1,6 +1,6 @@
 package com.Group11.soulfulplates.IntegrationTests;
 
-import com.Group11.soulfulplates.services.RatingService;
+import com.Group11.soulfulplates.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,34 +13,26 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.Mockito.when;
 
-/**
- * Integration tests for the RatingController class.
- */
-
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RatingControllerIntegrationTest {
+public class UserControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private RatingService ratingService;
+    private UserRepository userRepository;
 
-    /**
-     * Test case for unauthorized access when retrieving average rating.
-     * @throws Exception if any error occurs during the test
-     */
     @Test
-    public void getAverageRating_Unauthorized() throws Exception {
+    public void getUserById_Unauthorized() throws Exception {
         // Given
-        Long storeId = 1L;
+        Long userId = 1L;
 
-        // Mock the behavior of RatingService
-        when(ratingService.getAverageRating(storeId)).thenThrow(new RuntimeException("Error retrieving average rating"));
+        // Mock the behavior of UserRepository
+        when(userRepository.findById(userId)).thenThrow(new RuntimeException("User not found"));
 
         // When/Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/ratings/average/{storeId}", storeId)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/{userId}", userId)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer invalidTokenHere"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").doesNotExist())
