@@ -3,9 +3,12 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+/**
+ * Represents a transaction in the system.
+ */
 
 @Data
 @Entity

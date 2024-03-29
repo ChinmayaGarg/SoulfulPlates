@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents an order in the system.
+ */
 @Entity
 @Data
 @Table(name = "orders")

@@ -20,6 +20,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * This class implements the OrderService interface.
+ * It provides methods to create orders, update order status, fetch order details,
+ * fetch orders for users and stores, and count orders for a store within a specific month.
+ */
+
+
 @Service
 public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;

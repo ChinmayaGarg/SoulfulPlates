@@ -1,17 +1,19 @@
 package com.Group11.soulfulplates.services.impl;
 
-import com.Group11.soulfulplates.models.Category;
-import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.models.Subcategory;
-import com.Group11.soulfulplates.payload.response.MenuItemResponse;
 import com.Group11.soulfulplates.repository.SubcategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+
+/**
+ This class implements the SubcategoryService interface.
+ It provides methods to manage subcategories, including creating, updating, deleting,
+ and retrieving subcategories.
+ */
 
 @Service
 @Transactional

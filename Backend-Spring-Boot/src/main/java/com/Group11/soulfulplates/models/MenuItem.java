@@ -1,12 +1,11 @@
 package com.Group11.soulfulplates.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
+/**
+ * Represents a menu item in the system.
+ */
 @Entity
 @Table(name = "menu_items")
 @Data
@@ -51,6 +50,4 @@ public class MenuItem {
 
     @Column(name = "category_id")
     private Long categoryId;
-
-
 }
