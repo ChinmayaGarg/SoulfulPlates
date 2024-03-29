@@ -1,13 +1,19 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.Category;
-import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
+/**
+ * This class implements methods for managing categories, including creating, updating, and deleting categories,
+ * retrieving categories by ID or for a specific store, and fetching all categories.
+ */
+
 
 @Service
 @Transactional

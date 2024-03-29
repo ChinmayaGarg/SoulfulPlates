@@ -1,5 +1,8 @@
 package com.Group11.soulfulplates.payload.request;
 
+/**
+ * Request payload for creating a subcategory.
+ */
 public class SubcategoryRequest {
     private Long categoryId;
     private String subcategoryName;

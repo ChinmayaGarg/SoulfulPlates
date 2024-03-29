@@ -11,6 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ This class implements the TransactionService interface.
+ It provides methods to manage transactions, including creating a new transaction
+ and updating the status of an existing transaction.
+ */
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
 

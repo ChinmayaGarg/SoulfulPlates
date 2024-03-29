@@ -2,6 +2,7 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
 import com.Group11.soulfulplates.services.impl.MenuItemServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -197,4 +198,78 @@ class MenuItemControllerTest {
         assertEquals("Error deleting menu item: " + errorMessage, ((MessageResponse)responseEntity.getBody()).getDescription());
         verify(menuItemService, times(1)).deleteMenuItem(menuItemId);
     }
+
+    @Test
+    void testCreateMenuItem_ServiceException() {
+        // Given
+        MenuItem menuItem = new MenuItem();
+
+        // Stub the service method to throw an exception
+        when(menuItemService.createMenuItem(any(MenuItem.class))).thenThrow(new RuntimeException("Service exception"));
+
+        // When
+        ResponseEntity responseEntity = menuItemController.createMenuItem(menuItem);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(-1, ((OrderDetailsResponse) responseEntity.getBody()).getCode());
+        assertEquals("Error creating menu item: Service exception", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
+
+        verify(menuItemService).createMenuItem(any());
+    }
+
+    @Test
+    void testDeleteMenuItem_ServiceException() {
+        // Given
+        Long menuItemId = 1L;
+
+        // Stub the service method to throw an exception
+        doThrow(new RuntimeException("Service exception")).when(menuItemService).deleteMenuItem(menuItemId);
+
+        // When
+        ResponseEntity responseEntity = menuItemController.deleteMenuItem(menuItemId);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Error deleting menu item: Service exception", ((MessageResponse) responseEntity.getBody()).getDescription());
+
+        verify(menuItemService).deleteMenuItem(menuItemId);
+    }
+
+    @Test
+    void testGetAllMenuItems_ServiceException() {
+        // Stub the service method to throw an exception
+        when(menuItemService.getAllMenuItemsWithDetails()).thenThrow(new RuntimeException("Service exception"));
+
+        // When
+        ResponseEntity responseEntity = menuItemController.getAllMenuItemsWithDetails();
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Error fetching menu item: Service exception", ((MessageResponse) responseEntity.getBody()).getDescription());
+
+        verify(menuItemService).getAllMenuItemsWithDetails();
+    }
+
+    @Test
+    void testGetMenuItemsByStoreId_ServiceException() {
+        // Given
+        Long storeId = 1L;
+
+        // Stub the service method to throw an exception
+        when(menuItemService.getMenuItemByStore(storeId)).thenThrow(new RuntimeException("Service exception"));
+
+        // When
+        ResponseEntity responseEntity = menuItemController.getAllMenuItemsWithDetails(storeId);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(-1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Error fetching menu item: Service exception", ((MessageResponse) responseEntity.getBody()).getDescription());
+
+        verify(menuItemService).getMenuItemByStore(storeId);
+    }
+
 }

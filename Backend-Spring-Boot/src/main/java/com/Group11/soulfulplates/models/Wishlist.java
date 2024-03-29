@@ -3,6 +3,10 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Represents a wishlist item in the system.
+ */
+
 @Data
 @Entity
 @Table(name = "wishlist")
@@ -15,6 +19,12 @@ public class Wishlist {
 
     @Column(name = "store_id")
     private Long storeId;
+
+    @Column(name = "store_email")
+    private String storeEmail;
+
+    @Column(name = "store_name")
+    private String storeName;
 
     @Column(name = "user_id")
     private Long userId;

@@ -40,20 +40,32 @@ public class UserController {
     @Autowired
     private AddressService addressService;
 
+    /**
+     * Endpoint to toggle the notification flag for a user.
+     *
+     * @param userId The ID of the user.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @PutMapping("/toggle-notification/{userId}")
     public ResponseEntity<MessageResponse> toggleNotificationFlag(@PathVariable Long userId) {
         RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
         User user = userRepository.findById(userId).orElseThrow(() -> userNotFound);
 
-
         // Toggle the value of notificationFlag
         user.setNotificationFlag(!user.isNotificationFlag());
 
-        User updatedUser = userRepository.save(user);
+        userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse(1, "Notification flag toggled successfully!", null));
     }
 
+    /**
+     * Endpoint to create an address for a user.
+     *
+     * @param userId  The ID of the user.
+     * @param address The address to be created.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @PostMapping("/addresses/{userId}")
     public ResponseEntity<MessageResponse> createAddressForUser(@PathVariable Long userId, @RequestBody Address address) {
         User user = userRepository.findById(userId)
@@ -65,6 +77,12 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse(1, "Address saved successfully!", null));
     }
 
+    /**
+     * Endpoint to retrieve user information by ID.
+     *
+     * @param userId The ID of the user.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @GetMapping("/{userId}")
     public ResponseEntity<MessageResponse> getUserById(@PathVariable Long userId) {
         User user = userRepository.findById(userId)
@@ -73,7 +91,12 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse(1, "User information received", user));
     }
 
-
+    /**
+     * Endpoint to retrieve all addresses for a user.
+     *
+     * @param userId The ID of the user.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @GetMapping("/addresses/{userId}")
     public ResponseEntity<MessageResponse> getAllAddressesForUser(@PathVariable Long userId) {
         User user = userRepository.findById(userId)
@@ -100,16 +123,27 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse(1, "Addresses fetched successfully!", responseData));
     }
 
-
-
-    // Update an existing address for a user
+    /**
+     * Update an existing address for a user.
+     *
+     * @param userId        The ID of the user.
+     * @param addressId     The ID of the address to be updated.
+     * @param addressDetails The updated address details.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @PostMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> updateAddressForUser(@PathVariable Long userId, @PathVariable Long addressId, @RequestBody Address addressDetails) {
-        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
-        RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
-        User user = userRepository.findById(userId).orElseThrow(() -> userNotFound);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+        User user = userOptional.get();
 
-        Address address = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
+        Optional<Address> addressOptional = addressRepository.findById(addressId);
+        if (!addressOptional.isPresent()) {
+            throw new RuntimeException("Address not found with id: " + addressId);
+        }
+        Address address = addressOptional.get();
 
         address.setStreet(addressDetails.getStreet());
         address.setCity(addressDetails.getCity());
@@ -125,13 +159,26 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse(1, "Address updated successfully!", null));
     }
 
-    // Delete an address for a user
+    /**
+     * Delete an address for a user.
+     *
+     * @param userId    The ID of the user.
+     * @param addressId The ID of the address to be deleted.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @DeleteMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> deleteAddressForUser(@PathVariable Long userId, @PathVariable Long addressId) {
-        RuntimeException userNotFound = new RuntimeException("User not found with id: " + userId);
-        RuntimeException addressNotFound = new RuntimeException("Address not found with id: " + addressId);
-        User user = userRepository.findById(userId).orElseThrow(() ->userNotFound);
-        Address address = addressRepository.findById(addressId).orElseThrow(() -> addressNotFound);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+        User user = userOptional.get();
+
+        Optional<Address> addressOptional = addressRepository.findById(addressId);
+        if (!addressOptional.isPresent()) {
+            throw new RuntimeException("Address not found with id: " + addressId);
+        }
+        Address address = addressOptional.get();
 
         addressRepository.delete(address);
 
@@ -141,12 +188,18 @@ public class UserController {
     @Value("${upload.path}")
     private String uploadPath;
 
+    /**
+     * Update the profile image of a user.
+     *
+     * @param userId The ID of the user.
+     * @param file   The profile image file.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @PostMapping("/image/{userId}")
     public ResponseEntity<MessageResponse> updateUserImage(@PathVariable Long userId,
                                                            @RequestParam("file") MultipartFile file) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
 
         // Check if the uploaded file is not empty
         if (file.isEmpty()) {
@@ -154,14 +207,10 @@ public class UserController {
         }
 
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
-        String fileExtension = StringUtils.getFilenameExtension(originalFilename);
-        String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
         String fileName = StringUtils.cleanPath(userId + ".jpg");
 
         try {
-
-            Path uploadsDir = Paths.get(uploadPath+"users/");
-
+            Path uploadsDir = Paths.get(uploadPath + "users/");
             if (!Files.exists(uploadsDir)) {
                 Files.createDirectories(uploadsDir);
             }
@@ -183,6 +232,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Updates the information of a user.
+     *
+     * @param userId The ID of the user to update.
+     * @param request The request containing the updated user information.
+     * @return ResponseEntity containing a MessageResponse indicating the status of the update operation.
+     */
     @PutMapping("updateUser/{userId}")
     public ResponseEntity<MessageResponse> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
         try {
@@ -213,6 +269,14 @@ public class UserController {
         }
     }
 
+
+    /**
+     * Retrieves the nearest store within the specified maximum distance from a given address.
+     *
+     * @param addressId The ID of the address for which the nearest store needs to be found.
+     * @param maxDistance The maximum distance within which the nearest store should be located (in kilometers).
+     * @return ResponseEntity containing a MessageResponse with information about the nearest store.
+     */
     @GetMapping("/latlong/{addressId}/{maxDistance}")
     public ResponseEntity<MessageResponse> getUserAndNearestStore(
             @PathVariable Long addressId,
@@ -263,7 +327,7 @@ public class UserController {
             }
 
             if (nearestStores == null || nearestStores.size() < 1) {
-                return ResponseEntity.ok(new MessageResponse(1, "No store near by available at the moment.",  nearestStores));
+                return ResponseEntity.ok(new MessageResponse(1, "No store nearby available at the moment.",  nearestStores));
             }
 
             return ResponseEntity.ok(new MessageResponse(1, "Nearest store within " + maxDistance + " km found", nearestStores));
@@ -273,7 +337,15 @@ public class UserController {
 
     }
 
-    // Method to calculate distance using Haversine formula
+    /**
+     * Calculates the distance between two geographical coordinates using the Haversine formula.
+     *
+     * @param lat1 Latitude of the first point.
+     * @param lon1 Longitude of the first point.
+     * @param lat2 Latitude of the second point.
+     * @param lon2 Longitude of the second point.
+     * @return The distance between the two points in kilometers.
+     */
     private Double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
         final int rEarth = 6371; // Radius of the earth
         int two = 2;

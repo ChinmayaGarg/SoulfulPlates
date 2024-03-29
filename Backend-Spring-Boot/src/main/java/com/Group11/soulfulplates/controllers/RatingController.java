@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller class for managing ratings.
+ */
 @RestController
 @RequestMapping("/api/ratings")
 public class RatingController {
@@ -16,6 +19,12 @@ public class RatingController {
     @Autowired
     private RatingService ratingService;
 
+    /**
+     * Adds a rating.
+     *
+     * @param request The request object containing rating details.
+     * @return ResponseEntity containing the response.
+     */
     @PostMapping("/createrating")
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> addRating(@RequestBody(required = false) CreateRatingRequest request) {
@@ -25,9 +34,14 @@ public class RatingController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(-1, e.getMessage(), null));
         }
-
     }
 
+    /**
+     * Retrieves the average rating for a store.
+     *
+     * @param storeId The ID of the store.
+     * @return ResponseEntity containing the average rating.
+     */
     @GetMapping("/average/{storeId}")
     public ResponseEntity<?> getAverageRating(@PathVariable Long storeId) {
         try {

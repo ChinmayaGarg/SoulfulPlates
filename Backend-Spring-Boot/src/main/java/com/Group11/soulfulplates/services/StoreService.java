@@ -5,6 +5,12 @@ import com.Group11.soulfulplates.models.Store;
 import java.util.List;
 import java.util.Optional;
 
+/**
+
+ This service interface defines methods related to store management.
+ It provides functionality to create, retrieve, update, and delete stores.
+ */
+
 public interface StoreService {
     boolean existsById(Long id);
 

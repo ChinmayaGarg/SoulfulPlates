@@ -11,13 +11,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ This class implements the WishlistService interface.
+ It provides methods to manage wishlists, including retrieving all wishlists,
+ getting a wishlist by ID, saving or updating a wishlist, and deleting a wishlist.
+ */
+
 @Service
 public class WishlistServiceImpl {
 
     @Autowired
     private WishlistRepository wishlistRepository;
 
-    @Autowired // Add this annotation to inject the UserRepository
+    @Autowired
     private UserRepository userRepository;
 
     public List<Wishlist> getAllWishlists() {
@@ -45,18 +51,18 @@ public class WishlistServiceImpl {
         wishlist.setMenuItemId(wishlistRequest.getMenuItemId());
         wishlist.setItemName(wishlistRequest.getItemName());
         wishlist.setItemPrice(wishlistRequest.getItemPrice());
+        wishlist.setStoreEmail(wishlistRequest.getStoreEmail());
+        wishlist.setStoreName(wishlistRequest.getStoreName());
 
         return wishlistRepository.save(wishlist);
     }
 
-
-
     public boolean deleteWishlist(Long id) {
         try {
             wishlistRepository.deleteById(id);
-            return true; // Deletion successful
+            return true;
         } catch (Exception e) {
-            return false; // Deletion unsuccessful
+            return false;
         }
     }
 

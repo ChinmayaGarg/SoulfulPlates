@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
+/**
+ * This class implements methods for managing addresses, including creating, updating, deleting, and retrieving addresses
+ * by ID, as well as fetching all addresses and retrieving latitude and longitude information for all stores.
+ */
+
 
 @Service
 public class AddressServiceImpl implements AddressService {

@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
+
+/**
+ * Represents a rating given by a user to a store in the system.
+ */
 
 @Entity
 @Data

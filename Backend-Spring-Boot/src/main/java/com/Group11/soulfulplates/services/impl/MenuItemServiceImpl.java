@@ -15,6 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements methods for managing menu items, including creating, updating, and deleting menu items,
+ * retrieving menu items by ID or for a specific store, and fetching all menu items with details.
+ */
+
+
 @Service
 @Transactional
 public class MenuItemServiceImpl {

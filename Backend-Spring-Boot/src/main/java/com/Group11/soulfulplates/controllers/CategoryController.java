@@ -10,13 +10,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class for managing categories.
+ */
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
+
     @Autowired
     private CategoryServiceImpl categoryService;
 
+    /**
+     * Retrieves all categories.
+     *
+     * @return ResponseEntity containing a message response indicating the result of the operation.
+     */
     @GetMapping("/getAllCategories")
     public ResponseEntity getAllByStoreId() {
         try {
@@ -24,10 +33,16 @@ public class CategoryController {
             return ResponseEntity.ok(new MessageResponse(1, "Category fetched.", categories));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
-                    "Error creating category: " + e.getMessage(), null));
+                    "Error fetching categories: " + e.getMessage(), null));
         }
     }
 
+    /**
+     * Creates a new category.
+     *
+     * @param category The category to be created.
+     * @return ResponseEntity containing a message response indicating the result of the operation.
+     */
     @PostMapping("/categories")
     public ResponseEntity createCategory(@RequestBody Category category) {
         try {
@@ -39,7 +54,13 @@ public class CategoryController {
         }
     }
 
-    // Update Category
+    /**
+     * Updates an existing category.
+     *
+     * @param categoryId     The ID of the category to be updated.
+     * @param updatedCategory The updated category data.
+     * @return ResponseEntity containing a message response indicating the result of the operation.
+     */
     @PutMapping("/categories/{categoryId}")
     public ResponseEntity updateCategory(@PathVariable Long categoryId, @RequestBody Category updatedCategory) {
         try {
@@ -51,7 +72,12 @@ public class CategoryController {
         }
     }
 
-    // Delete Category
+    /**
+     * Deletes a category.
+     *
+     * @param categoryId The ID of the category to be deleted.
+     * @return ResponseEntity containing a message response indicating the result of the operation.
+     */
     @DeleteMapping("/categories/{categoryId}")
     public ResponseEntity deleteCategory(@PathVariable Long categoryId) {
         try {
@@ -63,7 +89,12 @@ public class CategoryController {
         }
     }
 
-    // Categories by Store.
+    /**
+     * Retrieves categories by store.
+     *
+     * @param storeId The ID of the store.
+     * @return ResponseEntity containing a message response indicating the result of the operation.
+     */
     @GetMapping("/getCategoriesByStore/{storeId}")
     public ResponseEntity getCategoriesByStore(@PathVariable Long storeId) {
         try {
@@ -71,8 +102,7 @@ public class CategoryController {
             return ResponseEntity.ok(new MessageResponse(1, "Category fetched.", categories));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1,
-                    "Error creating category: " + e.getMessage(), null));
+                    "Error fetching categories: " + e.getMessage(), null));
         }
     }
-
 }

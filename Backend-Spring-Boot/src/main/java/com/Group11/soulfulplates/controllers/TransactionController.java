@@ -18,6 +18,12 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    /**
+     * Endpoint to update the status of a transaction.
+     *
+     * @param request The request containing the transaction ID and the new status.
+     * @return ResponseEntity containing the result of the operation and a message response.
+     */
     @PostMapping("/updateStatus")
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> updateTransactionStatus(@RequestBody UpdateTransactionStatusRequest request) {
@@ -35,7 +41,12 @@ public class TransactionController {
         }
     }
 
-    // Helper method to validate status parameter
+    /**
+     * Helper method to validate the status parameter.
+     *
+     * @param status The status parameter to validate.
+     * @return boolean indicating whether the status is valid or not.
+     */
     private boolean isValidStatus(String status) {
         // Add logic to validate the status parameter (e.g., check against a list of valid statuses)
         // For demonstration purposes, let's assume "SUCCESS" and "FAILED" are the only valid statuses

@@ -2,6 +2,7 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Address;
 import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.payload.request.UserUpdateRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.AddressRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
@@ -275,6 +276,44 @@ class UserControllerTest {
         verify(userRepository, times(1)).findById(userId);
         verify(addressRepository, never()).findById(addressId);
         verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    void testUpdateUser_UserExists_UserInformationUpdatedSuccessfully() {
+        // Given
+        Long userId = 1L;
+        UserUpdateRequest request = new UserUpdateRequest();
+        request.setUsername("newUsername");
+        request.setEmail("newemail@example.com");
+        request.setContactNumber("1234567890");
+
+        User existingUser = new User();
+        existingUser.setId(userId);
+        existingUser.setUsername("oldUsername");
+        existingUser.setEmail("oldemail@example.com");
+        existingUser.setContactNumber("9876543210");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(existingUser)).thenReturn(existingUser);
+
+        // When
+        ResponseEntity<MessageResponse> responseEntity = userController.updateUser(userId, request);
+
+        // Then
+        assertNotNull(responseEntity);
+        assertEquals(expected200, responseEntity.getStatusCodeValue());
+        MessageResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("User information updated successfully!", response.getDescription());
+
+        // Check if user information is updated correctly
+        assertEquals("newUsername", existingUser.getUsername());
+        assertEquals("newemail@example.com", existingUser.getEmail());
+        assertEquals("1234567890", existingUser.getContactNumber());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).save(existingUser);
     }
 
 }
