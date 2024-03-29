@@ -16,6 +16,10 @@ class AppIcons {
   static String vegIcon = "${_drawables}veg_icon.png";
   static String nonVegIcon = "${_drawables}nonveg_icon.png";
   static String eggIcon = "${_drawables}egg_icon.png";
+  static String aboutUs = "assets/files/about.html";
+  static String termsAndConditions = "assets/files/termsAndConditions.html";
+  static String privacyPolicy = "assets/files/privacyPolicy.html";
+  static String cookiePolicy = "assets/files/cookiePolicy.html";
 
   ///Mention all SVG file paths here
   // static String iconPasswordHide = "${_svg}eyeSlash.svg";

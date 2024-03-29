@@ -14,6 +14,15 @@ import 'package:soulful_plates/network/network_interfaces/generic_model.dart';
 /// items : [{"menuItemId":1,"itemName":"Banana shake","quantity":2,"price":10.25}]
 /// cartItems : [{"menuItemId":1,"itemName":"Banana shake","quantity":2,"price":10.25}]
 
+/*
+            "username": null,
+            "userPhone": "9876543210",
+            "userEmail": "seller@seller.com",
+            "storeName": "Nikul’s Veggies",
+            "storePhone": "1234561230",
+            "storeEmail": "Nikul@gmail.com",
+
+ */
 class OrderDetailModel extends GenericModel {
   OrderDetailModel({
     num? orderId,
@@ -28,6 +37,12 @@ class OrderDetailModel extends GenericModel {
     String? instructions,
     List<Items>? items,
     List<CartItems>? cartItems,
+    String? username,
+    String? userPhone,
+    String? userEmail,
+    String? storeName,
+    String? storePhone,
+    String? storeEmail,
   }) {
     _orderId = orderId;
     _orderStatus = orderStatus;
@@ -41,6 +56,12 @@ class OrderDetailModel extends GenericModel {
     _instructions = instructions;
     _items = items;
     _cartItems = cartItems;
+    _username = username;
+    _userPhone = userPhone;
+    _userEmail = userEmail;
+    _storeName = storeName;
+    _storePhone = storePhone;
+    _storeEmail = storeEmail;
   }
 
   OrderDetailModel.fromJson(dynamic json) {
@@ -66,6 +87,12 @@ class OrderDetailModel extends GenericModel {
         _cartItems?.add(CartItems.fromJson(v));
       });
     }
+    _username = json['username'];
+    _userPhone = json['userPhone'];
+    _userEmail = json['userEmail'];
+    _storeName = json['storeName'];
+    _storePhone = json['storePhone'];
+    _storeEmail = json['storeEmail'];
   }
   num? _orderId;
   String? _orderStatus;
@@ -79,6 +106,21 @@ class OrderDetailModel extends GenericModel {
   String? _instructions;
   List<Items>? _items;
   List<CartItems>? _cartItems;
+
+  String? _username;
+  String? _userPhone;
+  String? _userEmail;
+  String? _storeName;
+  String? _storePhone;
+  String? _storeEmail;
+
+  String? get username => _username;
+  String? get userPhone => _userPhone;
+  String? get userEmail => _userEmail;
+  String? get storeName => _storeName;
+  String? get storePhone => _storePhone;
+  String? get storeEmail => _storeEmail;
+
   setRating(int value) {
     _rating = value;
   }
@@ -100,6 +142,12 @@ class OrderDetailModel extends GenericModel {
     String? instructions,
     List<Items>? items,
     List<CartItems>? cartItems,
+    String? username,
+    String? userPhone,
+    String? userEmail,
+    String? storeName,
+    String? storePhone,
+    String? storeEmail,
   }) =>
       OrderDetailModel(
         orderId: orderId ?? _orderId,
@@ -114,6 +162,12 @@ class OrderDetailModel extends GenericModel {
         instructions: instructions ?? _instructions,
         items: items ?? _items,
         cartItems: cartItems ?? _cartItems,
+        username: username ?? _username,
+        userPhone: userPhone ?? _userPhone,
+        userEmail: userEmail ?? _userEmail,
+        storeName: storeName ?? _storeName,
+        storePhone: storePhone ?? _storePhone,
+        storeEmail: storeEmail ?? _storeEmail,
       );
   num? get orderId => _orderId;
   String? get orderStatus => _orderStatus;
@@ -127,6 +181,12 @@ class OrderDetailModel extends GenericModel {
   String? get instructions => _instructions;
   List<Items>? get items => _items;
   List<CartItems>? get cartItems => _cartItems;
+
+  bool isSeller = false;
+
+  setIsSeller(seller) {
+    isSeller = seller;
+  }
 
   OrderStatus getOrderStatusType() {
     OrderStatus orderStatusType = OrderStatus.values.firstWhere(
@@ -154,6 +214,12 @@ class OrderDetailModel extends GenericModel {
     if (_cartItems != null) {
       map['cartItems'] = _cartItems?.map((v) => v.toJson()).toList();
     }
+    map['username'] = _username;
+    map['userPhone'] = _userPhone;
+    map['userEmail'] = _userEmail;
+    map['storeName'] = _storeName;
+    map['storePhone'] = _storePhone;
+    map['storeEmail'] = _storeEmail;
     return map;
   }
 
