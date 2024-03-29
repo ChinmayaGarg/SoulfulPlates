@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * The Address class represents a physical address entity.
+ */
 @Entity
 @Data
 @Table(name = "addresses")

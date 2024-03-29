@@ -46,7 +46,8 @@ class CartOrderSuccessScreen extends GetView<CartOrderSuccessController>
         4.rVerticalSizedBox(),
         Text(
           "Your Order is Placed Successfully.",
-          style: AppTextStyles.textStyleBlack22With700,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.textStyleBlack18With700,
         ),
         12.rVerticalSizedBox(),
         ElevatedButton(

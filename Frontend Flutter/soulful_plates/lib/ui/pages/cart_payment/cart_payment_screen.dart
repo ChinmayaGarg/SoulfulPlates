@@ -116,7 +116,7 @@ class CartPaymentScreen extends GetView<CartPaymentController>
             ).paddingUpSide48(),
           ),
           controller.state == ViewStateEnum.busy
-              ? const CircularProgressIndicator()
+              ? const Center(child: CircularProgressIndicator())
               : BaseButton(
                   onSubmit: () async {
                     await controller.createPayment(data: {
@@ -124,9 +124,7 @@ class CartPaymentScreen extends GetView<CartPaymentController>
                       "storeId": AppSingleton.storeId,
                       "amount": controller.total,
                       "orderId": controller.orderId,
-                      "cardNumber": controller.cardNumberController.text
-                          .trim()
-                          .replaceAll(" ", ""),
+                      "cardNumber": controller.cardNumberController.text.trim(),
                       "cardExpiry": controller.dateController.text,
                       "cvv": controller.cvvController.text
                     });

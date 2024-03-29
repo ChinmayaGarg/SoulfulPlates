@@ -2,6 +2,9 @@ package com.Group11.soulfulplates.payload.response;
 
 import lombok.Data;
 
+/**
+ * Response payload for menu items.
+ */
 @Data
 public class MenuItemResponse {
     private Long itemId;
@@ -18,5 +21,4 @@ public class MenuItemResponse {
     private boolean recommended;
     private Long subcategoryId;
     private Long categoryId;
-
 }

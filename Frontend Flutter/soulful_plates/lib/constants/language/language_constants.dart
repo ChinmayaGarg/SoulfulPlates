@@ -1,6 +1,6 @@
 // import 'package:config/config.dart';
 
-import '../../config.dart';
+import 'package:config/config.dart';
 
 class LanguageConst {
   /// App Name

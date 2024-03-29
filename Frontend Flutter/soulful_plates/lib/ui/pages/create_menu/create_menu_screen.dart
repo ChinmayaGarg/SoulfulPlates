@@ -113,8 +113,12 @@ class CreateMenuScreen extends GetView<CreateMenuController>
               labelText: 'Select Category',
             )),
             itemAsString: (MenuCategory u) => u.categoryName ?? '',
-            onChanged: (MenuCategory? data) {
+            onChanged: (MenuCategory? data) async {
               controller.selectCategory = data;
+              await Utils.fetchSubCategoryList(
+                  (state) => controller.setLoaderState,
+                  data?.categoryId?.toString() ?? '');
+              controller.selectSubCategory = null;
               controller.update();
             },
           ),
@@ -186,7 +190,7 @@ class CreateMenuScreen extends GetView<CreateMenuController>
             },
             hintText: 'Portion',
           ),
-          InkWell(
+          GestureDetector(
             onTap: () {
               controller.inStock = !controller.inStock;
 
@@ -217,9 +221,9 @@ class CreateMenuScreen extends GetView<CreateMenuController>
                           })),
                 )
               ],
-            ),
-          ).paddingVertical8(),
-          InkWell(
+            ).paddingVertical8(),
+          ),
+          GestureDetector(
             onTap: () {
               controller.isRecommended = !controller.isRecommended;
               controller.update();
@@ -241,8 +245,8 @@ class CreateMenuScreen extends GetView<CreateMenuController>
                   size: 24,
                 ),
               ],
-            ),
-          ).paddingVertical16(),
+            ).paddingVertical16(),
+          ),
           8.rVerticalSizedBox(),
           saveButton()
         ],

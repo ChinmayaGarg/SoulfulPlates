@@ -8,8 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+
+/**
+ This class implements the StoreService interface.
+ It provides methods to manage stores, including creating, updating, deleting,
+ and retrieving store information.
+ */
+
 @Service
 public class StoreServiceImpl implements StoreService {
 

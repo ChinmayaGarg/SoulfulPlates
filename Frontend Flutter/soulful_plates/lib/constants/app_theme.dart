@@ -172,6 +172,35 @@ class AppTheme {
     }
   }
 
+  static getPaymentStatusBackgroundColor(PaymentStatus paymentStatus) {
+    switch (paymentStatus) {
+      case PaymentStatus.Pending:
+        return BoxDecoration(
+          color: AppColor.linksColor.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+      case PaymentStatus.Completed:
+        return BoxDecoration(
+          color: AppColor.orangeColor.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+      case PaymentStatus.Failed:
+        return BoxDecoration(
+          color: AppColor.redColor.withOpacity(.1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        );
+    }
+  }
+
   static getStatusColor(OrderStatus orderStatus) {
     switch (orderStatus) {
       case OrderStatus.Completed:
@@ -184,8 +213,23 @@ class AppTheme {
         return TextStyle(color: AppColor.orangeColor);
     }
   }
+
+  static TextStyle getTransactionStatusColor(PaymentStatus orderStatus) {
+    switch (orderStatus) {
+      case PaymentStatus.Completed:
+        return TextStyle(color: AppColor.orangeColor);
+      case PaymentStatus.Failed:
+        return TextStyle(color: AppColor.redColor);
+      case PaymentStatus.Pending:
+        return TextStyle(color: AppColor.linksColor);
+    }
+  }
 }
 
 enum OrderStatus { Completed, Pending, FoodPreparing, OutForDelivery }
 
-enum PaymentStatus { Completed, Error, Pending }
+enum PaymentStatus {
+  Pending,
+  Completed,
+  Failed,
+}

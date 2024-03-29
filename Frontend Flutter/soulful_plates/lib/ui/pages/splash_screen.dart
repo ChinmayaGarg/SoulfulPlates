@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import '../../app_singleton.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_icons.dart';
+import '../../model/location/address_model.dart';
 import '../../routing/route_names.dart';
 import '../../utils/extensions.dart';
 import '../../utils/shared_prefs.dart';
+import '../../utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -46,28 +48,33 @@ class _SplashScreenState extends State<SplashScreen> {
             true;
     bool isUserLoggedIn =
         await UserPreference.getValue(key: SharedPrefKey.isLogin.name) ?? false;
-    print("This is isLoggedIn ${isUserLoggedIn}");
-    print(
-        "This is AppSingleton.loggedInUserProfile ${AppSingleton.loggedInUserProfile}");
-    print(
-        "This is AppSingleton.loggedInUserProfile ${UserPreference.getValue(key: SharedPrefKey.userProfileData.name)}");
     if (isUserFirstTime) {
       await UserPreference.setValue(
           key: SharedPrefKey.isFirstTime.name, value: false);
       Get.offAllNamed(introductionViewRoute);
     } else {
       if (isUserLoggedIn) {
-        //get data from database
-        if (AppSingleton.loggedInUserProfile != null) {
-          if (!AppSingleton.isBuyer() &&
-              AppSingleton.loggedInUserProfile?.sellerName.isNullOrEmpty ==
-                  true) {
-            Get.offAllNamed(storeDetailsViewRoute);
+        bool isLogin = await Utils.login();
+        if (isLogin) {
+          //get data from database
+          if (AppSingleton.loggedInUserProfile != null) {
+            if (!AppSingleton.isBuyer() &&
+                AppSingleton.loggedInUserProfile?.sellerName.isNullOrEmpty ==
+                    true) {
+              Get.offAllNamed(storeDetailsViewRoute);
+            } else {
+              List<AddressModel> result = await Utils.getAddress();
+              if (result.isNotNullOrEmpty) {
+                AppSingleton.storeId =
+                    AppSingleton.loggedInUserProfile?.sellerId?.toInt() ?? 1;
+                Get.offAllNamed(dashboardViewRoute);
+              } else {
+                Get.offAllNamed(editLocationViewRoute);
+              }
+            }
           } else {
-            Get.offAllNamed(dashboardViewRoute);
+            Get.offAllNamed(loginViewRoute);
           }
-        } else {
-          Get.offAllNamed(loginViewRoute);
         }
       } else {
         Get.offAllNamed(loginViewRoute);

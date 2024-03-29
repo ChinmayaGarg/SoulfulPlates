@@ -37,7 +37,7 @@ class OrderHistorySellerController extends BaseController
         parameters: {
           "storeId": AppSingleton.storeId,
           // "userId": 1,
-          "status": OrderStatus.Completed.name,
+          "status": orderStatus.name,
           "limit": recordsPerPage,
           "offset": pageNo
         }); //male api call here

@@ -6,7 +6,14 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
+/**
+ This class implements the SubcategoryService interface.
+ It provides methods to manage subcategories, including creating, updating, deleting,
+ and retrieving subcategories.
+ */
 
 @Service
 @Transactional
@@ -40,6 +47,11 @@ public class SubcategoryServiceImpl {
 
     public List<Subcategory> getAllSubCategories() {
         return subcategoryRepository.findAll();
+    }
+
+    public List<Subcategory> getAllSubCategoriesByCategory(Long categoryId) {
+        List<Subcategory> subcategories = subcategoryRepository.getAllSubCategoriesByCategory(categoryId);
+        return subcategories;
     }
 
 }

@@ -71,7 +71,8 @@ class OrderDetailScreen extends GetView<OrderDetailController>
                       child: Text(
                         controller.orderDetailModel
                                 ?.getOrderStatusType()
-                                .name ??
+                                .name
+                                .capitalizeFirst ??
                             '',
                         style: AppTheme.getStatusColor(
                             controller.orderDetailModel!.getOrderStatusType()),
@@ -123,7 +124,9 @@ class OrderDetailScreen extends GetView<OrderDetailController>
           24.rVerticalSizedBox(),
           (controller.orderDetailModel?.rating ?? 0) <= 1 ||
                   controller.orderDetailModel?.feedback.isNullOrEmpty == true
-              ? getRatingCard()
+              ? controller.orderDetailModel?.isSeller == true
+                  ? AppSizedBox.sizedBox0
+                  : getRatingCard()
               : getAlreadyRated(),
           150.rVerticalSizedBox()
         ],

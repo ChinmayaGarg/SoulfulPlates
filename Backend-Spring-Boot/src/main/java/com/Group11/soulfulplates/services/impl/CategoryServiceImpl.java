@@ -6,7 +6,14 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
+/**
+ * This class implements methods for managing categories, including creating, updating, and deleting categories,
+ * retrieving categories by ID or for a specific store, and fetching all categories.
+ */
+
 
 @Service
 @Transactional
@@ -39,6 +46,11 @@ public class CategoryServiceImpl {
 
     public List<Category> getAllByStoreId() {
         return categoryRepository.findAll();
+    }
+
+    public List<Category> getCategoriesByStore(Long storeId) {
+        List<Category> categories = categoryRepository.getCategoriesByStore(storeId);
+        return categories;
     }
 
 }

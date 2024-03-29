@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:map_location_picker/map_location_picker.dart';
+import 'package:soulful_plates/constants/app_sized_box.dart';
 // import 'package:map_address_picker/map_address_picker.dart';
 // import 'package:map_address_picker/models/location_result.dart';
 import 'package:soulful_plates/constants/size_config.dart';
@@ -19,21 +21,17 @@ class EditLocationScreen extends GetView<EditLocationController>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Location"),
-      ),
-      backgroundColor: AppColor.whiteColor,
-      body: SafeArea(
-        child: GetBuilder(
-          init: controller,
-          initState: (state) async {},
-          builder: (EditLocationController model) {
-            return getBody(context);
-          },
-        ),
-      ),
-    );
+    return GetBuilder(
+        init: controller,
+        initState: (state) async {},
+        builder: (EditLocationController model) {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(model.isEdit ? "Update Location" : "Add Location"),
+              ),
+              backgroundColor: AppColor.whiteColor,
+              body: SafeArea(child: getBody(context)));
+        });
   }
 
   Widget getBody(BuildContext context) {
@@ -44,50 +42,85 @@ class EditLocationScreen extends GetView<EditLocationController>
           children: [
             16.rHorizontalSizedBox(),
             Text(
-              'Location Name',
+              'Address Label',
               style: AppTextStyles.textStyleBlackTwo12With400,
             ),
-            8.rHorizontalSizedBox(),
+            8.rVerticalSizedBox(),
             AppTextField(
               controller: controller.nameController,
-              hintText: 'Enter Location Name',
+              hintText: 'Enter address label',
             ),
-            16.rHorizontalSizedBox(),
             Row(
               children: [
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Open the map location picker
-                      // LocationResult? result = await showLocationPicker(
-                      //   context,
-                      //   title: '', // Pass an empty string for the API key
-                      //   //apikey:'',
-                      //   initialCenter: LatLng(0.0, 0.0), // Initial map center
-                      //   automaticallyAnimateToCurrentLocation:
-                      //       true, // Auto center to user location
-                      // );
-                      //
-                      // if (result != null) {
-                      //   // Update latitude and longitude text fields
-                      //   controller.latitudeController.text =
-                      //       result.latLng?.latitude.toString() ?? '';
-                      //   controller.longitudeController.text =
-                      //       result.latLng?.longitude.toString() ?? '';
-                      // }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return MapLocationPicker(
+                              apiKey: "AIzaSyBpqxES86sEkb8BuQ0_ipHAUfmERDVzXh0",
+                              currentLatLng: const LatLng(29.146727, 76.464895),
+                              popOnNextButtonTaped: true,
+                              onNext: (GeocodingResult? result) {
+                                if (result != null) {
+                                  controller.address =
+                                      result.formattedAddress ?? "";
+                                  controller.lat =
+                                      result.geometry.location.lat.toString() ??
+                                          '';
+                                  controller.long =
+                                      result.geometry.location.lng.toString() ??
+                                          '';
+                                  controller.update();
+                                }
+                              },
+                              onSuggestionSelected:
+                                  (PlacesDetailsResponse? result) {
+                                if (result != null) {
+                                  controller.address =
+                                      result.result.formattedAddress ?? "";
+                                  controller.lat = result
+                                          .result.geometry?.location.lat
+                                          .toString() ??
+                                      '';
+                                  controller.long = result
+                                          .result.geometry?.location.lng
+                                          .toString() ??
+                                      '';
+                                  controller.update();
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      );
                     },
-                    child: Text('Select Location'),
+                    child: const Text('Select Location'),
                   ),
                 ),
               ],
             ).paddingAll4(),
-            16.rHorizontalSizedBox(),
+            controller.address.isNullOrEmpty
+                ? AppSizedBox.sizedBox0
+                : Text(
+                    controller.address,
+                    style: AppTextStyles.textStyleBlack14With400,
+                  ).paddingVertical8(),
+            controller.address.isNullOrEmpty
+                ? 8.rVerticalSizedBox()
+                : AppSizedBox.sizedBox0,
             BaseButton(
               onSubmit: () {
                 if (controller.nameController.text.isNotEmpty &&
-                    controller.latitudeController.text.isNotEmpty &&
-                    controller.longitudeController.text.isNotEmpty) {
-                  controller.getDataFromAPI();
+                    controller.lat.isNotEmpty &&
+                    controller.long.isNotEmpty) {
+                  if (controller.isEdit) {
+                    controller.editAddress();
+                  } else {
+                    controller.addAddress();
+                  }
                 } else {
                   Utils.showSuccessToast(
                       'Please fill in all required fields.', true);

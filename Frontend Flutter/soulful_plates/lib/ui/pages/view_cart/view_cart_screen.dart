@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:soulful_plates/app_singleton.dart';
 import 'package:soulful_plates/constants/app_paddings.dart';
 import 'package:soulful_plates/constants/app_text_styles.dart';
+import 'package:soulful_plates/constants/app_theme.dart';
 import 'package:soulful_plates/constants/enums/view_state.dart';
 import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/model/selected_item_model.dart';
@@ -68,7 +69,6 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
             children: [
               AppTextField(
                 controller: controller.instructionController,
-                keyboardType: TextInputType.number,
                 hintText: "Instructions/ Notes",
                 prefixWidget: const Icon(
                   Icons.note_alt,
@@ -87,10 +87,7 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   Widget cartItemCard(
       BuildContext context, SelectedItemModel selectedItemModel) {
     return Container(
-      decoration: BoxDecoration(
-        color: AppColor.black5TextColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: AppTheme.boxDecorationCard,
       child: Row(
         children: [
           SizedBox(
@@ -123,21 +120,40 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  selectedItemModel.itemName,
-                  style: AppTextStyles.textStyleBlack16With400,
+                  selectedItemModel.itemName.capitalizeFirst ?? '',
+                  style: AppTextStyles.textStyleBlack16With700,
                   maxLines: 2,
                 ),
-                4.rVerticalSizedBox(),
                 Text.rich(
                   TextSpan(
                     text: "\$ ${selectedItemModel.price}",
-                    style: AppTextStyles.textStylePrimary16With600,
+                    style: AppTextStyles.textStyleBlack14With400,
                     children: [
                       TextSpan(
                           text: " x${selectedItemModel.quantity}",
                           style: AppTextStyles.textStyleBlackTwo12With400),
                     ],
                   ),
+                ),
+                4.rVerticalSizedBox(),
+                CartStepperInt(
+                  value: selectedItemModel.quantity,
+                  axis: Axis.horizontal,
+                  style: CartStepperTheme.of(context).copyWith(
+                    activeForegroundColor: AppColor.greenColor,
+                    activeBackgroundColor: AppColor.greenColorCode,
+                  ),
+                  didChangeCount: (int value) {
+                    if (selectedItemModel.quantity == value) {
+                    } else if (selectedItemModel.quantity > value) {
+                      controller.removeFromCart(selectedItemModel.menuItemId,
+                          selectedItemModel.itemName);
+                    } else {
+                      controller.addToCart(selectedItemModel.menuItemId,
+                          selectedItemModel.itemName, selectedItemModel.price);
+                    }
+                    controller.update();
+                  },
                 )
               ],
             ),
@@ -158,28 +174,9 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
           //   ),
           // ),
           8.rHorizontalSizedBox(),
-          CartStepperInt(
-            value: selectedItemModel.quantity,
-            axis: Axis.vertical,
-            style: CartStepperTheme.of(context).copyWith(
-              activeForegroundColor: AppColor.greenColor,
-              activeBackgroundColor: AppColor.greenColorCode,
-            ),
-            didChangeCount: (int value) {
-              if (selectedItemModel.quantity == value) {
-              } else if (selectedItemModel.quantity > value) {
-                controller.removeFromCart(
-                    selectedItemModel.menuItemId, selectedItemModel.itemName);
-              } else {
-                controller.addToCart(selectedItemModel.menuItemId,
-                    selectedItemModel.itemName, selectedItemModel.price);
-              }
-              controller.update();
-            },
-          )
         ],
       ).paddingAll12(),
-    ).paddingVertical4();
+    ).paddingVertical8();
   }
 
   Widget getCheckoutCard() {
@@ -187,8 +184,8 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
       padding: AppPaddings.defaultPadding16,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
           BoxShadow(
             color: AppColor.black4TextColor,
             spreadRadius: 3,

@@ -1,18 +1,21 @@
 package com.Group11.soulfulplates.security.jwt;
 
-import java.security.Key;
-import java.util.Date;
-
+import com.Group11.soulfulplates.security.services.UserDetailsImpl;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.Group11.soulfulplates.security.services.UserDetailsImpl;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.Date;
+
+/**
+ * Utility class for handling JSON Web Tokens (JWT).
+ */
 
 @Component
 public class JwtUtils {
@@ -24,6 +27,12 @@ public class JwtUtils {
   @Value("${Group11.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
+  /**
+   * Generate a JWT token from authentication details.
+   *
+   * @param authentication The authentication object
+   * @return The generated JWT token
+   */
   public String generateJwtToken(Authentication authentication) {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -40,11 +49,23 @@ public class JwtUtils {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
   }
 
+  /**
+   * Extract the username from a JWT token.
+   *
+   * @param token The JWT token
+   * @return The username extracted from the token
+   */
   public String getUserNameFromJwtToken(String token) {
     return Jwts.parserBuilder().setSigningKey(key()).build()
             .parseClaimsJws(token).getBody().getSubject();
   }
 
+  /**
+   * Validate a JWT token.
+   *
+   * @param authToken The JWT token to validate
+   * @return True if the token is valid, false otherwise
+   */
   public boolean validateJwtToken(String authToken) {
     try {
       Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);

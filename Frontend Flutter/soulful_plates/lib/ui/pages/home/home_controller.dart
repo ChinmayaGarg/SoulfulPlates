@@ -33,7 +33,7 @@ class HomeController extends BaseController
     var response = await ApiCall().call<RestaurantModel>(
       method: RequestMethod.get,
       endPoint:
-          "${EndPoints.getNearByStores}/${AppSingleton.loggedInUserProfile?.id}/2001",
+          "${EndPoints.getNearByStores}/${AppSingleton.loggedInUserProfile?.id}/200001",
       obj: RestaurantModel(),
       apiCallType: ApiCallType.seller,
     );

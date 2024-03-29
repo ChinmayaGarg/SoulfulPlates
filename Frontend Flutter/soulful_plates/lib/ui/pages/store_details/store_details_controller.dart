@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:soulful_plates/app_singleton.dart';
-import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
+import '../../../model/location/address_model.dart';
 import '../../../model/store_details/store_detail_model.dart';
 import '../../../network/network_interfaces/end_points.dart';
 import '../../../network/network_interfaces/i_dio_singleton.dart';
@@ -46,7 +45,7 @@ class StoreDetailsController extends BaseController {
     var response = await ApiCall().call(
         method: RequestMethod.post,
         endPoint:
-            "${EndPoints.sellerUpdateDetails}/${AppSingleton.loggedInUserProfile?.sellerId}",
+            "${EndPoints.sellerUpdateDetails}/${AppSingleton.loggedInUserProfile?.id}",
         apiCallType: ApiCallType.seller,
         parameters: {
           "storeName": firstNameEditingController.text.trim(),
@@ -59,8 +58,23 @@ class StoreDetailsController extends BaseController {
     } else {
       Utils.showSuccessToast("Error while updating store details.", true);
     }
-    setLoaderState(ViewStateEnum.idle);
-    Get.offAllNamed(dashboardViewRoute);
+    Utils.fetchLatestProfileData();
+  }
+
+  getAddress() async {
+    try {
+      var response = await ApiCall().call<AddressModel>(
+        method: RequestMethod.get,
+        endPoint:
+            "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
+        obj: AddressModel(),
+        apiCallType: ApiCallType.seller,
+      );
+      print("Response $response ");
+      return response;
+    } catch (e) {
+      return null;
+    }
   }
 
   void initData() {

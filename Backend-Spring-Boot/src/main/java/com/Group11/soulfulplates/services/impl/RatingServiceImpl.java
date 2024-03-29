@@ -14,6 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+/**
+ This class implements the RatingService interface.
+ It provides methods to manage ratings, including adding a new rating and linking it to an order,
+ as well as calculating the average rating for a store.
+ */
+
 @Service
 public class RatingServiceImpl implements RatingService {
 

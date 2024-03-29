@@ -3,8 +3,9 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.*;
+/**
+ * Represents a wishlist item in the system.
+ */
 
 @Data
 @Entity
@@ -13,16 +14,27 @@ public class Wishlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wishlistId;
+    @Column(name = "wishid")
+    private Long wishId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "store_id")
+    private Long storeId;
 
-    @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "store_email")
+    private String storeEmail;
 
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
-    private List<WishlistItem> wishlistItems = new ArrayList<>();
+    @Column(name = "store_name")
+    private String storeName;
 
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "menuitem_id")
+    private Long menuItemId;
+
+    @Column(name = "item_name")
+    private String itemName;
+
+    @Column(name = "item_price")
+    private Double itemPrice;
 }

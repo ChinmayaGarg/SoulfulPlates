@@ -1,4 +1,5 @@
 import 'package:soulful_plates/app_singleton.dart';
+import 'package:soulful_plates/model/order_detail_model.dart';
 
 import '../../../constants/app_theme.dart';
 import '../../../constants/enums/view_state.dart';
@@ -18,6 +19,7 @@ class HomeSellerController extends BaseController
         "This is current token ${AppSingleton.loggedInUserProfile?.sellerId}");
     print("This is current token ${AppSingleton.loggedInUserProfile?.token}");
     initPagination();
+    fetchStatistics(3);
   }
 
   updateLoader(ViewStateEnum state) {
@@ -78,5 +80,40 @@ class HomeSellerController extends BaseController
   void loadMore() {
     getDataFromAPI();
     update();
+  }
+
+  double amount = 0;
+  int orderCount = 0;
+
+  void fetchStatistics(int month) async {
+    setButtonLoaderState(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.get,
+        endPoint: EndPoints.getMonthlySummary,
+        apiCallType: ApiCallType.seller,
+        queryParameters: {"storeId": AppSingleton.storeId, "month": month});
+    amount = response["totalAmount"];
+    orderCount = response["totalOrders"];
+    print("This is the stats ${response}");
+    setButtonLoaderState(ViewStateEnum.idle);
+  }
+
+  changeOrderStatus(
+      OrderDetailModel orderDetailModel, OrderStatus? status) async {
+    orderDetailModel.setOrderStatus(status ?? OrderStatus.Completed);
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint: EndPoints.updateOrderStatus,
+        apiCallType: ApiCallType.user,
+        parameters: {
+          "orderId": orderDetailModel.orderId,
+          "status": status?.name ?? OrderStatus.Completed
+        });
+    // {"code":1,"description":"Order Created.","data":{"orderId":5}}
+    print("Response $response ");
+    updateLoader(ViewStateEnum.idle);
+    update();
+    resetPagination();
   }
 }

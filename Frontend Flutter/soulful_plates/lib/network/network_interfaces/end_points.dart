@@ -19,13 +19,20 @@ class EndPoints {
   static const getOrdersForStore = 'orders/getForStore';
   static const sellerUpdateDetails = 'stores/updateStore';
   static const addCategory = 'categories'; // append userid
+  static const addWishList = 'wishlist/create'; // append userid
+  static const deleteWishList = 'wishlist/delete'; // append userid
+  static const getWishList = 'wishlist/user'; // append userid
+
+  static const getMonthlySummary = 'orders/getMonthlySummary'; // append userid
   static const addSubCategory = 'subcategories'; // append userid
   static const addMenuItem = 'menu-items'; // append userid
   static const getMenuItem = 'getMenuItemsByStore'; // append userid
-  static const getAllCategories = 'getAllCategories'; // append userid
-  static const getSubCategories = 'getSubCategories'; // append userid
+  static const getCategoriesByStore = 'getCategoriesByStore'; // append userid
+  static const getSubCategories =
+      'getAllSubCategoriesByCategory'; // append userid
 
   static const addAddress = 'users/addresses'; // append userid
+  static const updateUser = 'users/updateUser'; // append userid
   static const getNearByStores = 'users/latlong'; // append userid
   static const updateNotificationStatus =
       'users/toggle-notification'; // append userid

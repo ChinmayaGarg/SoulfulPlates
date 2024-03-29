@@ -4,6 +4,7 @@ import 'package:soulful_plates/constants/app_text_styles.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
+import '../../../constants/app_theme.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../constants/size_config.dart';
 import '../../../utils/extensions.dart';
@@ -19,7 +20,7 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Transaction Seller"),
+          title: const Text("Transaction"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -37,34 +38,39 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CardOne(),
         12.rVerticalSizedBox(),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: AppColor.black5TextColor),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search with Order No',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.black, // specify border color here
+        Text(
+          "Filter by Payment Status:",
+          style: AppTextStyles.textStyleBlack14With400,
+        ).paddingHorizontal16(),
+        4.rVerticalSizedBox(),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: PaymentStatus.values.map(
+              (PaymentStatus option) {
+                return ChoiceChip(
+                  label: Text(
+                    option.name,
+                    style: TextStyle(
+                        color: controller.paymentStatus == option
+                            ? Colors.white
+                            : Colors.green.shade900),
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.black, // specify focused border color here
-                  ),
-                ),
-              ),
-            ),
+                  selected: controller.paymentStatus == option,
+                  selectedColor: Colors.green.shade900,
+                  backgroundColor: Colors.green.shade50,
+                  onSelected: (bool selected) {
+                    controller.paymentStatus =
+                        option ?? PaymentStatus.Completed;
+                    controller.resetPagination();
+                  },
+                ).paddingHorizontal8();
+              },
+            ).toList(),
           ),
-        ).paddingAll4(),
-        8.rVerticalSizedBox(),
+        ).paddingHorizontal8(),
         Expanded(
           child: Stack(children: [
             controller.dataList.isNotEmpty
@@ -95,9 +101,9 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
                                   //todo tap on the item
                                 },
                                 child: PaymentItemWidget(
-                                        paymentModel:
-                                            controller.dataList[index])
-                                    .paddingVertical8(),
+                                  paymentModel: controller.dataList[index],
+                                  showUser: false,
+                                ).paddingUpSide812(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {
@@ -138,102 +144,6 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
           ]).paddingAllDefault(),
         )
       ],
-    ).paddingAll16();
-  }
-}
-
-class CardOne extends StatelessWidget {
-  const CardOne({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      constraints: BoxConstraints(maxWidth: 500),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                  colors: [AppColor.greenStart, AppColor.greenEnd],
-                  begin: FractionalOffset(0.0, 0.0),
-                  end: FractionalOffset(1.0, 1.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-              borderRadius: BorderRadius.circular(12.rSize())),
-
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(8),
-          //   color: AppColor.emeraldGreen, // Change to your desired color
-          // ),
-          child: Flex(
-            direction: Axis.vertical,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '12',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Paid',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '05',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Unpaid',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '02',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Overdue',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '03',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Draft',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ).paddingAll16(),
-        ).paddingHorizontal4(),
-      ),
     );
   }
 }

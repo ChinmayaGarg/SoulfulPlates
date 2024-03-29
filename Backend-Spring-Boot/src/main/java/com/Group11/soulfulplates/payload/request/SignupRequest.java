@@ -1,12 +1,16 @@
 package com.Group11.soulfulplates.payload.request;
 
-import java.util.Set;
-
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.Set;
+
+/**
+ * Request payload for user signup.
+ */
 @Data
 public class SignupRequest {
+
   @NotBlank
   @Size(min = 3, max = 20)
   private String username;

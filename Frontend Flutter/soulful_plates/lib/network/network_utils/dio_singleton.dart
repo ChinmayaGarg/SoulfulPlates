@@ -23,7 +23,8 @@ class DioSing implements IDioSing {
   @override
   // String url = 'http://192.168.1.9:8080';
   // String url = 'http://192.168.2.143:8080/api/';
-  String url = 'http://192.168.2.145:8080/api/';
+  // String url = 'http://192.168.2.145:8080/api/';
+  String url = 'http://172.17.2.123:8080/api/';
   // String url = 'http://localhost:8080/api';
   /// Use dio as below
   /// using the baseUrl and customHeaders

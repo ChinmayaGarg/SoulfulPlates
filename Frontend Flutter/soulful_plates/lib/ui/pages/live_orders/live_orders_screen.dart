@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/Utils/Extensions.dart';
+import 'package:soulful_plates/constants/app_theme.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
@@ -61,12 +62,19 @@ class LiveOrdersScreen extends GetView<LiveOrdersController>
                       if (index < controller.dataList.length) {
                         return InkWell(
                           onTap: () async {
+                            controller.dataList[index].setIsSeller(true);
                             Get.toNamed(orderDetailViewRoute,
                                 arguments: controller.dataList[index]);
                           },
                           child: OrderItemWidget(
-                                  orderDetailModel: controller.dataList[index])
-                              .paddingVertical8(),
+                              orderDetailModel: controller.dataList[index],
+                              isSeller: true,
+                              orderStatusChange: (OrderStatus? status) {
+                                controller.changeOrderStatus(
+                                    controller.dataList[index], status);
+                                print("This is order status ${status}");
+                                // controller.changeOrderStatus(status);
+                              }).paddingVertical8(),
                         );
                       } else if (controller.moreLoading == ViewStateEnum.busy) {
                         return controller.loadMoreLoader(

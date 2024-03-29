@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/app_singleton.dart';
 import 'package:soulful_plates/constants/app_text_styles.dart';
 import 'package:soulful_plates/model/store_details/restaurant_model.dart';
 import 'package:soulful_plates/utils/extensions.dart';
@@ -124,6 +125,10 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
                             if (index < controller.dataList.length) {
                               return InkWell(
                                 onTap: () async {
+                                  AppSingleton.storeId = controller
+                                          .dataList[index].storeId
+                                          ?.toInt() ??
+                                      1;
                                   Get.toNamed(restaurantDetailViewRoute,
                                       arguments: controller.dataList[index]);
                                 },
@@ -210,7 +215,7 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
                 maxLines: 2,
               ),
               Text(
-                "${restaurantModel.distance} kms away",
+                "${restaurantModel.distance?.toInt()} kms away",
                 style: AppTextStyles.textStyleBlackTwo14With400,
               ),
               8.rVerticalSizedBox(),

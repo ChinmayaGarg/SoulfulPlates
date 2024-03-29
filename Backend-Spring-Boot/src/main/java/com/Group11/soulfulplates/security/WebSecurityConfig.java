@@ -18,6 +18,12 @@ import com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt;
 import com.Group11.soulfulplates.security.jwt.AuthTokenFilter;
 import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
 
+/**
+ * This class configures the web security settings for the application, including authentication providers,
+ * password encoding, authentication token filter, and security filter chain.
+ */
+
+
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
@@ -60,6 +66,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth
+                                .requestMatchers("/uploads/**").permitAll()
                                 .requestMatchers("/public/uploads/**").permitAll() // Allow access without
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/**").permitAll()

@@ -113,6 +113,22 @@ class CategoryControllerTest {
     }
 
     @Test
+    void testCategoriesByStoreId() {
+
+        // Mock service method
+        when(categoryService.getCategoriesByStore(anyLong())).thenReturn( new ArrayList<>());
+
+        // Call controller method
+        ResponseEntity<?> responseEntity = categoryController.getCategoriesByStore(1L);
+
+        // Assertions
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Category fetched.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
+    }
+
+    @Test
     void testCreateCategory_Error() {
         // Mock data
         Category request = new Category();
@@ -182,7 +198,7 @@ class CategoryControllerTest {
         // Assertions
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(-1, ((OrderDetailsResponse) responseEntity.getBody()).getCode());
-        assertEquals("Error creating category: Test exception", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
+        assertEquals("Error fetching categories: Test exception", ((OrderDetailsResponse) responseEntity.getBody()).getDescription());
         assertNull(((OrderDetailsResponse) responseEntity.getBody()).getData());
     }
 

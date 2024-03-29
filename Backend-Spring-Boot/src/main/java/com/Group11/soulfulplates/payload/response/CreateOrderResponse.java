@@ -1,5 +1,8 @@
 package com.Group11.soulfulplates.payload.response;
 
+/**
+ * Response payload for creating an order.
+ */
 public class CreateOrderResponse {
     private int code;
     private String description;
@@ -18,7 +21,7 @@ public class CreateOrderResponse {
             this.orderId = orderId;
         }
 
-        // Getters
+        // Getters and Setters
 
         public Long getOrderId() {
             return orderId;
@@ -29,7 +32,7 @@ public class CreateOrderResponse {
         }
     }
 
-    // Getters
+    // Getters and Setters
 
     public int getCode() {
         return code;

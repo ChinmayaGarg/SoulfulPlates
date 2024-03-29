@@ -3,6 +3,27 @@
         android:label="Soulful Plates"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+        <uses-feature android:name="android.hardware.location.network" android:required="false"/>
+        <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+        <!-- Provide required visibility configuration for API level 30 and above -->
+        <queries>
+            <!-- If your app checks for SMS support -->
+            <intent>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="sms" />
+            </intent>
+            <!-- If your app checks for call support -->
+            <intent>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="tel" />
+            </intent>
+            <!-- If your application checks for inAppBrowserView launch mode support -->
+            <intent>
+                <action android:name="android.support.customtabs.action.CustomTabsService" />
+            </intent>
+        </queries>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,6 +40,9 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+
+            <meta-data android:name="com.google.android.geo.API_KEY"
+                       android:value="AIzaSyBpqxES86sEkb8BuQ0_ipHAUfmERDVzXh0"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
