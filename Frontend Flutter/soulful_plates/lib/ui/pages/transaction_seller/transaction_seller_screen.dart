@@ -20,7 +20,7 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Transaction Seller"),
+          title: const Text("Transaction"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -144,102 +144,6 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
           ]).paddingAllDefault(),
         )
       ],
-    );
-  }
-}
-
-class CardOne extends StatelessWidget {
-  const CardOne({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      constraints: BoxConstraints(maxWidth: 500),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                  colors: [AppColor.greenStart, AppColor.greenEnd],
-                  begin: FractionalOffset(0.0, 0.0),
-                  end: FractionalOffset(1.0, 1.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-              borderRadius: BorderRadius.circular(12.rSize())),
-
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(8),
-          //   color: AppColor.emeraldGreen, // Change to your desired color
-          // ),
-          child: Flex(
-            direction: Axis.vertical,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '12',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Paid',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '05',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Unpaid',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '02',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Overdue',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '03',
-                            style: AppTextStyles.textStyleWhite22With700,
-                          ),
-                          Text(
-                            'Draft',
-                            style: AppTextStyles.textStyleWhite14With400,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ).paddingAll16(),
-        ).paddingHorizontal4(),
-      ),
     );
   }
 }

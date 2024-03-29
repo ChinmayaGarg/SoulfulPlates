@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/app_singleton.dart';
+import 'package:soulful_plates/constants/app_icons.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 import 'package:soulful_plates/utils/shared_prefs.dart';
@@ -139,7 +140,7 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                     onTap: () {
                       Get.toNamed(webViewRoute,
                           arguments: WebViewModel(
-                              'https://termly.io/resources/templates/app-privacy-policy/',
+                              AppIcons.aboutUs, // Load the local HTML file
                               "About"));
                     },
                     child: Row(
@@ -162,7 +163,7 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                     onTap: () {
                       Get.toNamed(webViewRoute,
                           arguments: WebViewModel(
-                            'https://termly.io/resources/templates/app-privacy-policy/',
+                            AppIcons.termsAndConditions,
                             'Terms and Conditions',
                           ));
                     },
@@ -186,7 +187,7 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                     onTap: () {
                       Get.toNamed(webViewRoute,
                           arguments: WebViewModel(
-                            'https://termly.io/resources/templates/app-privacy-policy/',
+                            AppIcons.cookiePolicy,
                             'Cookie policy',
                           ));
                     },
@@ -210,8 +211,7 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                     onTap: () {
                       Get.toNamed(webViewRoute,
                           arguments: WebViewModel(
-                              'https://termly.io/resources/templates/app-privacy-policy/',
-                              'Privacy Policy'));
+                              AppIcons.privacyPolicy, 'Privacy Policy'));
                     },
                     child: Row(
                       children: [
