@@ -28,8 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-#  config:
-#    path: config
+  config:
+    path: config
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
@@ -54,6 +54,7 @@ dependencies:
 #  map_address_picker:
   cart_stepper: ^4.3.0
   map_location_picker: ^1.2.8+3
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +87,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/files/
     - assets/icons/drawables/
 
   # An image asset can refer to one or more resolution-specific "variants", see

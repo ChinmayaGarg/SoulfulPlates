@@ -3,10 +3,11 @@ package com.Group11.soulfulplates.payload.response;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
+/**
+ * Response payload for payment filtering.
+ */
 @Data
 public class PaymentFilterResponse {
     private Long userId;
@@ -25,7 +26,9 @@ public class PaymentFilterResponse {
     private Date createdDate;
     private Date updatedDate;
 
-    public PaymentFilterResponse(){}
+    // Constructors
+    public PaymentFilterResponse() {}
+
     public PaymentFilterResponse(Long userId, String username, Long storeId, String storeName, BigDecimal amount, Long orderId, String cardNumber,
                                  String cardExpiry, String cvv, String paymentStatus, Long paymentId,
                                  Long transactionId, String status, Date createdDate, Date updatedDate) {
@@ -45,5 +48,4 @@ public class PaymentFilterResponse {
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
-
 }

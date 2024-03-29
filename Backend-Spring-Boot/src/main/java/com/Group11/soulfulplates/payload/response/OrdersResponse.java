@@ -3,6 +3,10 @@ package com.Group11.soulfulplates.payload.response;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Response payload for orders.
+ */
+
 public class OrdersResponse {
     private Integer code;
     private String description;

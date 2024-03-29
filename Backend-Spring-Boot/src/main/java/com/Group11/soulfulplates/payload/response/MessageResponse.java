@@ -2,6 +2,9 @@ package com.Group11.soulfulplates.payload.response;
 
 import lombok.Data;
 
+/**
+ * Response payload for general messages.
+ */
 @Data
 public class MessageResponse {
   private int code;
@@ -13,6 +16,4 @@ public class MessageResponse {
     this.description = description;
     this.data = data;
   }
-
 }
-

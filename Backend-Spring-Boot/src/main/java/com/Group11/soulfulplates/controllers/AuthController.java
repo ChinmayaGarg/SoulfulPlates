@@ -205,7 +205,7 @@ public class AuthController {
       if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
         responseDescription = "Forget password code generated successfully!";
         responseCode = 1;
-        responseData = Collections.singletonMap("OTP_Code", OtpResponse.OtpCode());
+        responseData = Collections.singletonMap("OTP_Code", OtpResponse.generateOtpCode());
         messageResponse = new MessageResponse(responseCode, responseDescription, responseData);
         return ResponseEntity.ok(messageResponse);
       } else {

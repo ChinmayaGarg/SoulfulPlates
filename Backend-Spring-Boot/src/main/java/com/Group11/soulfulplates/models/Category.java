@@ -1,11 +1,11 @@
 package com.Group11.soulfulplates.models;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import java.util.List;
-import lombok.Data;
-import java.util.List;
 
+import jakarta.persistence.*;
+import lombok.Data;
+
+/**
+ * The Category class represents a category for items in a store.
+ */
 @Entity
 @Table(name = "categories")
 @Data
@@ -18,8 +18,6 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
-
     @Column(name = "store_id")
     private String storeId;
-
 }

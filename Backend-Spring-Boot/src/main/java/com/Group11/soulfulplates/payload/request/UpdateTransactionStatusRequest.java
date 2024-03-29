@@ -1,5 +1,8 @@
 package com.Group11.soulfulplates.payload.request;
 
+/**
+ * Request payload for updating transaction status.
+ */
 public class UpdateTransactionStatusRequest {
 
     private Long transactionId;

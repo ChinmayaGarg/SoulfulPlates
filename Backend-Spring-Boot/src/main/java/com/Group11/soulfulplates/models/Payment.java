@@ -13,6 +13,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Represents a payment made for an order in the system.
+ */
+
 @Data
 @Entity
 @Table(name = "payment")

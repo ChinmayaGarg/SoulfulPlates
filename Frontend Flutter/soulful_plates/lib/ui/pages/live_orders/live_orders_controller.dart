@@ -77,4 +77,23 @@ class LiveOrdersController extends BaseController
     getDataFromAPI();
     update();
   }
+
+  changeOrderStatus(
+      OrderDetailModel orderDetailModel, OrderStatus? status) async {
+    orderDetailModel.setOrderStatus(status ?? OrderStatus.Completed);
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint: EndPoints.updateOrderStatus,
+        apiCallType: ApiCallType.user,
+        parameters: {
+          "orderId": orderDetailModel.orderId,
+          "status": status?.name ?? OrderStatus.Completed
+        });
+    // {"code":1,"description":"Order Created.","data":{"orderId":5}}
+    print("Response $response ");
+    updateLoader(ViewStateEnum.idle);
+    update();
+    resetPagination();
+  }
 }

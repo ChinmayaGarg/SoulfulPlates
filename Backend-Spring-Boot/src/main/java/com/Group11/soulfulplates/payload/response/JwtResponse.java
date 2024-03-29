@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Response payload for JWT authentication.
+ */
 @Data
 public class JwtResponse {
   private String token;
@@ -21,7 +24,6 @@ public class JwtResponse {
   private String sellerContactNumber;
   private String storeDescription;
 
-
   // Constructor without Seller
   public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag) {
     this.token = accessToken;
@@ -34,10 +36,8 @@ public class JwtResponse {
     this.contactNumber = contactNumber;
   }
 
-
-  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag, Long sellerId, String sellerName, String sellerEmail, String sellerContactNumber,
-                     String storeDescription
-                     ) {
+  // Constructor with Seller
+  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag, Long sellerId, String sellerName, String sellerEmail, String sellerContactNumber, String storeDescription) {
     this.token = accessToken;
     this.id = id;
     this.username = username;

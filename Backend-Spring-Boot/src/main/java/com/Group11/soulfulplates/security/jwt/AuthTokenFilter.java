@@ -17,7 +17,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component // Add this annotation to enable component scanning and autowiring
+/**
+ * Filter to intercept and process JWT tokens in incoming requests.
+ */
+
+@Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Autowired

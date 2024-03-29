@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents a UserDetails implementation which contains user information required for authentication and authorization.
+ */
+
+
 @Data
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;

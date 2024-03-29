@@ -9,6 +9,10 @@ import lombok.Data;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents a user in the system.
+ */
+
 @Data
 @Entity
 @Table(name = "users",

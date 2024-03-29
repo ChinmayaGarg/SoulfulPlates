@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:soulful_plates/app_singleton.dart';
-import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/enums/view_state.dart';
@@ -60,18 +58,7 @@ class StoreDetailsController extends BaseController {
     } else {
       Utils.showSuccessToast("Error while updating store details.", true);
     }
-
-    List<AddressModel> result = await getAddress();
-    if (result.isNotNullOrEmpty) {
-      AppSingleton.storeId =
-          AppSingleton.loggedInUserProfile?.sellerId?.toInt() ?? 1;
-      Get.offAllNamed(dashboardViewRoute);
-    } else {
-      Get.offAllNamed(
-        editLocationViewRoute,
-      );
-    }
-    setLoaderState(ViewStateEnum.idle);
+    Utils.fetchLatestProfileData();
   }
 
   getAddress() async {

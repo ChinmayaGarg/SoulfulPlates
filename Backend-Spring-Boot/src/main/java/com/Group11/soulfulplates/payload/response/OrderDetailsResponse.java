@@ -1,7 +1,11 @@
 package com.Group11.soulfulplates.payload.response;
-import java.time.LocalDateTime;
+
 import java.util.Date;
 import java.util.List;
+
+/**
+ * Response payload for order details.
+ */
 
 public class OrderDetailsResponse {
     private Integer code;

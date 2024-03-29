@@ -22,6 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ This class implements the PaymentService interface.
+ It provides methods to create payments and transactions, update payment status,
+ filter payments, and calculate the sum of payments for a store within a specific month.
+ */
+
 @Service
 public class PaymentServiceImpl implements PaymentService {
 

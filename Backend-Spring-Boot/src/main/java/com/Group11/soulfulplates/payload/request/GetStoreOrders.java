@@ -1,5 +1,8 @@
 package com.Group11.soulfulplates.payload.request;
 
+/**
+ * Request payload for retrieving orders associated with a store.
+ */
 public class GetStoreOrders {
     private Long storeId;
     private String status;

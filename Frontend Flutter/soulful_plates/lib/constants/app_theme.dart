@@ -214,7 +214,7 @@ class AppTheme {
     }
   }
 
-  static getTransactionStatusColor(PaymentStatus orderStatus) {
+  static TextStyle getTransactionStatusColor(PaymentStatus orderStatus) {
     switch (orderStatus) {
       case PaymentStatus.Completed:
         return TextStyle(color: AppColor.orangeColor);
