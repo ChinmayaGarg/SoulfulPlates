@@ -26,6 +26,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
      * Retrieves latitude and longitude information for all stores.
      * @return A list of maps containing store information with latitude and longitude.
      */
-    @Query(nativeQuery = true, value = "SELECT s.*, a.latitude AS lat, a.longitude AS lon FROM Stores s JOIN Addresses a ON a.user_id = s.store_id")
+    @Query(nativeQuery = true, value = "SELECT s.*, a.latitude AS lat, a.longitude AS lon FROM stores s JOIN addresses a ON a.user_id = s.user_id")
     List<Map<String, Object>> findAllStoresLatLon();
 }
